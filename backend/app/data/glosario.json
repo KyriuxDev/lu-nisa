@@ -874,9 +874,7 @@
    "espanol": "Lluvia",
    "zapoteco": "Shiah",
    "categoria": "Naturaleza",
-   "terminos": [
-    "lluvia"
-   ],
+   "terminos": ["lluvia", "llover", "llueve", "llovió"],
    "buscar_en_respuesta": true
   },
   {
