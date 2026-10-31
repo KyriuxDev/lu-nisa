@@ -43,7 +43,7 @@ class ProveedorFalso:
         self.llamadas = []
 
     async def generar(self, prompt, sistema=None, imagen=None, json_mode=False, pensar_minimo=False, max_tokens=None):
-        self.llamadas.append({"prompt": prompt, "sistema": sistema, "imagen": imagen})
+        self.llamadas.append({"prompt": prompt, "sistema": sistema, "imagen": imagen, "pensar_minimo": pensar_minimo})
         r = self.respuestas.pop(0)
         if isinstance(r, Exception):
             raise r
@@ -142,3 +142,10 @@ def test_imagen_invalida(cliente_con):
     cliente, _ = cliente_con(gemini=[])
     r = cliente.post("/analizar-plaga", files={"imagen": ("x.jpg", b"no soy imagen", "image/jpeg")})
     assert r.status_code == 415
+
+
+def test_pide_razonamiento_minimo(cliente_con):
+    # En la prueba real Gemini cortaba a los 30 s porque Gemma razonaba demasiado
+    cliente, provs = cliente_con(gemini=[json.dumps(COGOLLERO)])
+    enviar(cliente)
+    assert provs["gemini"].llamadas[0]["pensar_minimo"] is True

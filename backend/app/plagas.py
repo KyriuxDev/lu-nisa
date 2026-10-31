@@ -122,7 +122,10 @@ async def analizar_con(llm: Proveedor, jpeg: bytes, cultivo: str | None) -> tupl
     prompt = PROMPT.format(pista=pista)
     error = ""
     for intento in range(1, MAX_INTENTOS + 1):
-        texto = await llm.generar(prompt, sistema=SISTEMA, imagen=jpeg, json_mode=True, max_tokens=700)
+        # pensar_minimo: sin esto Gemma 4 razona tanto que Gemini corta a los 30 s (ReadTimeout)
+        texto = await llm.generar(
+            prompt, sistema=SISTEMA, imagen=jpeg, json_mode=True, pensar_minimo=True, max_tokens=700
+        )
         try:
             return PlagaAnalisis.model_validate(extraer_json(texto)), intento
         except ValueError as e:

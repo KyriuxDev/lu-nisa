@@ -51,6 +51,8 @@ class BackendService {
   // Gemini (30 s máx.) + respaldo en Ollama en frío (~40 s); carga en segundo plano
   static const _timeoutExplicar = Duration(seconds: 90);
   static const _timeoutPreguntar = Duration(seconds: 90);
+  // Si Gemini falla (30 s) la foto se analiza con Gemma local, que tarda más con imágenes
+  static const _timeoutPlaga = Duration(seconds: 150);
 
   static Future<String> obtenerUrl() async {
     try {
@@ -183,7 +185,7 @@ class BackendService {
     if (cultivo != null) peticion.fields['cultivo'] = cultivo;
 
     final respuesta = await http.Response.fromStream(
-      await peticion.send().timeout(_timeoutAnalisis),
+      await peticion.send().timeout(_timeoutPlaga),
     );
     if (respuesta.statusCode != 200) {
       throw HttpException('analizar-plaga ${respuesta.statusCode}: ${respuesta.body}');
