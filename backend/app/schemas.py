@@ -95,8 +95,18 @@ class PalabraZapoteca(BaseModel):
     categoria: str
 
 
+class Segmento(BaseModel):
+    texto: str
+    # Traducción al zapoteco de este trozo (None si es texto normal)
+    zapoteco: str | None
+
+
 class PreguntarRespuesta(BaseModel):
     respuesta: str
+    # La misma respuesta en trozos, para mostrar el zapoteco dentro de la frase
+    respuesta_segmentos: list[Segmento]
+    # La pregunta con las palabras zapotecas cambiadas a español (None si no tenía)
+    pregunta_traducida: str | None
     # Palabras de la respuesta que tienen traducción en el glosario (las pone el código, no el modelo)
     zapoteco: list[PalabraZapoteca]
     # Palabras zapotecas que reconocimos en la pregunta

@@ -17,11 +17,28 @@ class PalabraZapoteca {
       );
 }
 
+/// Trozo de la respuesta. Si [zapoteco] no es null, [texto] es la palabra en español que traduce.
+class Segmento {
+  final String texto;
+  final String? zapoteco;
+
+  const Segmento({required this.texto, this.zapoteco});
+
+  factory Segmento.desdeJson(Map<String, dynamic> json) => Segmento(
+        texto: json['texto'] as String,
+        zapoteco: json['zapoteco'] as String?,
+      );
+}
+
 /// Respuesta de POST /preguntar.
 /// Gemma contesta en español; las palabras en zapoteco las agrega el backend desde el glosario.
 class RespuestaPregunta {
   final String pregunta;
   final String respuesta;
+  final List<Segmento> segmentos;
+
+  /// La pregunta con las palabras zapotecas en español; null si no traía zapoteco
+  final String? preguntaTraducida;
   final List<PalabraZapoteca> zapoteco;
   final List<PalabraZapoteca> zapotecoPregunta;
   final String saludo;
@@ -35,6 +52,8 @@ class RespuestaPregunta {
   const RespuestaPregunta({
     required this.pregunta,
     required this.respuesta,
+    required this.segmentos,
+    required this.preguntaTraducida,
     required this.zapoteco,
     required this.zapotecoPregunta,
     required this.saludo,
@@ -54,6 +73,10 @@ class RespuestaPregunta {
     return RespuestaPregunta(
       pregunta: pregunta,
       respuesta: json['respuesta'] as String,
+      segmentos: (json['respuesta_segmentos'] as List? ?? [])
+          .map((e) => Segmento.desdeJson(e as Map<String, dynamic>))
+          .toList(),
+      preguntaTraducida: json['pregunta_traducida'] as String?,
       zapoteco: lista('zapoteco'),
       zapotecoPregunta: lista('zapoteco_pregunta'),
       saludo: json['saludo'] as String? ?? 'Padiuxi',
@@ -65,6 +88,9 @@ class RespuestaPregunta {
       latenciaMs: json['latencia_ms'] as int? ?? 0,
     );
   }
+
+  /// true si hay al menos una palabra para mostrar en zapoteco dentro de la frase
+  bool get tieneZapotecoEnFrase => segmentos.any((s) => s.zapoteco != null);
 
   /// Mismo texto que usa el análisis de foto: "Gemma 4 26B" o "Gemma 4 local"
   String get etiquetaModelo =>

@@ -267,10 +267,10 @@ async def preguntar(entrada: PreguntarEntrada, proveedores: dict[str, Proveedor]
     las palabras en zapoteco las agrega el glosario, nunca el modelo."""
     inicio = time.perf_counter()
     mes = entrada.mes or datetime.now().month
-    datos, municipio = contexto.armar(entrada.municipio, mes, entrada.texto)
-
     # Si el campesino usó palabras en zapoteco, se las traducimos al modelo
     en_pregunta = glosario.zapoteco_en_pregunta(entrada.texto)
+    # Con la pregunta traducida, "dháh" también encuentra los datos del frijol
+    datos, municipio = contexto.armar(entrada.municipio, mes, glosario.traducir_pregunta(entrada.texto))
     traducciones = (
         "Palabras en zapoteco que usó el campesino: "
         + ", ".join(f"{p['zapoteco']} = {p['espanol'].lower()}" for p in en_pregunta)
@@ -278,8 +278,14 @@ async def preguntar(entrada: PreguntarEntrada, proveedores: dict[str, Proveedor]
         if en_pregunta
         else ""
     )
+    traducida = glosario.traducir_pregunta(entrada.texto) if en_pregunta else None
     prompt = prompts.PROMPT_PREGUNTA.format(
-        datos=datos, traducciones=traducciones, pregunta=entrada.texto.replace('"', "'")
+        datos=datos,
+        traducciones=traducciones,
+        pregunta=entrada.texto.replace('"', "'"),
+        pregunta_traducida=(
+            f'La misma pregunta en español: "{traducida.replace(chr(34), chr(39))}"\n' if traducida else ""
+        ),
     )
     texto, llm, respaldo = await generar_con_respaldo(
         proveedores, config.PROVEEDOR_PREGUNTAR, prompt, prompts.SISTEMA_PREGUNTA, "/preguntar"
@@ -288,6 +294,8 @@ async def preguntar(entrada: PreguntarEntrada, proveedores: dict[str, Proveedor]
 
     return PreguntarRespuesta(
         respuesta=respuesta,
+        respuesta_segmentos=glosario.segmentos_respuesta(respuesta),
+        pregunta_traducida=traducida,
         zapoteco=glosario.palabras_en_texto(respuesta),
         zapoteco_pregunta=en_pregunta,
         saludo=glosario.SALUDO,

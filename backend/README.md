@@ -28,7 +28,7 @@ ollama pull gemma4:e4b        # respaldo local y /explicar
 |---|---|---|
 | `GET /salud` | — | proveedor activo y si el modelo responde |
 | `POST /analizar-parcela` | multipart `imagen` (jpeg/png/webp, ≤10 MB) | `{analisis, humedad_preguntar_usuario, respaldo, proveedor, modelo, intentos, latencia_ms}` |
-| `POST /preguntar` | `{texto, municipio?, mes?}` (texto dictado por voz o escrito) | `{respuesta, zapoteco: [{espanol, zapoteco, categoria}], zapoteco_pregunta, saludo, despedida, municipio, respaldo, proveedor, modelo, latencia_ms}` |
+| `POST /preguntar` | `{texto, municipio?, mes?}` (texto dictado por voz o escrito) | `{respuesta, respuesta_segmentos, pregunta_traducida, zapoteco: [{espanol, zapoteco, categoria}], zapoteco_pregunta, saludo, despedida, municipio, respaldo, proveedor, modelo, latencia_ms}` |
 | `POST /explicar` | `{municipio, cultivo, puntaje, datos_regla: {clave: {valor, fuente: foto\|campesino\|datos}}}` | `{explicacion, respaldo, proveedor, modelo, latencia_ms}` |
 
 `analisis` solo trae atributos observables (`es_parcela`, `suelo_desnudo`, `humedad_aparente`,
@@ -44,7 +44,19 @@ Gemma contesta **solo en español** con los datos de clima y cultivos del munici
 las palabras que tienen traducción en [`app/data/glosario.json`](app/data/glosario.json) y las devuelve en `zapoteco`.
 El modelo nunca escribe zapoteco, así que no puede inventarlo.
 
-Si la pregunta trae palabras en zapoteco ("¿cuándo siembro dháh?"), se le pasan traducidas al modelo.
+Si la pregunta trae palabras en zapoteco ("¿Bata siembro dháh?"), el código la traduce
+("¿cuándo siembro frijol?"), se la pasa así al modelo y la devuelve en `pregunta_traducida`.
+
+`respuesta_segmentos` trae la respuesta en trozos; los que tienen `zapoteco` son palabras con traducción,
+y la app los muestra dentro de la frase: "El **Dháh** (frijol) se siembra en junio…".
+
+El reconocimiento de voz del teléfono escribe las palabras zapotecas como suenan en español
+(por ejemplo "shiah" puede salir como "chía"). Cuando un hablante lo pruebe, se agrega cómo salió en
+`alias_voz` de esa palabra en el glosario:
+
+```json
+{"espanol": "Lluvia", "zapoteco": "Shiah", "alias_voz": ["chía"], ...}
+```
 
 El glosario viene de [vocabulario_zapoteco](https://dev-deivis.github.io/vocabulario_zapoteco/). Las entradas
 con `"zapoteco": ""` (maíz, milpa, sembrar, cosechar, café…) faltan por confirmar con un hablante y no se muestran;

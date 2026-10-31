@@ -42,6 +42,7 @@ class _PreguntarScreenState extends State<PreguntarScreen> {
     '¿Qué puedo sembrar este mes?',
     '¿Cuándo siembro frijol?',
     '¿Cuánto llueve en esta época?',
+    '¿Bata siembro dháh?',
   ];
 
   @override
@@ -233,6 +234,14 @@ class _PreguntarScreenState extends State<PreguntarScreen> {
                 style: const TextStyle(fontSize: 15, fontStyle: FontStyle.italic, color: Color(0xFF555555)),
               ),
             ],
+            if (_respuesta?.preguntaTraducida != null && !_enviando) ...[
+              const SizedBox(height: 4),
+              Text(
+                'Entendimos: ${_respuesta!.preguntaTraducida}',
+                textAlign: TextAlign.center,
+                style: const TextStyle(fontSize: 14, color: _kTierra, fontWeight: FontWeight.w600),
+              ),
+            ],
             const SizedBox(height: 20),
             _CampoTexto(
               controlador: _controlTexto,
@@ -405,7 +414,7 @@ class _Aviso extends StatelessWidget {
   }
 }
 
-class _TarjetaRespuesta extends StatelessWidget {
+class _TarjetaRespuesta extends StatefulWidget {
   final RespuestaPregunta respuesta;
   final bool hablando;
   final VoidCallback onEscuchar;
@@ -413,7 +422,19 @@ class _TarjetaRespuesta extends StatelessWidget {
   const _TarjetaRespuesta({required this.respuesta, required this.hablando, required this.onEscuchar});
 
   @override
+  State<_TarjetaRespuesta> createState() => _TarjetaRespuestaState();
+}
+
+class _TarjetaRespuestaState extends State<_TarjetaRespuesta> {
+  /// Mostrar las palabras en zapoteco dentro de la frase
+  bool _conZapoteco = true;
+
+  @override
   Widget build(BuildContext context) {
+    final respuesta = widget.respuesta;
+    final hablando = widget.hablando;
+    final onEscuchar = widget.onEscuchar;
+    final mezclar = _conZapoteco && respuesta.tieneZapotecoEnFrase;
     // Palabras de la pregunta y de la respuesta, sin repetir
     final palabras = <String, PalabraZapoteca>{
       for (final p in [...respuesta.zapotecoPregunta, ...respuesta.zapoteco]) p.espanol: p,
@@ -444,7 +465,19 @@ class _TarjetaRespuesta extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 8),
-          Text(respuesta.respuesta, style: const TextStyle(fontSize: 17, height: 1.45)),
+          mezclar
+              ? _FraseConZapoteco(segmentos: respuesta.segmentos)
+              : Text(respuesta.respuesta, style: const TextStyle(fontSize: 17, height: 1.45)),
+          if (respuesta.tieneZapotecoEnFrase)
+            Align(
+              alignment: Alignment.centerLeft,
+              child: TextButton.icon(
+                style: TextButton.styleFrom(padding: EdgeInsets.zero, foregroundColor: _kTierra),
+                onPressed: () => setState(() => _conZapoteco = !_conZapoteco),
+                icon: const Icon(Icons.translate_rounded, size: 18),
+                label: Text(_conZapoteco ? 'Ver solo en español' : 'Ver con palabras en zapoteco'),
+              ),
+            ),
           if (palabras.isNotEmpty) ...[
             const SizedBox(height: 20),
             const Text(
@@ -478,6 +511,36 @@ class _TarjetaRespuesta extends StatelessWidget {
               ),
             ],
           ),
+        ],
+      ),
+    );
+  }
+}
+
+/// La respuesta con cada palabra traducida así: "El **Dháh** (frijol) necesita…"
+class _FraseConZapoteco extends StatelessWidget {
+  final List<Segmento> segmentos;
+  const _FraseConZapoteco({required this.segmentos});
+
+  @override
+  Widget build(BuildContext context) {
+    return RichText(
+      text: TextSpan(
+        style: const TextStyle(fontSize: 17, height: 1.45, color: Color(0xFF1A1A1A)),
+        children: [
+          for (final s in segmentos)
+            if (s.zapoteco == null)
+              TextSpan(text: s.texto)
+            else ...[
+              TextSpan(
+                text: s.zapoteco,
+                style: const TextStyle(fontWeight: FontWeight.w700, color: _kPrimario),
+              ),
+              TextSpan(
+                text: ' (${s.texto})',
+                style: const TextStyle(color: Color(0xFF555555)),
+              ),
+            ],
         ],
       ),
     );

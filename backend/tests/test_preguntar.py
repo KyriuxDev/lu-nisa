@@ -116,7 +116,8 @@ def test_preguntar_gemini_y_zapoteco(cliente_con):
     j = r.json()
     assert j["proveedor"] == "gemini" and j["respaldo"] is None
     assert j["municipio"] == "Ixtlán de Juárez"
-    assert [p["zapoteco"] for p in j["zapoteco"]] == ["Dháh", "Yúu"]
+    # "llover" cuenta como lluvia (Shiah)
+    assert [p["zapoteco"] for p in j["zapoteco"]] == ["Shiah", "Dháh", "Yúu"]
     assert j["saludo"] == "Padiuxi" and j["despedida"] == "Kixarubalo"
     # El modelo recibió los datos reales del municipio
     assert "141 mm" in provs["gemini"].llamadas[0]["prompt"]
@@ -152,3 +153,58 @@ def test_preguntar_valida_entrada(cliente_con):
     cliente, _ = cliente_con(gemini=[])
     assert cliente.post("/preguntar", json={"texto": ""}).status_code == 422
     assert cliente.post("/preguntar", json={"texto": "hola", "mes": 13}).status_code == 422
+
+
+# ---------- preguntar en zapoteco y respuesta mezclada ----------
+
+def test_traducir_pregunta_con_interrogativos():
+    assert glosario.traducir_pregunta("¿Bata siembro dháh si ya cayó shiah?") == "¿cuándo siembro frijol si ya cayó lluvia?"
+    assert glosario.traducir_pregunta("Padiuxi, ¿kani siembro ishú?") == "hola, ¿dónde siembro aguacate?"
+
+
+def test_traducir_pregunta_sin_zapoteco_no_cambia():
+    assert glosario.traducir_pregunta("¿Qué siembro este mes?") == "¿Qué siembro este mes?"
+
+
+def test_segmentos_marcan_solo_la_primera_vez():
+    seg = glosario.segmentos_respuesta("El frijol necesita lluvia. Más lluvia, más frijol.")
+    marcados = [(s["texto"], s["zapoteco"]) for s in seg if s["zapoteco"]]
+    assert marcados == [("frijol", "Dháh"), ("lluvia", "Shiah")]
+    # Juntando los trozos sale la respuesta original, sin perder nada
+    assert "".join(s["texto"] for s in seg) == "El frijol necesita lluvia. Más lluvia, más frijol."
+
+
+def test_segmentos_conservan_mayusculas_y_acentos():
+    seg = glosario.segmentos_respuesta("Lluvia y Árboles.")
+    assert [(s["texto"], s["zapoteco"]) for s in seg if s["zapoteco"]] == [("Lluvia", "Shiah"), ("Árboles", "Ka-yaha")]
+
+
+def test_alias_voz(monkeypatch):
+    # Un hablante puede registrar cómo transcribe el teléfono una palabra
+    original = glosario.cargar()
+    con_alias = [dict(p, alias_voz=["chía"]) if p["espanol"] == "Lluvia" else p for p in original]
+    monkeypatch.setattr(glosario, "cargar", lambda: con_alias)
+    glosario._patrones.cache_clear()
+    try:
+        assert glosario.traducir_pregunta("¿ya cayó suficiente chía?") == "¿ya cayó suficiente lluvia?"
+    finally:
+        glosario._patrones.cache_clear()
+
+
+def test_preguntar_en_zapoteco(cliente_con):
+    cliente, provs = cliente_con(gemini=["El frijol se siembra en junio y julio, con la lluvia."])
+    j = cliente.post(
+        "/preguntar", json={"texto": "¿Bata siembro dháh?", "municipio": "Ixtlán de Juárez", "mes": 10}
+    ).json()
+    assert j["pregunta_traducida"] == "¿cuándo siembro frijol?"
+    prompt = provs["gemini"].llamadas[0]["prompt"]
+    assert "¿cuándo siembro frijol?" in prompt
+    # Encontró los datos del frijol aunque la pregunta decía "dháh"
+    assert "Frijol negro criollo" in prompt
+    assert [s["zapoteco"] for s in j["respuesta_segmentos"] if s["zapoteco"]] == ["Dháh", "Shiah"]
+
+
+def test_preguntar_en_espanol_no_trae_traduccion(cliente_con):
+    cliente, _ = cliente_con(gemini=["Respuesta."])
+    j = cliente.post("/preguntar", json={"texto": "¿qué siembro?"}).json()
+    assert j["pregunta_traducida"] is None
