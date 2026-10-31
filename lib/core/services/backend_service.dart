@@ -25,12 +25,16 @@ class Explicacion {
 /// Traducción experimental de POST /traducir-zapoteco (no revisada por un hablante)
 class TraduccionExperimental {
   final String traduccion;
+
+  /// false si el modelo se quedó repitiendo palabras y no hubo nada que mostrar
+  final bool confiable;
   final String aviso;
   final String proveedor;
   final String modelo;
 
   const TraduccionExperimental({
     required this.traduccion,
+    this.confiable = true,
     required this.aviso,
     required this.proveedor,
     required this.modelo,
@@ -171,6 +175,7 @@ class BackendService {
     final json = jsonDecode(utf8.decode(respuesta.bodyBytes)) as Map<String, dynamic>;
     return TraduccionExperimental(
       traduccion: json['traduccion'] as String,
+      confiable: json['confiable'] as bool? ?? true,
       aviso: json['aviso'] as String,
       proveedor: json['proveedor'] as String,
       modelo: json['modelo'] as String,

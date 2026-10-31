@@ -600,8 +600,15 @@ class _TraduccionExperimental extends StatelessWidget {
           ),
           const SizedBox(height: 10),
           Text(
-            traduccion.traduccion,
-            style: const TextStyle(fontSize: 17, height: 1.45, fontStyle: FontStyle.italic),
+            traduccion.confiable
+                ? traduccion.traduccion
+                : 'Gemma no pudo traducir bien esta respuesta: se quedó repitiendo palabras. '
+                    'Así se ve por qué hace falta que hablantes revisen y completen el zapoteco.',
+            style: TextStyle(
+              fontSize: traduccion.confiable ? 17 : 15,
+              height: 1.45,
+              fontStyle: traduccion.confiable ? FontStyle.italic : FontStyle.normal,
+            ),
           ),
           const SizedBox(height: 10),
           Text(

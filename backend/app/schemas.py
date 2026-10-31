@@ -136,6 +136,8 @@ class TraducirEntrada(BaseModel):
 
 class TraducirRespuesta(BaseModel):
     traduccion: str
+    # false si el modelo se quedó repitiendo palabras y no se pudo rescatar nada
+    confiable: bool = True
     # Siempre true: es traducción automática, no revisada por un hablante
     experimental: bool = True
     aviso: str

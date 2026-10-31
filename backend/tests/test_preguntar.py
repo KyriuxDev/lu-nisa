@@ -214,7 +214,8 @@ def test_preguntar_en_zapoteco(cliente_con):
     assert "¿cuándo siembro frijol?" in prompt
     # Encontró los datos del frijol aunque la pregunta decía "dháh"
     assert "Frijol negro criollo" in prompt
-    assert [s["zapoteco"] for s in j["respuesta_segmentos"] if s["zapoteco"]] == ["Dháh", "raz", "Shiah"]
+    # "siembra" sale en las etiquetas, pero dentro de la frase solo se marcan las formas principales
+    assert [s["zapoteco"] for s in j["respuesta_segmentos"] if s["zapoteco"]] == ["Dháh", "Shiah"]
 
 
 def test_preguntar_en_espanol_no_trae_traduccion(cliente_con):
@@ -234,12 +235,12 @@ def test_preguntar_si_todo_era_zapoteco_responde_algo(cliente_con):
 
 def test_traducir_da_vocabulario_verificado_al_modelo(cliente_con, monkeypatch):
     monkeypatch.setattr(config, "PROVEEDOR_TRADUCIR", "gemini")
-    cliente, provs = cliente_con(gemini=['"Dháh ... Shiah ..."'])
+    cliente, provs = cliente_con(gemini=['"Dháh nak shiah guiela xhoꞌbaꞌ."'])
     j = cliente.post("/traducir-zapoteco", json={"texto": "El frijol necesita lluvia."}).json()
     prompt = provs["gemini"].llamadas[0]["prompt"]
     assert "frijol = Dháh" in prompt and "lluvia = Shiah" in prompt
     assert j["experimental"] is True and "no revisada" in j["aviso"]
-    assert j["traduccion"] == "Dháh ... Shiah ..."  # sin comillas
+    assert j["traduccion"] == "Dháh nak shiah guiela xhoꞌbaꞌ." and j["confiable"] is True  # sin comillas
     assert [p["zapoteco"] for p in j["vocabulario_usado"]] == ["Dháh", "Shiah"]
 
 
@@ -282,3 +283,48 @@ def test_traducir_limita_largo_de_respuesta(cliente_con, monkeypatch):
     cliente, provs = cliente_con(gemini=["traducción"])
     cliente.post("/traducir-zapoteco", json={"texto": "Hola."})
     assert provs["gemini"].llamadas[0]["max_tokens"] == 300
+
+
+
+# ---------- pruebas en el teléfono (31 oct) ----------
+
+def test_en_la_frase_no_cambia_verbos_por_sustantivos():
+    # Se veía "suelen Shiah (llover)"
+    seg = glosario.segmentos_respuesta("En octubre suelen llover 141 mm.")
+    assert [s for s in seg if s["zapoteco"]] == []
+    # pero la etiqueta sí sale
+    assert [p["zapoteco"] for p in glosario.palabras_en_texto("En octubre suelen llover 141 mm.")] == ["Shiah"]
+
+
+def test_contexto_dice_que_se_siembra_y_que_sigue():
+    # Gemma contestaba "no tengo información de qué sembrar" en octubre
+    datos, _ = contexto.armar("Ixtlán de Juárez", 10, "¿qué siembro este mes?")
+    assert "En octubre no se siembra ninguno" in datos
+    assert "Trigo: empieza en noviembre, en 1 mes" in datos
+    datos, _ = contexto.armar("Ixtlán de Juárez", 5, "¿qué siembro?")
+    assert "Cultivos que se siembran en mayo:" in datos and "Calabaza" in datos
+
+
+def test_meses_de_rango_que_cruza_el_año():
+    assert contexto.meses_de("Octubre-Enero") == [10, 11, 12, 1]
+    assert contexto.meses_de("Mayo-Junio") == [5, 6]
+    assert contexto.meses_de("algo raro") == []
+
+
+def test_traduccion_repetitiva_se_descarta(cliente_con, monkeypatch):
+    monkeypatch.setattr(config, "PROVEEDOR_TRADUCIR", "gemini")
+    # Texto real del teléfono: repetitivo desde el principio
+    bucle = (
+        "Ndxi' xquixe' shiah 141 mm naxhi' xquixe' ndu'u 14.2 °C. Ndxi' naxhi' ndu'u naxhi' raz ndxi' ndxi' ndu'u, "
+        "naxhi' ndxi' raz ndxi' ndxi' ndu'u ndxi' ndxi' ndu'u. Ndxi' " + "naxhi' " * 40
+    )
+    cliente, _ = cliente_con(gemini=[bucle])
+    j = cliente.post("/traducir-zapoteco", json={"texto": "En octubre suelen llover 141 mm."}).json()
+    assert j["confiable"] is False and j["traduccion"] == ""
+
+
+def test_traduccion_que_empieza_bien_se_corta():
+    from app.main import limpiar_traduccion
+
+    assert limpiar_traduccion("Dháh raz guiela xhoꞌbaꞌ nisa yo yo yo yo") == "Dháh raz guiela xhoꞌbaꞌ nisa…"
+    assert limpiar_traduccion("Dháh raz guiela xhoꞌbaꞌ nisa.") == "Dháh raz guiela xhoꞌbaꞌ nisa."

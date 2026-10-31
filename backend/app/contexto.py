@@ -64,6 +64,49 @@ def _cultivos_mencionados(pregunta: str, municipio: dict) -> dict[str, dict]:
     return encontrados
 
 
+def meses_de(rango: str) -> list[int]:
+    """'Mayo-Junio' → [5, 6]; 'Octubre-Enero' → [10, 11, 12, 1]. Vacío si no se entiende."""
+    partes = [normalizar(p).strip() for p in rango.split("-")]
+    nums = [MESES.index(p) + 1 for p in partes if p in MESES]
+    if not nums:
+        return []
+    inicio, fin = nums[0], nums[-1]
+    salida = [inicio]
+    while salida[-1] != fin:
+        salida.append(salida[-1] % 12 + 1)
+    return salida
+
+
+def _calendario_siembra(municipio: dict, mes: int) -> list[str]:
+    """Qué se siembra este mes y qué toca después: así el modelo no tiene que calcularlo."""
+    cultivos: dict[str, str] = {}
+    for lista in municipio["recomendaciones_por_mes"].values():
+        for c in lista:
+            cultivos.setdefault(nombre_corto(c["cultivo"]), c["meses_siembra"])
+
+    ahora, proximos = [], []
+    for nombre, rango in cultivos.items():
+        meses = meses_de(rango)
+        if not meses:
+            continue
+        if mes in meses:
+            ahora.append(f"{nombre} ({rango.lower()})")
+        else:
+            faltan = min((m - mes) % 12 for m in meses)
+            primero = MESES[(mes + faltan - 1) % 12]
+            proximos.append((faltan, f"{nombre}: empieza en {primero}, en {faltan} {'mes' if faltan == 1 else 'meses'}"))
+
+    lineas = []
+    if ahora:
+        lineas.append(f"Cultivos que se siembran en {MESES[mes - 1]}: {', '.join(sorted(ahora))}")
+    else:
+        lineas.append(f"En {MESES[mes - 1]} no se siembra ninguno de los cultivos de los datos de este municipio.")
+    if proximos:
+        lineas.append("Próximos cultivos en sembrarse:")
+        lineas += [f"- {texto}" for _, texto in sorted(proximos)[:3]]
+    return lineas
+
+
 def _linea_cultivo(c: dict) -> str:
     partes = [
         f"{nombre_corto(c['cultivo'])}: puntaje {c['score']}/100",
@@ -95,8 +138,9 @@ def armar(municipio_nombre: str | None, mes: int, pregunta: str) -> tuple[str, s
         f"mínima {clima['temp_min']} °C, lluvia {clima['precipitacion_mensual']} mm en el mes",
         f"Clima de {MESES[sig - 1]}: temperatura media {clima_sig['temp_media']} °C, "
         f"lluvia {clima_sig['precipitacion_mensual']} mm en el mes",
-        f"Cultivos con mejor puntaje en {MESES[mes - 1]}:",
     ]
+    lineas += _calendario_siembra(m, mes)
+    lineas.append(f"Cultivos con mejor puntaje en {MESES[mes - 1]} (para cuidar o cosechar, no siempre para sembrar):")
     del_mes = sorted(m["recomendaciones_por_mes"].get(str(mes), []), key=lambda c: -c["score"])
     lineas += [_linea_cultivo(c) for c in del_mes[:MAX_CULTIVOS]]
 

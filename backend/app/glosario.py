@@ -135,16 +135,24 @@ def traducir_pregunta(texto: str) -> str:
     return "".join(partes)
 
 
+def _es_forma_principal(encontrado: str, p: dict) -> bool:
+    """'lluvia' o 'lluvias' para la entrada Lluvia; no 'llover' ni 'llueve'."""
+    base = normalizar(p["terminos"][0])
+    return normalizar(encontrado) in (base, base + "s", base + "es")
+
+
 def segmentos_respuesta(texto: str) -> list[dict]:
     """La respuesta en trozos para mostrar el zapoteco dentro de la frase.
 
     [{"texto": "El ", "zapoteco": None}, {"texto": "frijol", "zapoteco": "Dháh"}, ...]
-    Solo se marca la primera vez que aparece cada palabra, para que se lea fácil.
+    Solo se marca la primera vez que aparece cada palabra, para que se lea fácil, y solo en su forma
+    principal: "lluvia" sí, pero "llover" no ("suelen Shiah (llover)" cambiaba un verbo por un sustantivo).
+    Las otras formas siguen saliendo en las etiquetas de palabras_en_texto().
     """
     texto = unicodedata.normalize("NFC", texto)
     segmentos, pos, vistas = [], 0, set()
     for ini, fin, p in _coincidencias(texto, "espanol", solo_respuesta=True):
-        if p["espanol"] in vistas:
+        if p["espanol"] in vistas or not _es_forma_principal(texto[ini:fin], p):
             continue
         vistas.add(p["espanol"])
         if ini > pos:

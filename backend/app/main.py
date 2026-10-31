@@ -313,6 +313,33 @@ async def preguntar(entrada: PreguntarEntrada, proveedores: dict[str, Proveedor]
     )
 
 
+def limpiar_traduccion(texto: str) -> str | None:
+    """Corta los bucles del modelo ("naxhi' naxhi' naxhi'…"). None si no queda nada confiable.
+
+    Gemma no sabe zapoteco de la Sierra Norte y a veces se queda repitiendo la misma palabra.
+    """
+    palabras = " ".join(texto.split()).split(" ")
+    claves = [re.sub(r"[^\w']", "", p.lower()) for p in palabras]
+    # Corta donde empieza una misma palabra o frase corta repetida 3 veces seguidas
+    for i in range(len(claves)):
+        for largo in (1, 2, 3):
+            trozo = claves[i : i + largo]
+            if len(trozo) == largo and all(t for t in trozo) and claves[i + largo : i + 2 * largo] == trozo == claves[
+                i + 2 * largo : i + 3 * largo
+            ]:
+                palabras = palabras[:i]
+                claves = claves[:i]
+                break
+        else:
+            continue
+        break
+    utiles = [c for c in claves if c]
+    # Muy pocas palabras, o casi todas repetidas: no es una traducción
+    if len(utiles) < 4 or len(set(utiles)) / len(utiles) < 0.5:
+        return None
+    return " ".join(palabras).rstrip(" ,;") + ("" if len(palabras) == len(texto.split()) else "…")
+
+
 AVISO_TRADUCCION = (
     "Traducción automática con Gemma 4, todavía no revisada por un hablante. "
     "Puede tener errores o mezclar otras variantes del zapoteco."
@@ -338,8 +365,12 @@ async def traducir_zapoteco(
     texto, llm, respaldo = await generar_con_respaldo(
         proveedores, config.PROVEEDOR_TRADUCIR, prompt, prompts.SISTEMA_TRADUCIR, "/traducir-zapoteco", max_tokens=300
     )
+    limpia = limpiar_traduccion(texto.strip().strip('"'))
+    if limpia is None:
+        log.warning("Traducción descartada por repetitiva: %r", texto[:200])
     return TraducirRespuesta(
-        traduccion=" ".join(texto.strip().strip('"').split()),
+        traduccion=limpia or "",
+        confiable=limpia is not None,
         aviso=AVISO_TRADUCCION,
         vocabulario_usado=vocabulario,
         respaldo=respaldo,
