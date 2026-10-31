@@ -1,0 +1,1272 @@
+{
+ "fuente": "https://dev-deivis.github.io/vocabulario_zapoteco/",
+ "variante": "Zapoteco de la Sierra Norte de Oaxaca (según la fuente)",
+ "nota": "Entradas con zapoteco vacío faltan por confirmar con un hablante; no se muestran en las respuestas.",
+ "palabras": [
+  {
+   "espanol": "Saludo general",
+   "zapoteco": "Padiuxi",
+   "categoria": "Saludos",
+   "terminos": [
+    "saludo general"
+   ],
+   "buscar_en_respuesta": false
+  },
+  {
+   "espanol": "Bienvenido/Bienvenida",
+   "zapoteco": "Karuba keé dalu",
+   "categoria": "Saludos",
+   "terminos": [
+    "bienvenido",
+    "bienvenida"
+   ],
+   "buscar_en_respuesta": false
+  },
+  {
+   "espanol": "Gracias",
+   "zapoteco": "Kixarubalo",
+   "categoria": "Saludos",
+   "terminos": [
+    "gracias"
+   ],
+   "buscar_en_respuesta": false
+  },
+  {
+   "espanol": "Hasta mañana",
+   "zapoteco": "Hasta uxtila",
+   "categoria": "Saludos",
+   "terminos": [
+    "hasta mañana"
+   ],
+   "buscar_en_respuesta": false
+  },
+  {
+   "espanol": "Tuna",
+   "zapoteco": "Tahsia etse",
+   "categoria": "Frutas",
+   "terminos": [
+    "tuna"
+   ],
+   "buscar_en_respuesta": true
+  },
+  {
+   "espanol": "Fresa",
+   "zapoteco": "Digaxxtila",
+   "categoria": "Frutas",
+   "terminos": [
+    "fresa"
+   ],
+   "buscar_en_respuesta": true
+  },
+  {
+   "espanol": "Toronja",
+   "zapoteco": "Xa riah",
+   "categoria": "Frutas",
+   "terminos": [
+    "toronja"
+   ],
+   "buscar_en_respuesta": true
+  },
+  {
+   "espanol": "Higo",
+   "zapoteco": "Ish shu wi",
+   "categoria": "Frutas",
+   "terminos": [
+    "higo"
+   ],
+   "buscar_en_respuesta": true
+  },
+  {
+   "espanol": "Sandía",
+   "zapoteco": "Tzuna color",
+   "categoria": "Frutas",
+   "terminos": [
+    "sandía"
+   ],
+   "buscar_en_respuesta": true
+  },
+  {
+   "espanol": "Zapote",
+   "zapoteco": "La jue",
+   "categoria": "Frutas",
+   "terminos": [
+    "zapote"
+   ],
+   "buscar_en_respuesta": true
+  },
+  {
+   "espanol": "Cereza",
+   "zapoteco": "Bisá",
+   "categoria": "Frutas",
+   "terminos": [
+    "cereza"
+   ],
+   "buscar_en_respuesta": true
+  },
+  {
+   "espanol": "Cacahuate",
+   "zapoteco": "Yiishi",
+   "categoria": "Frutas",
+   "terminos": [
+    "cacahuate"
+   ],
+   "buscar_en_respuesta": true
+  },
+  {
+   "espanol": "Manzana",
+   "zapoteco": "Ninaxy",
+   "categoria": "Frutas",
+   "terminos": [
+    "manzana"
+   ],
+   "buscar_en_respuesta": true
+  },
+  {
+   "espanol": "Anona",
+   "zapoteco": "Kiál",
+   "categoria": "Frutas",
+   "terminos": [
+    "anona"
+   ],
+   "buscar_en_respuesta": true
+  },
+  {
+   "espanol": "Piña",
+   "zapoteco": "Tuah ttsinah",
+   "categoria": "Frutas",
+   "terminos": [
+    "piña"
+   ],
+   "buscar_en_respuesta": true
+  },
+  {
+   "espanol": "Uva",
+   "zapoteco": "Betsuli",
+   "categoria": "Frutas",
+   "terminos": [
+    "uva"
+   ],
+   "buscar_en_respuesta": true
+  },
+  {
+   "espanol": "Caña",
+   "zapoteco": "Yatiaxxtila",
+   "categoria": "Frutas",
+   "terminos": [
+    "caña"
+   ],
+   "buscar_en_respuesta": true
+  },
+  {
+   "espanol": "Aguacate",
+   "zapoteco": "Ishú",
+   "categoria": "Frutas",
+   "terminos": [
+    "aguacate"
+   ],
+   "buscar_en_respuesta": true
+  },
+  {
+   "espanol": "Lima",
+   "zapoteco": "Marxlim",
+   "categoria": "Frutas",
+   "terminos": [
+    "lima"
+   ],
+   "buscar_en_respuesta": true
+  },
+  {
+   "espanol": "Limón",
+   "zapoteco": "Táh dhí",
+   "categoria": "Frutas",
+   "terminos": [
+    "limón"
+   ],
+   "buscar_en_respuesta": true
+  },
+  {
+   "espanol": "Mamey",
+   "zapoteco": "Laah shunnu",
+   "categoria": "Frutas",
+   "terminos": [
+    "mamey"
+   ],
+   "buscar_en_respuesta": true
+  },
+  {
+   "espanol": "Naranja",
+   "zapoteco": "Marasha",
+   "categoria": "Frutas",
+   "terminos": [
+    "naranja"
+   ],
+   "buscar_en_respuesta": true
+  },
+  {
+   "espanol": "Plátano",
+   "zapoteco": "Betoxxtila",
+   "categoria": "Frutas",
+   "terminos": [
+    "plátano"
+   ],
+   "buscar_en_respuesta": true
+  },
+  {
+   "espanol": "Guayaba",
+   "zapoteco": "Gwi",
+   "categoria": "Frutas",
+   "terminos": [
+    "guayaba"
+   ],
+   "buscar_en_respuesta": true
+  },
+  {
+   "espanol": "Durazno",
+   "zapoteco": "Traddú",
+   "categoria": "Frutas",
+   "terminos": [
+    "durazno"
+   ],
+   "buscar_en_respuesta": true
+  },
+  {
+   "espanol": "Chayote",
+   "zapoteco": "yet-tuet-seh",
+   "categoria": "Verduras",
+   "terminos": [
+    "chayote"
+   ],
+   "buscar_en_respuesta": true
+  },
+  {
+   "espanol": "Calabacita",
+   "zapoteco": "yet-tuh-too",
+   "categoria": "Verduras",
+   "terminos": [
+    "calabacita"
+   ],
+   "buscar_en_respuesta": true
+  },
+  {
+   "espanol": "Ejote",
+   "zapoteco": "dá yah",
+   "categoria": "Verduras",
+   "terminos": [
+    "ejote"
+   ],
+   "buscar_en_respuesta": true
+  },
+  {
+   "espanol": "Tomate",
+   "zapoteco": "Beshi dú",
+   "categoria": "Verduras",
+   "terminos": [
+    "tomate"
+   ],
+   "buscar_en_respuesta": true
+  },
+  {
+   "espanol": "Miltomate",
+   "zapoteco": "Beshi yishi",
+   "categoria": "Verduras",
+   "terminos": [
+    "miltomate"
+   ],
+   "buscar_en_respuesta": true
+  },
+  {
+   "espanol": "Ajo",
+   "zapoteco": "Gáshu",
+   "categoria": "Verduras",
+   "terminos": [
+    "ajo"
+   ],
+   "buscar_en_respuesta": true
+  },
+  {
+   "espanol": "Cebolla",
+   "zapoteco": "shishú",
+   "categoria": "Verduras",
+   "terminos": [
+    "cebolla"
+   ],
+   "buscar_en_respuesta": true
+  },
+  {
+   "espanol": "Papa",
+   "zapoteco": "Gú",
+   "categoria": "Verduras",
+   "terminos": [
+    "papa"
+   ],
+   "buscar_en_respuesta": true
+  },
+  {
+   "espanol": "Chile verde",
+   "zapoteco": "Yinah yaáh",
+   "categoria": "Verduras",
+   "terminos": [
+    "chile verde"
+   ],
+   "buscar_en_respuesta": true
+  },
+  {
+   "espanol": "Nopal",
+   "zapoteco": "bexa",
+   "categoria": "Verduras",
+   "terminos": [
+    "nopal"
+   ],
+   "buscar_en_respuesta": true
+  },
+  {
+   "espanol": "Berros",
+   "zapoteco": "Ediché",
+   "categoria": "Verduras",
+   "terminos": [
+    "berros"
+   ],
+   "buscar_en_respuesta": true
+  },
+  {
+   "espanol": "Chepil",
+   "zapoteco": "yedhia shishia",
+   "categoria": "Verduras",
+   "terminos": [
+    "chepil"
+   ],
+   "buscar_en_respuesta": true
+  },
+  {
+   "espanol": "Guaje",
+   "zapoteco": "La-á",
+   "categoria": "Verduras",
+   "terminos": [
+    "guaje"
+   ],
+   "buscar_en_respuesta": true
+  },
+  {
+   "espanol": "Elote",
+   "zapoteco": "Taáh",
+   "categoria": "Verduras",
+   "terminos": [
+    "elote"
+   ],
+   "buscar_en_respuesta": true
+  },
+  {
+   "espanol": "Gusano de maguey",
+   "zapoteco": "Bella toóh",
+   "categoria": "Verduras",
+   "terminos": [
+    "gusano de maguey"
+   ],
+   "buscar_en_respuesta": true
+  },
+  {
+   "espanol": "Chicharo",
+   "zapoteco": "Dalberja",
+   "categoria": "Verduras",
+   "terminos": [
+    "chicharo"
+   ],
+   "buscar_en_respuesta": true
+  },
+  {
+   "espanol": "Cacao",
+   "zapoteco": "Duguía",
+   "categoria": "Verduras",
+   "terminos": [
+    "cacao"
+   ],
+   "buscar_en_respuesta": true
+  },
+  {
+   "espanol": "Verdolagas",
+   "zapoteco": "Dési",
+   "categoria": "Verduras",
+   "terminos": [
+    "verdolagas"
+   ],
+   "buscar_en_respuesta": true
+  },
+  {
+   "espanol": "Quiotes",
+   "zapoteco": "shiya tuáh",
+   "categoria": "Verduras",
+   "terminos": [
+    "quiotes"
+   ],
+   "buscar_en_respuesta": true
+  },
+  {
+   "espanol": "Quelites",
+   "zapoteco": "Yedhia guálasi",
+   "categoria": "Verduras",
+   "terminos": [
+    "quelites"
+   ],
+   "buscar_en_respuesta": true
+  },
+  {
+   "espanol": "Semillas/pepitas",
+   "zapoteco": "ká dethú",
+   "categoria": "Verduras",
+   "terminos": [
+    "semillas",
+    "semilla",
+    "pepitas"
+   ],
+   "buscar_en_respuesta": true
+  },
+  {
+   "espanol": "Guías",
+   "zapoteco": "Ka ló kuana",
+   "categoria": "Verduras",
+   "terminos": [
+    "guías"
+   ],
+   "buscar_en_respuesta": true
+  },
+  {
+   "espanol": "Mariposa",
+   "zapoteco": "Bel-lóh",
+   "categoria": "Animales",
+   "terminos": [
+    "mariposa"
+   ],
+   "buscar_en_respuesta": true
+  },
+  {
+   "espanol": "Pájaro",
+   "zapoteco": "Binni",
+   "categoria": "Animales",
+   "terminos": [
+    "pájaro"
+   ],
+   "buscar_en_respuesta": true
+  },
+  {
+   "espanol": "Ardilla",
+   "zapoteco": "Beridaá",
+   "categoria": "Animales",
+   "terminos": [
+    "ardilla"
+   ],
+   "buscar_en_respuesta": true
+  },
+  {
+   "espanol": "Venado",
+   "zapoteco": "Betzíinah",
+   "categoria": "Animales",
+   "terminos": [
+    "venado"
+   ],
+   "buscar_en_respuesta": true
+  },
+  {
+   "espanol": "Abeja",
+   "zapoteco": "Beédu",
+   "categoria": "Animales",
+   "terminos": [
+    "abeja"
+   ],
+   "buscar_en_respuesta": true
+  },
+  {
+   "espanol": "León",
+   "zapoteco": "Betsi",
+   "categoria": "Animales",
+   "terminos": [
+    "león"
+   ],
+   "buscar_en_respuesta": true
+  },
+  {
+   "espanol": "Serpiente",
+   "zapoteco": "Bel-lá",
+   "categoria": "Animales",
+   "terminos": [
+    "serpiente"
+   ],
+   "buscar_en_respuesta": true
+  },
+  {
+   "espanol": "Zopilote",
+   "zapoteco": "Tzuuth",
+   "categoria": "Animales",
+   "terminos": [
+    "zopilote"
+   ],
+   "buscar_en_respuesta": true
+  },
+  {
+   "espanol": "Ratón",
+   "zapoteco": "Bedhinah",
+   "categoria": "Animales",
+   "terminos": [
+    "ratón"
+   ],
+   "buscar_en_respuesta": true
+  },
+  {
+   "espanol": "Zorro",
+   "zapoteco": "Bedáh",
+   "categoria": "Animales",
+   "terminos": [
+    "zorro"
+   ],
+   "buscar_en_respuesta": true
+  },
+  {
+   "espanol": "Coyote",
+   "zapoteco": "Tzahuiuh",
+   "categoria": "Animales",
+   "terminos": [
+    "coyote"
+   ],
+   "buscar_en_respuesta": true
+  },
+  {
+   "espanol": "Abejorro",
+   "zapoteco": "Bedhía",
+   "categoria": "Animales",
+   "terminos": [
+    "abejorro"
+   ],
+   "buscar_en_respuesta": true
+  },
+  {
+   "espanol": "Lagartija",
+   "zapoteco": "Guattzih",
+   "categoria": "Animales",
+   "terminos": [
+    "lagartija"
+   ],
+   "buscar_en_respuesta": true
+  },
+  {
+   "espanol": "Águila",
+   "zapoteco": "Beedhia",
+   "categoria": "Animales",
+   "terminos": [
+    "águila"
+   ],
+   "buscar_en_respuesta": true
+  },
+  {
+   "espanol": "Paloma",
+   "zapoteco": "Bechah",
+   "categoria": "Animales",
+   "terminos": [
+    "paloma"
+   ],
+   "buscar_en_respuesta": true
+  },
+  {
+   "espanol": "Tejón",
+   "zapoteco": "Beshitsú",
+   "categoria": "Animales",
+   "terminos": [
+    "tejón"
+   ],
+   "buscar_en_respuesta": true
+  },
+  {
+   "espanol": "Comadreja",
+   "zapoteco": "Beshée",
+   "categoria": "Animales",
+   "terminos": [
+    "comadreja"
+   ],
+   "buscar_en_respuesta": true
+  },
+  {
+   "espanol": "Zorrillo",
+   "zapoteco": "Bethii",
+   "categoria": "Animales",
+   "terminos": [
+    "zorrillo"
+   ],
+   "buscar_en_respuesta": true
+  },
+  {
+   "espanol": "Tortuga",
+   "zapoteco": "Begú",
+   "categoria": "Animales",
+   "terminos": [
+    "tortuga"
+   ],
+   "buscar_en_respuesta": true
+  },
+  {
+   "espanol": "Murciélago",
+   "zapoteco": "Beyetí",
+   "categoria": "Animales",
+   "terminos": [
+    "murciélago"
+   ],
+   "buscar_en_respuesta": true
+  },
+  {
+   "espanol": "Mosca",
+   "zapoteco": "Beshah",
+   "categoria": "Animales",
+   "terminos": [
+    "mosca"
+   ],
+   "buscar_en_respuesta": true
+  },
+  {
+   "espanol": "Mosquito",
+   "zapoteco": "Beshatóh",
+   "categoria": "Animales",
+   "terminos": [
+    "mosquito"
+   ],
+   "buscar_en_respuesta": true
+  },
+  {
+   "espanol": "Lombriz",
+   "zapoteco": "Bela guna",
+   "categoria": "Animales",
+   "terminos": [
+    "lombriz"
+   ],
+   "buscar_en_respuesta": true
+  },
+  {
+   "espanol": "Hormiga",
+   "zapoteco": "Beré",
+   "categoria": "Animales",
+   "terminos": [
+    "hormiga"
+   ],
+   "buscar_en_respuesta": true
+  },
+  {
+   "espanol": "Búho",
+   "zapoteco": "Betitih",
+   "categoria": "Animales",
+   "terminos": [
+    "búho"
+   ],
+   "buscar_en_respuesta": true
+  },
+  {
+   "espanol": "Grillo",
+   "zapoteco": "Bettsu",
+   "categoria": "Animales",
+   "terminos": [
+    "grillo"
+   ],
+   "buscar_en_respuesta": true
+  },
+  {
+   "espanol": "Oruga",
+   "zapoteco": "Bettsana",
+   "categoria": "Animales",
+   "terminos": [
+    "oruga"
+   ],
+   "buscar_en_respuesta": true
+  },
+  {
+   "espanol": "Cucaracha",
+   "zapoteco": "Gualanah",
+   "categoria": "Animales",
+   "terminos": [
+    "cucaracha"
+   ],
+   "buscar_en_respuesta": true
+  },
+  {
+   "espanol": "Caracol",
+   "zapoteco": "Beruchá",
+   "categoria": "Animales",
+   "terminos": [
+    "caracol"
+   ],
+   "buscar_en_respuesta": true
+  },
+  {
+   "espanol": "Chapulín",
+   "zapoteco": "Sharhú",
+   "categoria": "Animales",
+   "terminos": [
+    "chapulín"
+   ],
+   "buscar_en_respuesta": true
+  },
+  {
+   "espanol": "Colibrí",
+   "zapoteco": "Rshtutsí",
+   "categoria": "Animales",
+   "terminos": [
+    "colibrí"
+   ],
+   "buscar_en_respuesta": true
+  },
+  {
+   "espanol": "Alacrán",
+   "zapoteco": "Sharheyi",
+   "categoria": "Animales",
+   "terminos": [
+    "alacrán"
+   ],
+   "buscar_en_respuesta": true
+  },
+  {
+   "espanol": "Araña",
+   "zapoteco": "Begudia",
+   "categoria": "Animales",
+   "terminos": [
+    "araña"
+   ],
+   "buscar_en_respuesta": true
+  },
+  {
+   "espanol": "Sapo",
+   "zapoteco": "Belutzu",
+   "categoria": "Animales",
+   "terminos": [
+    "sapo"
+   ],
+   "buscar_en_respuesta": true
+  },
+  {
+   "espanol": "Agua",
+   "zapoteco": "Índa",
+   "categoria": "Naturaleza",
+   "terminos": [
+    "agua"
+   ],
+   "buscar_en_respuesta": true
+  },
+  {
+   "espanol": "Aire",
+   "zapoteco": "Beéh",
+   "categoria": "Naturaleza",
+   "terminos": [
+    "aire"
+   ],
+   "buscar_en_respuesta": true
+  },
+  {
+   "espanol": "Nube",
+   "zapoteco": "Biia",
+   "categoria": "Naturaleza",
+   "terminos": [
+    "nube"
+   ],
+   "buscar_en_respuesta": true
+  },
+  {
+   "espanol": "Tierra",
+   "zapoteco": "Yúu",
+   "categoria": "Naturaleza",
+   "terminos": [
+    "tierra"
+   ],
+   "buscar_en_respuesta": true
+  },
+  {
+   "espanol": "Estrellas",
+   "zapoteco": "Belia",
+   "categoria": "Naturaleza",
+   "terminos": [
+    "estrellas"
+   ],
+   "buscar_en_respuesta": true
+  },
+  {
+   "espanol": "Sol",
+   "zapoteco": "Ubitza",
+   "categoria": "Naturaleza",
+   "terminos": [
+    "sol"
+   ],
+   "buscar_en_respuesta": true
+  },
+  {
+   "espanol": "Luna",
+   "zapoteco": "Biuh",
+   "categoria": "Naturaleza",
+   "terminos": [
+    "luna"
+   ],
+   "buscar_en_respuesta": true
+  },
+  {
+   "espanol": "Fuego",
+   "zapoteco": "Yí",
+   "categoria": "Naturaleza",
+   "terminos": [
+    "fuego"
+   ],
+   "buscar_en_respuesta": true
+  },
+  {
+   "espanol": "Polvo",
+   "zapoteco": "Besté",
+   "categoria": "Naturaleza",
+   "terminos": [
+    "polvo"
+   ],
+   "buscar_en_respuesta": true
+  },
+  {
+   "espanol": "Cielo",
+   "zapoteco": "Ya-bah",
+   "categoria": "Naturaleza",
+   "terminos": [
+    "cielo"
+   ],
+   "buscar_en_respuesta": true
+  },
+  {
+   "espanol": "Río",
+   "zapoteco": "Shó",
+   "categoria": "Naturaleza",
+   "terminos": [
+    "río"
+   ],
+   "buscar_en_respuesta": true
+  },
+  {
+   "espanol": "Mar",
+   "zapoteco": "Índa tóh",
+   "categoria": "Naturaleza",
+   "terminos": [
+    "mar"
+   ],
+   "buscar_en_respuesta": true
+  },
+  {
+   "espanol": "Arena",
+   "zapoteco": "Yuushi",
+   "categoria": "Naturaleza",
+   "terminos": [
+    "arena"
+   ],
+   "buscar_en_respuesta": true
+  },
+  {
+   "espanol": "Piedra",
+   "zapoteco": "Shiá",
+   "categoria": "Naturaleza",
+   "terminos": [
+    "piedra"
+   ],
+   "buscar_en_respuesta": true
+  },
+  {
+   "espanol": "Montañas",
+   "zapoteco": "Ka-shiá",
+   "categoria": "Naturaleza",
+   "terminos": [
+    "montañas"
+   ],
+   "buscar_en_respuesta": true
+  },
+  {
+   "espanol": "Lluvia",
+   "zapoteco": "Shiah",
+   "categoria": "Naturaleza",
+   "terminos": [
+    "lluvia"
+   ],
+   "buscar_en_respuesta": true
+  },
+  {
+   "espanol": "Llovizna",
+   "zapoteco": "Shiah besté",
+   "categoria": "Naturaleza",
+   "terminos": [
+    "llovizna"
+   ],
+   "buscar_en_respuesta": true
+  },
+  {
+   "espanol": "Árboles",
+   "zapoteco": "Ka-yaha",
+   "categoria": "Naturaleza",
+   "terminos": [
+    "árboles",
+    "árbol"
+   ],
+   "buscar_en_respuesta": true
+  },
+  {
+   "espanol": "Chubasco",
+   "zapoteco": "Shiah dhiu",
+   "categoria": "Naturaleza",
+   "terminos": [
+    "chubasco"
+   ],
+   "buscar_en_respuesta": true
+  },
+  {
+   "espanol": "Granizo",
+   "zapoteco": "Shiah-shiá",
+   "categoria": "Naturaleza",
+   "terminos": [
+    "granizo"
+   ],
+   "buscar_en_respuesta": true
+  },
+  {
+   "espanol": "Relámpago",
+   "zapoteco": "Éd-zá",
+   "categoria": "Naturaleza",
+   "terminos": [
+    "relámpago",
+    "relampago"
+   ],
+   "buscar_en_respuesta": true
+  },
+  {
+   "espanol": "Temblor",
+   "zapoteco": "Rhioshú",
+   "categoria": "Naturaleza",
+   "terminos": [
+    "temblor"
+   ],
+   "buscar_en_respuesta": true
+  },
+  {
+   "espanol": "Cascada",
+   "zapoteco": "Sia-to ati-rhiga índa",
+   "categoria": "Naturaleza",
+   "terminos": [
+    "cascada"
+   ],
+   "buscar_en_respuesta": true
+  },
+  {
+   "espanol": "Arcoiris",
+   "zapoteco": "Betuyá",
+   "categoria": "Naturaleza",
+   "terminos": [
+    "arcoiris"
+   ],
+   "buscar_en_respuesta": true
+  },
+  {
+   "espanol": "Eclipse de sol",
+   "zapoteco": "Rhati ubitza",
+   "categoria": "Naturaleza",
+   "terminos": [
+    "eclipse de sol"
+   ],
+   "buscar_en_respuesta": true
+  },
+  {
+   "espanol": "Eclipse de luna",
+   "zapoteco": "Rhati biuh",
+   "categoria": "Naturaleza",
+   "terminos": [
+    "eclipse de luna"
+   ],
+   "buscar_en_respuesta": true
+  },
+  {
+   "espanol": "Flores",
+   "zapoteco": "Ka shia",
+   "categoria": "Naturaleza",
+   "terminos": [
+    "flores"
+   ],
+   "buscar_en_respuesta": true
+  },
+  {
+   "espanol": "Pasto",
+   "zapoteco": "pastu",
+   "categoria": "Naturaleza",
+   "terminos": [
+    "pasto"
+   ],
+   "buscar_en_respuesta": true
+  },
+  {
+   "espanol": "manantial",
+   "zapoteco": "Dina",
+   "categoria": "Naturaleza",
+   "terminos": [
+    "manantial"
+   ],
+   "buscar_en_respuesta": true
+  },
+  {
+   "espanol": "Sal",
+   "zapoteco": "Dé-teh",
+   "categoria": "Despensa",
+   "terminos": [
+    "sal"
+   ],
+   "buscar_en_respuesta": true
+  },
+  {
+   "espanol": "Azúcar",
+   "zapoteco": "Ta-rshishi",
+   "categoria": "Despensa",
+   "terminos": [
+    "azúcar"
+   ],
+   "buscar_en_respuesta": true
+  },
+  {
+   "espanol": "Leche",
+   "zapoteco": "Sitssi",
+   "categoria": "Despensa",
+   "terminos": [
+    "leche"
+   ],
+   "buscar_en_respuesta": true
+  },
+  {
+   "espanol": "Frijol",
+   "zapoteco": "Dháh",
+   "categoria": "Despensa",
+   "terminos": [
+    "frijol"
+   ],
+   "buscar_en_respuesta": true
+  },
+  {
+   "espanol": "Aceite",
+   "zapoteco": "Táh-dhá",
+   "categoria": "Despensa",
+   "terminos": [
+    "aceite"
+   ],
+   "buscar_en_respuesta": true
+  },
+  {
+   "espanol": "Chile seco",
+   "zapoteco": "Yinah-bitzi",
+   "categoria": "Despensa",
+   "terminos": [
+    "chile seco"
+   ],
+   "buscar_en_respuesta": true
+  },
+  {
+   "espanol": "Huevo",
+   "zapoteco": "Sit-ta",
+   "categoria": "Despensa",
+   "terminos": [
+    "huevo"
+   ],
+   "buscar_en_respuesta": true
+  },
+  {
+   "espanol": "Carne",
+   "zapoteco": "Bela",
+   "categoria": "Despensa",
+   "terminos": [
+    "carne"
+   ],
+   "buscar_en_respuesta": true
+  },
+  {
+   "espanol": "Pan",
+   "zapoteco": "Taxtila",
+   "categoria": "Despensa",
+   "terminos": [
+    "pan"
+   ],
+   "buscar_en_respuesta": true
+  },
+  {
+   "espanol": "Salsa",
+   "zapoteco": "Yinah shúnia",
+   "categoria": "Despensa",
+   "terminos": [
+    "salsa"
+   ],
+   "buscar_en_respuesta": true
+  },
+  {
+   "espanol": "Tortillas",
+   "zapoteco": "Etta",
+   "categoria": "Despensa",
+   "terminos": [
+    "tortillas"
+   ],
+   "buscar_en_respuesta": true
+  },
+  {
+   "espanol": "Arroz",
+   "zapoteco": "Ishtá",
+   "categoria": "Despensa",
+   "terminos": [
+    "arroz"
+   ],
+   "buscar_en_respuesta": true
+  },
+  {
+   "espanol": "Harina de maíz",
+   "zapoteco": "Yedhia shuah",
+   "categoria": "Despensa",
+   "terminos": [
+    "harina de maíz"
+   ],
+   "buscar_en_respuesta": true
+  },
+  {
+   "espanol": "Harina de trigo",
+   "zapoteco": "Yedhia shuaxxtila",
+   "categoria": "Despensa",
+   "terminos": [
+    "harina de trigo"
+   ],
+   "buscar_en_respuesta": true
+  },
+  {
+   "espanol": "¿Cuándo?",
+   "zapoteco": "Bata",
+   "categoria": "Interrogativos",
+   "terminos": [
+    "¿cuándo?"
+   ],
+   "buscar_en_respuesta": false
+  },
+  {
+   "espanol": "¿Cuánto?",
+   "zapoteco": "galia",
+   "categoria": "Interrogativos",
+   "terminos": [
+    "¿cuánto?"
+   ],
+   "buscar_en_respuesta": false
+  },
+  {
+   "espanol": "¿Dónde?",
+   "zapoteco": "kani",
+   "categoria": "Interrogativos",
+   "terminos": [
+    "¿dónde?"
+   ],
+   "buscar_en_respuesta": false
+  },
+  {
+   "espanol": "¿Qué?",
+   "zapoteco": "Bi",
+   "categoria": "Interrogativos",
+   "terminos": [
+    "¿qué?"
+   ],
+   "buscar_en_respuesta": false
+  },
+  {
+   "espanol": "¿Cómo?",
+   "zapoteco": "Bini",
+   "categoria": "Interrogativos",
+   "terminos": [
+    "¿cómo?"
+   ],
+   "buscar_en_respuesta": false
+  },
+  {
+   "espanol": "maíz",
+   "zapoteco": "",
+   "categoria": "Pendiente",
+   "terminos": [
+    "maíz"
+   ],
+   "buscar_en_respuesta": false
+  },
+  {
+   "espanol": "milpa",
+   "zapoteco": "",
+   "categoria": "Pendiente",
+   "terminos": [
+    "milpa"
+   ],
+   "buscar_en_respuesta": false
+  },
+  {
+   "espanol": "sembrar",
+   "zapoteco": "",
+   "categoria": "Pendiente",
+   "terminos": [
+    "sembrar"
+   ],
+   "buscar_en_respuesta": false
+  },
+  {
+   "espanol": "cosechar",
+   "zapoteco": "",
+   "categoria": "Pendiente",
+   "terminos": [
+    "cosechar"
+   ],
+   "buscar_en_respuesta": false
+  },
+  {
+   "espanol": "café",
+   "zapoteco": "",
+   "categoria": "Pendiente",
+   "terminos": [
+    "café"
+   ],
+   "buscar_en_respuesta": false
+  },
+  {
+   "espanol": "calabaza",
+   "zapoteco": "",
+   "categoria": "Pendiente",
+   "terminos": [
+    "calabaza"
+   ],
+   "buscar_en_respuesta": false
+  },
+  {
+   "espanol": "siembra",
+   "zapoteco": "",
+   "categoria": "Pendiente",
+   "terminos": [
+    "siembra"
+   ],
+   "buscar_en_respuesta": false
+  },
+  {
+   "espanol": "cosecha",
+   "zapoteco": "",
+   "categoria": "Pendiente",
+   "terminos": [
+    "cosecha"
+   ],
+   "buscar_en_respuesta": false
+  },
+  {
+   "espanol": "frío",
+   "zapoteco": "",
+   "categoria": "Pendiente",
+   "terminos": [
+    "frío"
+   ],
+   "buscar_en_respuesta": false
+  },
+  {
+   "espanol": "calor",
+   "zapoteco": "",
+   "categoria": "Pendiente",
+   "terminos": [
+    "calor"
+   ],
+   "buscar_en_respuesta": false
+  },
+  {
+   "espanol": "helada",
+   "zapoteco": "",
+   "categoria": "Pendiente",
+   "terminos": [
+    "helada"
+   ],
+   "buscar_en_respuesta": false
+  }
+ ]
+}

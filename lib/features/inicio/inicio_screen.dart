@@ -65,6 +65,8 @@ class InicioScreen extends StatelessWidget {
             const _WeatherWidget(),
             const SizedBox(height: 24),
             _AnalizarButton(onTap: () => context.go('/camara')),
+            const SizedBox(height: 12),
+            _PreguntarButton(onTap: () => context.push('/preguntar')),
             const SizedBox(height: 24),
             _HistorialSection(onVerTodo: () => context.go('/historial')),
             const SizedBox(height: 16),
@@ -351,6 +353,32 @@ class _AnalizarButton extends StatelessWidget {
           backgroundColor: const Color(0xFF012D1D),
           foregroundColor: Colors.white,
           elevation: 3,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+        ),
+      ),
+    );
+  }
+}
+
+class _PreguntarButton extends StatelessWidget {
+  final VoidCallback onTap;
+  const _PreguntarButton({required this.onTap});
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: double.infinity,
+      height: 56,
+      child: OutlinedButton.icon(
+        onPressed: onTap,
+        icon: const Icon(Icons.mic_rounded, size: 22),
+        label: const Text(
+          'Preguntar con mi voz',
+          style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+        ),
+        style: OutlinedButton.styleFrom(
+          foregroundColor: const Color(0xFF012D1D),
+          side: const BorderSide(color: Color(0xFF012D1D), width: 1.5),
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
         ),
       ),

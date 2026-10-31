@@ -174,7 +174,11 @@ def crear_proveedores() -> dict[str, Proveedor]:
     if config.GEMINI_API_KEY:
         proveedores["gemini"] = GeminiProvider(config.GEMINI_API_KEY, config.GEMINI_MODEL, config.GEMINI_TIMEOUT)
 
-    for tarea, nombre in [("PROVEEDOR_ANALISIS", config.PROVEEDOR_ANALISIS), ("PROVEEDOR_EXPLICAR", config.PROVEEDOR_EXPLICAR)]:
+    for tarea, nombre in [
+        ("PROVEEDOR_ANALISIS", config.PROVEEDOR_ANALISIS),
+        ("PROVEEDOR_EXPLICAR", config.PROVEEDOR_EXPLICAR),
+        ("PROVEEDOR_PREGUNTAR", config.PROVEEDOR_PREGUNTAR),
+    ]:
         if nombre not in ("ollama", "gemini"):
             raise RuntimeError(f"{tarea} inválido: {nombre!r} (usa ollama o gemini)")
         if nombre not in proveedores:

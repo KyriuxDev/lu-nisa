@@ -1,6 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <!-- Necesario en release para llamar al backend (debug lo trae por defecto) -->
     <uses-permission android:name="android.permission.INTERNET"/>
+    <!-- Preguntas por voz (speech_to_text) -->
+    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
     <application
         android:label="lunisa"
         android:usesCleartextTraffic="true"
@@ -44,6 +46,13 @@
 
          In particular, this is used by the Flutter engine in io.flutter.plugin.text.ProcessTextPlugin. -->
     <queries>
+        <!-- Reconocimiento de voz y lectura en voz alta (Android 11+) -->
+        <intent>
+            <action android:name="android.speech.RecognitionService"/>
+        </intent>
+        <intent>
+            <action android:name="android.intent.action.TTS_SERVICE"/>
+        </intent>
         <intent>
             <action android:name="android.intent.action.PROCESS_TEXT"/>
             <data android:mimeType="text/plain"/>

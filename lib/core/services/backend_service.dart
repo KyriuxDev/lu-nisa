@@ -6,6 +6,7 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../data/models/condicion_parcela.dart';
+import '../../data/models/respuesta_pregunta.dart';
 
 /// Explicación generada por POST /explicar
 class Explicacion {
@@ -33,6 +34,7 @@ class BackendService {
   static const _timeoutAnalisis = Duration(seconds: 90);
   // Gemini (30 s máx.) + respaldo en Ollama en frío (~40 s); carga en segundo plano
   static const _timeoutExplicar = Duration(seconds: 90);
+  static const _timeoutPreguntar = Duration(seconds: 90);
 
   static Future<String> obtenerUrl() async {
     try {
@@ -106,6 +108,33 @@ class BackendService {
       debugPrint('[Backend] explicar falló: $e');
       return null;
     }
+  }
+
+  /// POST /preguntar. [texto] es lo que dictó o escribió el campesino.
+  /// Lanza excepción si el backend no responde: la pantalla muestra el error.
+  static Future<RespuestaPregunta> preguntar({
+    required String texto,
+    String? municipio,
+    int? mes,
+  }) async {
+    final url = await obtenerUrl();
+    final respuesta = await http
+        .post(
+          Uri.parse('$url/preguntar'),
+          headers: {'Content-Type': 'application/json'},
+          body: jsonEncode({
+            'texto': texto,
+            'municipio': municipio,
+            'mes': mes ?? DateTime.now().month,
+          }),
+        )
+        .timeout(_timeoutPreguntar);
+    if (respuesta.statusCode != 200) {
+      throw HttpException('preguntar ${respuesta.statusCode}: ${respuesta.body}');
+    }
+    final json = jsonDecode(utf8.decode(respuesta.bodyBytes)) as Map<String, dynamic>;
+    debugPrint('[Backend] preguntar ${json['proveedor']} ${json['latencia_ms']} ms');
+    return RespuestaPregunta.desdeJson(texto, json);
   }
 
   /// GET /salud con la URL dada; true si responde 200

@@ -19,6 +19,7 @@ ollama pull gemma4:e4b        # respaldo local y /explicar
 | Tarea | Preferido | Respaldo |
 |---|---|---|
 | `/analizar-parcela` | Gemini `gemma-4-26b-a4b-it` (`PROVEEDOR_ANALISIS`) | Ollama `gemma4:e4b` si Gemini falla, no hay red o no hay API key. En ese caso `humedad_aparente="no_determinable"` y `humedad_preguntar_usuario=true` (e4b no distingue húmeda de seca) |
+| `/preguntar` | Gemini `gemma-4-26b-a4b-it` (`PROVEEDOR_PREGUNTAR`) | Ollama `gemma4:e4b` si Gemini falla, no hay red o no hay API key |
 | `/explicar` | Ollama (`PROVEEDOR_EXPLICAR`, funciona sin internet) | Si `PROVEEDOR_EXPLICAR=gemini` y Gemini falla, no hay red o no hay API key, cae a Ollama |
 
 ## Endpoints
@@ -27,6 +28,7 @@ ollama pull gemma4:e4b        # respaldo local y /explicar
 |---|---|---|
 | `GET /salud` | — | proveedor activo y si el modelo responde |
 | `POST /analizar-parcela` | multipart `imagen` (jpeg/png/webp, ≤10 MB) | `{analisis, humedad_preguntar_usuario, respaldo, proveedor, modelo, intentos, latencia_ms}` |
+| `POST /preguntar` | `{texto, municipio?, mes?}` (texto dictado por voz o escrito) | `{respuesta, zapoteco: [{espanol, zapoteco, categoria}], zapoteco_pregunta, saludo, despedida, municipio, respaldo, proveedor, modelo, latencia_ms}` |
 | `POST /explicar` | `{municipio, cultivo, puntaje, datos_regla: {clave: {valor, fuente: foto\|campesino\|datos}}}` | `{explicacion, respaldo, proveedor, modelo, latencia_ms}` |
 
 `analisis` solo trae atributos observables (`es_parcela`, `suelo_desnudo`, `humedad_aparente`,
@@ -34,6 +36,19 @@ ollama pull gemma4:e4b        # respaldo local y /explicar
 `confianza` es informativo: ninguna lógica lo usa.
 
 Errores: `415` imagen inválida · `413` muy grande · `502` el modelo respondió mal dos veces · `503` Ollama/Gemini no disponible.
+
+## Zapoteco en `/preguntar`
+
+Gemma contesta **solo en español** con los datos de clima y cultivos del municipio
+(`assets/data/recomendaciones.json`). Después, [`app/glosario.py`](app/glosario.py) busca en la respuesta
+las palabras que tienen traducción en [`app/data/glosario.json`](app/data/glosario.json) y las devuelve en `zapoteco`.
+El modelo nunca escribe zapoteco, así que no puede inventarlo.
+
+Si la pregunta trae palabras en zapoteco ("¿cuándo siembro dháh?"), se le pasan traducidas al modelo.
+
+El glosario viene de [vocabulario_zapoteco](https://dev-deivis.github.io/vocabulario_zapoteco/). Las entradas
+con `"zapoteco": ""` (maíz, milpa, sembrar, cosechar, café…) faltan por confirmar con un hablante y no se muestran;
+para agregarlas basta llenar ese campo.
 
 ## Pruebas
 

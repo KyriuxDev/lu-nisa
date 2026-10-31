@@ -8,10 +8,19 @@ from fastapi import Depends, FastAPI, File, HTTPException, Request, UploadFile
 from PIL import Image, ImageOps, UnidentifiedImageError
 from pydantic import ValidationError
 
-from app import config, prompts
+from datetime import datetime
+
+from app import config, contexto, glosario, prompts
 from app.razones import frase_siembra
 from app.llm import LLMError, LLMNoDisponible, Proveedor, crear_proveedores, extraer_json
-from app.schemas import AnalisisRespuesta, ExplicarEntrada, ExplicarRespuesta, ParcelaAnalisis
+from app.schemas import (
+    AnalisisRespuesta,
+    ExplicarEntrada,
+    ExplicarRespuesta,
+    ParcelaAnalisis,
+    PreguntarEntrada,
+    PreguntarRespuesta,
+)
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(name)s: %(message)s")
 log = logging.getLogger("lunisa")
@@ -214,6 +223,76 @@ async def explicar(entrada: ExplicarEntrada, proveedores: dict[str, Proveedor] =
 
     return ExplicarRespuesta(
         explicacion=explicacion,
+        respaldo=respaldo,
+        proveedor=llm.nombre,
+        modelo=llm.modelo,
+        latencia_ms=ms_desde(inicio),
+    )
+
+
+async def generar_con_respaldo(
+    proveedores: dict[str, Proveedor], preferido: str, prompt: str, sistema: str, tarea: str
+) -> tuple[str, Proveedor, str | None]:
+    """Pide texto al proveedor preferido y cae a Ollama si falla. Devuelve (texto, proveedor, respaldo)."""
+    llm = proveedores.get(preferido) or proveedores["ollama"]
+    respaldo = None if llm.nombre == preferido else "sin_api_key"
+
+    if llm.nombre != "ollama":
+        try:
+            texto = (await llm.generar(prompt, sistema=sistema, pensar_minimo=True)).strip()
+            if texto:
+                return texto, llm, None
+            respaldo = "respuesta_invalida"
+            log.warning("Gemini devolvió texto vacío en %s, uso Ollama", tarea)
+        except LLMNoDisponible as e:
+            respaldo = "sin_conexion"
+            log.warning("Gemini no disponible en %s, uso Ollama: %s", tarea, e)
+        except LLMError as e:
+            respaldo = "error_gemini"
+            log.warning("Gemini falló en %s, uso Ollama: %s", tarea, e)
+        llm = proveedores["ollama"]
+
+    try:
+        texto = (await llm.generar(prompt, sistema=sistema)).strip()
+    except (LLMNoDisponible, LLMError) as e:
+        raise errores_llm(e)
+    if not texto:
+        raise HTTPException(502, {"error": "respuesta_vacia_llm", "detalle": "El modelo no devolvió texto"})
+    return texto, llm, respaldo
+
+
+@app.post("/preguntar", response_model=PreguntarRespuesta)
+async def preguntar(entrada: PreguntarEntrada, proveedores: dict[str, Proveedor] = Depends(obtener_proveedores)):
+    """Pregunta libre (por voz o escrita). Gemma contesta en español con los datos del municipio;
+    las palabras en zapoteco las agrega el glosario, nunca el modelo."""
+    inicio = time.perf_counter()
+    mes = entrada.mes or datetime.now().month
+    datos, municipio = contexto.armar(entrada.municipio, mes, entrada.texto)
+
+    # Si el campesino usó palabras en zapoteco, se las traducimos al modelo
+    en_pregunta = glosario.zapoteco_en_pregunta(entrada.texto)
+    traducciones = (
+        "Palabras en zapoteco que usó el campesino: "
+        + ", ".join(f"{p['zapoteco']} = {p['espanol'].lower()}" for p in en_pregunta)
+        + "\n"
+        if en_pregunta
+        else ""
+    )
+    prompt = prompts.PROMPT_PREGUNTA.format(
+        datos=datos, traducciones=traducciones, pregunta=entrada.texto.replace('"', "'")
+    )
+    texto, llm, respaldo = await generar_con_respaldo(
+        proveedores, config.PROVEEDOR_PREGUNTAR, prompt, prompts.SISTEMA_PREGUNTA, "/preguntar"
+    )
+    respuesta = max_oraciones(texto, 4)
+
+    return PreguntarRespuesta(
+        respuesta=respuesta,
+        zapoteco=glosario.palabras_en_texto(respuesta),
+        zapoteco_pregunta=en_pregunta,
+        saludo=glosario.SALUDO,
+        despedida=glosario.DESPEDIDA,
+        municipio=municipio,
         respaldo=respaldo,
         proveedor=llm.nombre,
         modelo=llm.modelo,

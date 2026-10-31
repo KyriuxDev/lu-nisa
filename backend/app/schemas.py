@@ -76,3 +76,35 @@ class ExplicarRespuesta(BaseModel):
     proveedor: str
     modelo: str
     latencia_ms: int
+
+
+Respaldo = Literal["sin_conexion", "error_gemini", "respuesta_invalida", "sin_api_key"] | None
+
+
+class PreguntarEntrada(BaseModel):
+    # Texto que transcribió el teléfono (reconocimiento de voz) o que escribió el campesino
+    texto: str = Field(min_length=1, max_length=500)
+    municipio: str | None = None
+    # 1-12; si no viene, el mes actual
+    mes: int | None = Field(default=None, ge=1, le=12)
+
+
+class PalabraZapoteca(BaseModel):
+    espanol: str
+    zapoteco: str
+    categoria: str
+
+
+class PreguntarRespuesta(BaseModel):
+    respuesta: str
+    # Palabras de la respuesta que tienen traducción en el glosario (las pone el código, no el modelo)
+    zapoteco: list[PalabraZapoteca]
+    # Palabras zapotecas que reconocimos en la pregunta
+    zapoteco_pregunta: list[PalabraZapoteca]
+    saludo: str
+    despedida: str
+    municipio: str | None
+    respaldo: Respaldo
+    proveedor: str
+    modelo: str
+    latencia_ms: int
