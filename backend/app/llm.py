@@ -32,6 +32,7 @@ class Proveedor(Protocol):
         imagen: bytes | None = None,
         json_mode: bool = False,
         pensar_minimo: bool = False,
+        max_tokens: int | None = None,
     ) -> str: ...
 
     async def salud(self) -> dict: ...
@@ -45,7 +46,9 @@ class OllamaProvider:
         self.modelo = modelo
         self.timeout = timeout
 
-    async def generar(self, prompt, sistema=None, imagen=None, json_mode=False, pensar_minimo=False) -> str:
+    async def generar(
+        self, prompt, sistema=None, imagen=None, json_mode=False, pensar_minimo=False, max_tokens=None
+    ) -> str:
         # pensar_minimo no aplica: con Ollama el razonamiento siempre va apagado (think=False)
         mensajes = []
         if sistema:
@@ -62,6 +65,9 @@ class OllamaProvider:
             "think": False,
             "options": {"temperature": 0},
         }
+        if max_tokens:
+            # Sin límite, el modelo chico a veces se queda repitiendo y la petición nunca termina
+            cuerpo["options"]["num_predict"] = max_tokens
         if json_mode:
             cuerpo["format"] = "json"
 
@@ -104,7 +110,9 @@ class GeminiProvider:
         self._usar_system = True
         self._usar_thinking = True
 
-    async def generar(self, prompt, sistema=None, imagen=None, json_mode=False, pensar_minimo=False) -> str:
+    async def generar(
+        self, prompt, sistema=None, imagen=None, json_mode=False, pensar_minimo=False, max_tokens=None
+    ) -> str:
         # json_mode no se usa: Gemma en la API de Gemini no soporta response_mime_type,
         # el JSON se extrae del texto con extraer_json()
         from google.genai import errors, types
@@ -125,6 +133,7 @@ class GeminiProvider:
                         system_instruction=sistema if usar_system else None,
                         thinking_config=types.ThinkingConfig(thinking_level="minimal") if usar_thinking else None,
                         temperature=0,
+                        max_output_tokens=max_tokens,
                     ),
                 )
             except errors.ClientError as e:

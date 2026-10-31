@@ -18,8 +18,8 @@ class ProveedorFalso:
         self.respuestas = list(respuestas)
         self.llamadas = []
 
-    async def generar(self, prompt, sistema=None, imagen=None, json_mode=False, pensar_minimo=False):
-        self.llamadas.append({"prompt": prompt, "sistema": sistema})
+    async def generar(self, prompt, sistema=None, imagen=None, json_mode=False, pensar_minimo=False, max_tokens=None):
+        self.llamadas.append({"prompt": prompt, "sistema": sistema, "imagen": imagen, "max_tokens": max_tokens})
         r = self.respuestas.pop(0)
         if isinstance(r, Exception):
             raise r
@@ -273,3 +273,12 @@ def test_variantes_tienen_nombre_y_fuente():
 def test_no_confunde_yo_en_espanol():
     # "yo" es tierra en Jaltepec, pero es muy corta para buscarla en español
     assert glosario.quitar_zapoteco_del_modelo("Yo creo que sí.") == "Yo creo que sí."
+
+
+
+def test_traducir_limita_largo_de_respuesta(cliente_con, monkeypatch):
+    # En la prueba real Gemma no terminaba y Gemini cortó a los 30 s (504)
+    monkeypatch.setattr(config, "PROVEEDOR_TRADUCIR", "gemini")
+    cliente, provs = cliente_con(gemini=["traducción"])
+    cliente.post("/traducir-zapoteco", json={"texto": "Hola."})
+    assert provs["gemini"].llamadas[0]["max_tokens"] == 300

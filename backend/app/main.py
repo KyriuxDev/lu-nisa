@@ -239,7 +239,12 @@ async def explicar(entrada: ExplicarEntrada, proveedores: dict[str, Proveedor] =
 
 
 async def generar_con_respaldo(
-    proveedores: dict[str, Proveedor], preferido: str, prompt: str, sistema: str, tarea: str
+    proveedores: dict[str, Proveedor],
+    preferido: str,
+    prompt: str,
+    sistema: str,
+    tarea: str,
+    max_tokens: int | None = None,
 ) -> tuple[str, Proveedor, str | None]:
     """Pide texto al proveedor preferido y cae a Ollama si falla. Devuelve (texto, proveedor, respaldo)."""
     llm = proveedores.get(preferido) or proveedores["ollama"]
@@ -247,7 +252,7 @@ async def generar_con_respaldo(
 
     if llm.nombre != "ollama":
         try:
-            texto = (await llm.generar(prompt, sistema=sistema, pensar_minimo=True)).strip()
+            texto = (await llm.generar(prompt, sistema=sistema, pensar_minimo=True, max_tokens=max_tokens)).strip()
             if texto:
                 return texto, llm, None
             respaldo = "respuesta_invalida"
@@ -261,7 +266,7 @@ async def generar_con_respaldo(
         llm = proveedores["ollama"]
 
     try:
-        texto = (await llm.generar(prompt, sistema=sistema)).strip()
+        texto = (await llm.generar(prompt, sistema=sistema, max_tokens=max_tokens)).strip()
     except (LLMNoDisponible, LLMError) as e:
         raise errores_llm(e)
     if not texto:
@@ -283,7 +288,7 @@ async def preguntar(entrada: PreguntarEntrada, proveedores: dict[str, Proveedor]
     datos, municipio = contexto.armar(entrada.municipio, mes, en_espanol)
     prompt = prompts.PROMPT_PREGUNTA.format(datos=datos, pregunta=en_espanol.replace('"', "'"))
     texto, llm, respaldo = await generar_con_respaldo(
-        proveedores, config.PROVEEDOR_PREGUNTAR, prompt, prompts.SISTEMA_PREGUNTA, "/preguntar"
+        proveedores, config.PROVEEDOR_PREGUNTAR, prompt, prompts.SISTEMA_PREGUNTA, "/preguntar", max_tokens=400
     )
     # Red de seguridad: si aun así el modelo escribió zapoteco, se quita esa oración
     texto = glosario.quitar_zapoteco_del_modelo(texto) or (
@@ -330,7 +335,7 @@ async def traducir_zapoteco(
     ) or "- (ninguna palabra del texto)"
     prompt = prompts.PROMPT_TRADUCIR.format(vocabulario=lista, texto=entrada.texto)
     texto, llm, respaldo = await generar_con_respaldo(
-        proveedores, config.PROVEEDOR_TRADUCIR, prompt, prompts.SISTEMA_TRADUCIR, "/traducir-zapoteco"
+        proveedores, config.PROVEEDOR_TRADUCIR, prompt, prompts.SISTEMA_TRADUCIR, "/traducir-zapoteco", max_tokens=300
     )
     return TraducirRespuesta(
         traduccion=" ".join(texto.strip().strip('"').split()),
