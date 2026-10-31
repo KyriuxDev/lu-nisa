@@ -56,8 +56,6 @@ El proyecto ya existía antes del evento (ver abajo). Esto es lo que agregamos h
 
 **Antes del evento:** app Flutter base, datos de clima por municipio y mes, y backend de análisis de fotos con Gemma 4.
 
-**Equipo:** dev-deivis, galileaCrazy, AlexxHappy26, KyriuxDev.
-
 ---
 
 ## Tecnologías
