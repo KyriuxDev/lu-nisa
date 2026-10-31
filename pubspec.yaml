@@ -75,7 +75,6 @@ flutter:
     - assets/data/historico_sierra_norte.csv
     - assets/data/cultivos_sierra_norte.csv
     - assets/data/recomendaciones.json
-    - assets/model/
     - recursos/LogoLuNisa.png
     - recursos/oaxaca-sierra-norte-forest.jpg
     - recursos/maiz.jpg

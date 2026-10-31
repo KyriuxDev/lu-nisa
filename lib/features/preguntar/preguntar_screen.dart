@@ -129,10 +129,10 @@ class _PreguntarScreenState extends State<PreguntarScreen> {
     });
     await _stt.listen(
       onResult: _alEscuchar,
-      localeId: _localeVoz,
-      listenFor: const Duration(seconds: 30),
-      pauseFor: const Duration(seconds: 3),
       listenOptions: SpeechListenOptions(
+        localeId: _localeVoz,
+        listenFor: const Duration(seconds: 30),
+        pauseFor: const Duration(seconds: 3),
         partialResults: true,
         listenMode: ListenMode.confirmation,
         cancelOnError: true,
