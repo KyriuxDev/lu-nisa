@@ -59,7 +59,15 @@ El reconocimiento de voz del teléfono escribe las palabras zapotecas como suena
 {"espanol": "Lluvia", "zapoteco": "Shiah", "alias_voz": ["chía"], ...}
 ```
 
-El glosario viene de [vocabulario_zapoteco](https://dev-deivis.github.io/vocabulario_zapoteco/). Las entradas
+El glosario junta **dos variantes distintas** del zapoteco de la Sierra Norte, y cada palabra dice de cuál es
+(`variante`), con las equivalencias en la otra (`otras_variantes`); la app siempre muestra la variante:
+
+- `sierra_norte`: [vocabulario_zapoteco](https://dev-deivis.github.io/vocabulario_zapoteco/) del equipo.
+- `jaltepec`: una selección de palabras del campo y del clima del *Diccionario Zapoteco (di'dz xi'dza')
+  San Juan Jaltepec, municipio de Santiago Yaveo* (Hernández Andrade y López Nicolás, INPI, 2022).
+  Llena los huecos del otro vocabulario: maíz *xhoꞌbaꞌ*, milpa *guiela*, sembrar *raz*, cosechar *rláp*.
+
+`GET /variantes` devuelve el nombre y la fuente de cada una. Las entradas
 con `"zapoteco": ""` (maíz, milpa, sembrar, cosechar, café…) faltan por confirmar con un hablante y no se muestran;
 para agregarlas basta llenar ese campo.
 

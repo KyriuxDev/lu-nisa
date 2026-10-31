@@ -656,14 +656,31 @@ class _ChipZapoteco extends StatelessWidget {
         color: _kPrimarioSuave,
         borderRadius: BorderRadius.circular(20),
       ),
-      child: RichText(
-        text: TextSpan(
-          style: const TextStyle(fontSize: 15, color: _kPrimario),
-          children: [
-            TextSpan(text: palabra.zapoteco, style: const TextStyle(fontWeight: FontWeight.w700)),
-            TextSpan(text: '  ${palabra.espanol.toLowerCase()}', style: const TextStyle(color: Color(0xFF274E3D))),
-          ],
-        ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          RichText(
+            text: TextSpan(
+              style: const TextStyle(fontSize: 15, color: _kPrimario),
+              children: [
+                TextSpan(text: palabra.zapoteco, style: const TextStyle(fontWeight: FontWeight.w700)),
+                TextSpan(
+                  text: '  ${palabra.espanol.toLowerCase()}',
+                  style: const TextStyle(color: Color(0xFF274E3D)),
+                ),
+              ],
+            ),
+          ),
+          // Son variantes distintas: siempre se dice de cuál es cada palabra
+          Text(
+            [
+              nombreVariante(palabra.variante),
+              for (final o in palabra.otrasVariantes) '${o.zapoteco} en ${nombreVariante(o.variante)}',
+            ].join(' · '),
+            style: const TextStyle(fontSize: 11, color: Color(0xFF555555)),
+          ),
+        ],
       ),
     );
   }

@@ -1,7 +1,5 @@
 {
- "fuente": "https://dev-deivis.github.io/vocabulario_zapoteco/",
- "variante": "Zapoteco de la Sierra Norte de Oaxaca (según la fuente)",
- "nota": "Entradas con zapoteco vacío faltan por confirmar con un hablante; no se muestran en las respuestas.",
+ "nota": "Son dos variantes distintas del zapoteco de la Sierra Norte; cada palabra dice de cuál es y no se mezclan sin etiqueta. Entradas con zapoteco vacío faltan por confirmar con un hablante.",
  "palabras": [
   {
    "espanol": "Saludo general",
@@ -10,7 +8,9 @@
    "terminos": [
     "saludo general"
    ],
-   "buscar_en_respuesta": false
+   "buscar_en_respuesta": false,
+   "variante": "sierra_norte",
+   "otras_variantes": []
   },
   {
    "espanol": "Bienvenido/Bienvenida",
@@ -20,7 +20,9 @@
     "bienvenido",
     "bienvenida"
    ],
-   "buscar_en_respuesta": false
+   "buscar_en_respuesta": false,
+   "variante": "sierra_norte",
+   "otras_variantes": []
   },
   {
    "espanol": "Gracias",
@@ -29,7 +31,14 @@
    "terminos": [
     "gracias"
    ],
-   "buscar_en_respuesta": false
+   "buscar_en_respuesta": false,
+   "variante": "sierra_norte",
+   "otras_variantes": [
+    {
+     "zapoteco": "dioxklé",
+     "variante": "jaltepec"
+    }
+   ]
   },
   {
    "espanol": "Hasta mañana",
@@ -38,7 +47,9 @@
    "terminos": [
     "hasta mañana"
    ],
-   "buscar_en_respuesta": false
+   "buscar_en_respuesta": false,
+   "variante": "sierra_norte",
+   "otras_variantes": []
   },
   {
    "espanol": "Tuna",
@@ -47,7 +58,9 @@
    "terminos": [
     "tuna"
    ],
-   "buscar_en_respuesta": true
+   "buscar_en_respuesta": true,
+   "variante": "sierra_norte",
+   "otras_variantes": []
   },
   {
    "espanol": "Fresa",
@@ -56,7 +69,9 @@
    "terminos": [
     "fresa"
    ],
-   "buscar_en_respuesta": true
+   "buscar_en_respuesta": true,
+   "variante": "sierra_norte",
+   "otras_variantes": []
   },
   {
    "espanol": "Toronja",
@@ -65,7 +80,9 @@
    "terminos": [
     "toronja"
    ],
-   "buscar_en_respuesta": true
+   "buscar_en_respuesta": true,
+   "variante": "sierra_norte",
+   "otras_variantes": []
   },
   {
    "espanol": "Higo",
@@ -74,7 +91,9 @@
    "terminos": [
     "higo"
    ],
-   "buscar_en_respuesta": true
+   "buscar_en_respuesta": true,
+   "variante": "sierra_norte",
+   "otras_variantes": []
   },
   {
    "espanol": "Sandía",
@@ -83,7 +102,9 @@
    "terminos": [
     "sandía"
    ],
-   "buscar_en_respuesta": true
+   "buscar_en_respuesta": true,
+   "variante": "sierra_norte",
+   "otras_variantes": []
   },
   {
    "espanol": "Zapote",
@@ -92,7 +113,9 @@
    "terminos": [
     "zapote"
    ],
-   "buscar_en_respuesta": true
+   "buscar_en_respuesta": true,
+   "variante": "sierra_norte",
+   "otras_variantes": []
   },
   {
    "espanol": "Cereza",
@@ -101,7 +124,9 @@
    "terminos": [
     "cereza"
    ],
-   "buscar_en_respuesta": true
+   "buscar_en_respuesta": true,
+   "variante": "sierra_norte",
+   "otras_variantes": []
   },
   {
    "espanol": "Cacahuate",
@@ -110,7 +135,9 @@
    "terminos": [
     "cacahuate"
    ],
-   "buscar_en_respuesta": true
+   "buscar_en_respuesta": true,
+   "variante": "sierra_norte",
+   "otras_variantes": []
   },
   {
    "espanol": "Manzana",
@@ -119,7 +146,9 @@
    "terminos": [
     "manzana"
    ],
-   "buscar_en_respuesta": true
+   "buscar_en_respuesta": true,
+   "variante": "sierra_norte",
+   "otras_variantes": []
   },
   {
    "espanol": "Anona",
@@ -128,7 +157,9 @@
    "terminos": [
     "anona"
    ],
-   "buscar_en_respuesta": true
+   "buscar_en_respuesta": true,
+   "variante": "sierra_norte",
+   "otras_variantes": []
   },
   {
    "espanol": "Piña",
@@ -137,7 +168,9 @@
    "terminos": [
     "piña"
    ],
-   "buscar_en_respuesta": true
+   "buscar_en_respuesta": true,
+   "variante": "sierra_norte",
+   "otras_variantes": []
   },
   {
    "espanol": "Uva",
@@ -146,7 +179,9 @@
    "terminos": [
     "uva"
    ],
-   "buscar_en_respuesta": true
+   "buscar_en_respuesta": true,
+   "variante": "sierra_norte",
+   "otras_variantes": []
   },
   {
    "espanol": "Caña",
@@ -155,7 +190,14 @@
    "terminos": [
     "caña"
    ],
-   "buscar_en_respuesta": true
+   "buscar_en_respuesta": true,
+   "variante": "sierra_norte",
+   "otras_variantes": [
+    {
+     "zapoteco": "yota",
+     "variante": "jaltepec"
+    }
+   ]
   },
   {
    "espanol": "Aguacate",
@@ -164,7 +206,14 @@
    "terminos": [
     "aguacate"
    ],
-   "buscar_en_respuesta": true
+   "buscar_en_respuesta": true,
+   "variante": "sierra_norte",
+   "otras_variantes": [
+    {
+     "zapoteco": "guiéxá",
+     "variante": "jaltepec"
+    }
+   ]
   },
   {
    "espanol": "Lima",
@@ -173,7 +222,9 @@
    "terminos": [
     "lima"
    ],
-   "buscar_en_respuesta": true
+   "buscar_en_respuesta": true,
+   "variante": "sierra_norte",
+   "otras_variantes": []
   },
   {
    "espanol": "Limón",
@@ -182,7 +233,9 @@
    "terminos": [
     "limón"
    ],
-   "buscar_en_respuesta": true
+   "buscar_en_respuesta": true,
+   "variante": "sierra_norte",
+   "otras_variantes": []
   },
   {
    "espanol": "Mamey",
@@ -191,7 +244,9 @@
    "terminos": [
     "mamey"
    ],
-   "buscar_en_respuesta": true
+   "buscar_en_respuesta": true,
+   "variante": "sierra_norte",
+   "otras_variantes": []
   },
   {
    "espanol": "Naranja",
@@ -200,7 +255,9 @@
    "terminos": [
     "naranja"
    ],
-   "buscar_en_respuesta": true
+   "buscar_en_respuesta": true,
+   "variante": "sierra_norte",
+   "otras_variantes": []
   },
   {
    "espanol": "Plátano",
@@ -209,7 +266,14 @@
    "terminos": [
     "plátano"
    ],
-   "buscar_en_respuesta": true
+   "buscar_en_respuesta": true,
+   "variante": "sierra_norte",
+   "otras_variantes": [
+    {
+     "zapoteco": "guieꞌlaꞌ",
+     "variante": "jaltepec"
+    }
+   ]
   },
   {
    "espanol": "Guayaba",
@@ -218,7 +282,9 @@
    "terminos": [
     "guayaba"
    ],
-   "buscar_en_respuesta": true
+   "buscar_en_respuesta": true,
+   "variante": "sierra_norte",
+   "otras_variantes": []
   },
   {
    "espanol": "Durazno",
@@ -227,7 +293,9 @@
    "terminos": [
     "durazno"
    ],
-   "buscar_en_respuesta": true
+   "buscar_en_respuesta": true,
+   "variante": "sierra_norte",
+   "otras_variantes": []
   },
   {
    "espanol": "Chayote",
@@ -236,7 +304,9 @@
    "terminos": [
     "chayote"
    ],
-   "buscar_en_respuesta": true
+   "buscar_en_respuesta": true,
+   "variante": "sierra_norte",
+   "otras_variantes": []
   },
   {
    "espanol": "Calabacita",
@@ -245,7 +315,9 @@
    "terminos": [
     "calabacita"
    ],
-   "buscar_en_respuesta": true
+   "buscar_en_respuesta": true,
+   "variante": "sierra_norte",
+   "otras_variantes": []
   },
   {
    "espanol": "Ejote",
@@ -254,7 +326,9 @@
    "terminos": [
     "ejote"
    ],
-   "buscar_en_respuesta": true
+   "buscar_en_respuesta": true,
+   "variante": "sierra_norte",
+   "otras_variantes": []
   },
   {
    "espanol": "Tomate",
@@ -263,7 +337,9 @@
    "terminos": [
     "tomate"
    ],
-   "buscar_en_respuesta": true
+   "buscar_en_respuesta": true,
+   "variante": "sierra_norte",
+   "otras_variantes": []
   },
   {
    "espanol": "Miltomate",
@@ -272,7 +348,9 @@
    "terminos": [
     "miltomate"
    ],
-   "buscar_en_respuesta": true
+   "buscar_en_respuesta": true,
+   "variante": "sierra_norte",
+   "otras_variantes": []
   },
   {
    "espanol": "Ajo",
@@ -281,7 +359,9 @@
    "terminos": [
     "ajo"
    ],
-   "buscar_en_respuesta": true
+   "buscar_en_respuesta": true,
+   "variante": "sierra_norte",
+   "otras_variantes": []
   },
   {
    "espanol": "Cebolla",
@@ -290,7 +370,9 @@
    "terminos": [
     "cebolla"
    ],
-   "buscar_en_respuesta": true
+   "buscar_en_respuesta": true,
+   "variante": "sierra_norte",
+   "otras_variantes": []
   },
   {
    "espanol": "Papa",
@@ -299,7 +381,9 @@
    "terminos": [
     "papa"
    ],
-   "buscar_en_respuesta": true
+   "buscar_en_respuesta": true,
+   "variante": "sierra_norte",
+   "otras_variantes": []
   },
   {
    "espanol": "Chile verde",
@@ -308,7 +392,9 @@
    "terminos": [
     "chile verde"
    ],
-   "buscar_en_respuesta": true
+   "buscar_en_respuesta": true,
+   "variante": "sierra_norte",
+   "otras_variantes": []
   },
   {
    "espanol": "Nopal",
@@ -317,7 +403,9 @@
    "terminos": [
     "nopal"
    ],
-   "buscar_en_respuesta": true
+   "buscar_en_respuesta": true,
+   "variante": "sierra_norte",
+   "otras_variantes": []
   },
   {
    "espanol": "Berros",
@@ -326,7 +414,9 @@
    "terminos": [
     "berros"
    ],
-   "buscar_en_respuesta": true
+   "buscar_en_respuesta": true,
+   "variante": "sierra_norte",
+   "otras_variantes": []
   },
   {
    "espanol": "Chepil",
@@ -335,7 +425,9 @@
    "terminos": [
     "chepil"
    ],
-   "buscar_en_respuesta": true
+   "buscar_en_respuesta": true,
+   "variante": "sierra_norte",
+   "otras_variantes": []
   },
   {
    "espanol": "Guaje",
@@ -344,7 +436,9 @@
    "terminos": [
     "guaje"
    ],
-   "buscar_en_respuesta": true
+   "buscar_en_respuesta": true,
+   "variante": "sierra_norte",
+   "otras_variantes": []
   },
   {
    "espanol": "Elote",
@@ -353,7 +447,14 @@
    "terminos": [
     "elote"
    ],
-   "buscar_en_respuesta": true
+   "buscar_en_respuesta": true,
+   "variante": "sierra_norte",
+   "otras_variantes": [
+    {
+     "zapoteco": "zaꞌ",
+     "variante": "jaltepec"
+    }
+   ]
   },
   {
    "espanol": "Gusano de maguey",
@@ -362,7 +463,9 @@
    "terminos": [
     "gusano de maguey"
    ],
-   "buscar_en_respuesta": true
+   "buscar_en_respuesta": true,
+   "variante": "sierra_norte",
+   "otras_variantes": []
   },
   {
    "espanol": "Chicharo",
@@ -371,7 +474,9 @@
    "terminos": [
     "chicharo"
    ],
-   "buscar_en_respuesta": true
+   "buscar_en_respuesta": true,
+   "variante": "sierra_norte",
+   "otras_variantes": []
   },
   {
    "espanol": "Cacao",
@@ -380,7 +485,9 @@
    "terminos": [
     "cacao"
    ],
-   "buscar_en_respuesta": true
+   "buscar_en_respuesta": true,
+   "variante": "sierra_norte",
+   "otras_variantes": []
   },
   {
    "espanol": "Verdolagas",
@@ -389,7 +496,9 @@
    "terminos": [
     "verdolagas"
    ],
-   "buscar_en_respuesta": true
+   "buscar_en_respuesta": true,
+   "variante": "sierra_norte",
+   "otras_variantes": []
   },
   {
    "espanol": "Quiotes",
@@ -398,7 +507,9 @@
    "terminos": [
     "quiotes"
    ],
-   "buscar_en_respuesta": true
+   "buscar_en_respuesta": true,
+   "variante": "sierra_norte",
+   "otras_variantes": []
   },
   {
    "espanol": "Quelites",
@@ -407,7 +518,14 @@
    "terminos": [
     "quelites"
    ],
-   "buscar_en_respuesta": true
+   "buscar_en_respuesta": true,
+   "variante": "sierra_norte",
+   "otras_variantes": [
+    {
+     "zapoteco": "guiezá",
+     "variante": "jaltepec"
+    }
+   ]
   },
   {
    "espanol": "Semillas/pepitas",
@@ -418,7 +536,14 @@
     "semilla",
     "pepitas"
    ],
-   "buscar_en_respuesta": true
+   "buscar_en_respuesta": true,
+   "variante": "sierra_norte",
+   "otras_variantes": [
+    {
+     "zapoteco": "ledxiꞌ",
+     "variante": "jaltepec"
+    }
+   ]
   },
   {
    "espanol": "Guías",
@@ -427,7 +552,9 @@
    "terminos": [
     "guías"
    ],
-   "buscar_en_respuesta": true
+   "buscar_en_respuesta": true,
+   "variante": "sierra_norte",
+   "otras_variantes": []
   },
   {
    "espanol": "Mariposa",
@@ -436,7 +563,9 @@
    "terminos": [
     "mariposa"
    ],
-   "buscar_en_respuesta": true
+   "buscar_en_respuesta": true,
+   "variante": "sierra_norte",
+   "otras_variantes": []
   },
   {
    "espanol": "Pájaro",
@@ -445,7 +574,9 @@
    "terminos": [
     "pájaro"
    ],
-   "buscar_en_respuesta": true
+   "buscar_en_respuesta": true,
+   "variante": "sierra_norte",
+   "otras_variantes": []
   },
   {
    "espanol": "Ardilla",
@@ -454,7 +585,9 @@
    "terminos": [
     "ardilla"
    ],
-   "buscar_en_respuesta": true
+   "buscar_en_respuesta": true,
+   "variante": "sierra_norte",
+   "otras_variantes": []
   },
   {
    "espanol": "Venado",
@@ -463,7 +596,9 @@
    "terminos": [
     "venado"
    ],
-   "buscar_en_respuesta": true
+   "buscar_en_respuesta": true,
+   "variante": "sierra_norte",
+   "otras_variantes": []
   },
   {
    "espanol": "Abeja",
@@ -472,7 +607,9 @@
    "terminos": [
     "abeja"
    ],
-   "buscar_en_respuesta": true
+   "buscar_en_respuesta": true,
+   "variante": "sierra_norte",
+   "otras_variantes": []
   },
   {
    "espanol": "León",
@@ -481,7 +618,9 @@
    "terminos": [
     "león"
    ],
-   "buscar_en_respuesta": true
+   "buscar_en_respuesta": true,
+   "variante": "sierra_norte",
+   "otras_variantes": []
   },
   {
    "espanol": "Serpiente",
@@ -490,7 +629,9 @@
    "terminos": [
     "serpiente"
    ],
-   "buscar_en_respuesta": true
+   "buscar_en_respuesta": true,
+   "variante": "sierra_norte",
+   "otras_variantes": []
   },
   {
    "espanol": "Zopilote",
@@ -499,7 +640,9 @@
    "terminos": [
     "zopilote"
    ],
-   "buscar_en_respuesta": true
+   "buscar_en_respuesta": true,
+   "variante": "sierra_norte",
+   "otras_variantes": []
   },
   {
    "espanol": "Ratón",
@@ -508,7 +651,9 @@
    "terminos": [
     "ratón"
    ],
-   "buscar_en_respuesta": true
+   "buscar_en_respuesta": true,
+   "variante": "sierra_norte",
+   "otras_variantes": []
   },
   {
    "espanol": "Zorro",
@@ -517,7 +662,9 @@
    "terminos": [
     "zorro"
    ],
-   "buscar_en_respuesta": true
+   "buscar_en_respuesta": true,
+   "variante": "sierra_norte",
+   "otras_variantes": []
   },
   {
    "espanol": "Coyote",
@@ -526,7 +673,9 @@
    "terminos": [
     "coyote"
    ],
-   "buscar_en_respuesta": true
+   "buscar_en_respuesta": true,
+   "variante": "sierra_norte",
+   "otras_variantes": []
   },
   {
    "espanol": "Abejorro",
@@ -535,7 +684,9 @@
    "terminos": [
     "abejorro"
    ],
-   "buscar_en_respuesta": true
+   "buscar_en_respuesta": true,
+   "variante": "sierra_norte",
+   "otras_variantes": []
   },
   {
    "espanol": "Lagartija",
@@ -544,7 +695,9 @@
    "terminos": [
     "lagartija"
    ],
-   "buscar_en_respuesta": true
+   "buscar_en_respuesta": true,
+   "variante": "sierra_norte",
+   "otras_variantes": []
   },
   {
    "espanol": "Águila",
@@ -553,7 +706,9 @@
    "terminos": [
     "águila"
    ],
-   "buscar_en_respuesta": true
+   "buscar_en_respuesta": true,
+   "variante": "sierra_norte",
+   "otras_variantes": []
   },
   {
    "espanol": "Paloma",
@@ -562,7 +717,9 @@
    "terminos": [
     "paloma"
    ],
-   "buscar_en_respuesta": true
+   "buscar_en_respuesta": true,
+   "variante": "sierra_norte",
+   "otras_variantes": []
   },
   {
    "espanol": "Tejón",
@@ -571,7 +728,9 @@
    "terminos": [
     "tejón"
    ],
-   "buscar_en_respuesta": true
+   "buscar_en_respuesta": true,
+   "variante": "sierra_norte",
+   "otras_variantes": []
   },
   {
    "espanol": "Comadreja",
@@ -580,7 +739,9 @@
    "terminos": [
     "comadreja"
    ],
-   "buscar_en_respuesta": true
+   "buscar_en_respuesta": true,
+   "variante": "sierra_norte",
+   "otras_variantes": []
   },
   {
    "espanol": "Zorrillo",
@@ -589,7 +750,9 @@
    "terminos": [
     "zorrillo"
    ],
-   "buscar_en_respuesta": true
+   "buscar_en_respuesta": true,
+   "variante": "sierra_norte",
+   "otras_variantes": []
   },
   {
    "espanol": "Tortuga",
@@ -598,7 +761,9 @@
    "terminos": [
     "tortuga"
    ],
-   "buscar_en_respuesta": true
+   "buscar_en_respuesta": true,
+   "variante": "sierra_norte",
+   "otras_variantes": []
   },
   {
    "espanol": "Murciélago",
@@ -607,7 +772,9 @@
    "terminos": [
     "murciélago"
    ],
-   "buscar_en_respuesta": true
+   "buscar_en_respuesta": true,
+   "variante": "sierra_norte",
+   "otras_variantes": []
   },
   {
    "espanol": "Mosca",
@@ -616,7 +783,9 @@
    "terminos": [
     "mosca"
    ],
-   "buscar_en_respuesta": true
+   "buscar_en_respuesta": true,
+   "variante": "sierra_norte",
+   "otras_variantes": []
   },
   {
    "espanol": "Mosquito",
@@ -625,7 +794,9 @@
    "terminos": [
     "mosquito"
    ],
-   "buscar_en_respuesta": true
+   "buscar_en_respuesta": true,
+   "variante": "sierra_norte",
+   "otras_variantes": []
   },
   {
    "espanol": "Lombriz",
@@ -634,7 +805,9 @@
    "terminos": [
     "lombriz"
    ],
-   "buscar_en_respuesta": true
+   "buscar_en_respuesta": true,
+   "variante": "sierra_norte",
+   "otras_variantes": []
   },
   {
    "espanol": "Hormiga",
@@ -643,7 +816,14 @@
    "terminos": [
     "hormiga"
    ],
-   "buscar_en_respuesta": true
+   "buscar_en_respuesta": true,
+   "variante": "sierra_norte",
+   "otras_variantes": [
+    {
+     "zapoteco": "breꞌé",
+     "variante": "jaltepec"
+    }
+   ]
   },
   {
    "espanol": "Búho",
@@ -652,7 +832,9 @@
    "terminos": [
     "búho"
    ],
-   "buscar_en_respuesta": true
+   "buscar_en_respuesta": true,
+   "variante": "sierra_norte",
+   "otras_variantes": []
   },
   {
    "espanol": "Grillo",
@@ -661,7 +843,9 @@
    "terminos": [
     "grillo"
    ],
-   "buscar_en_respuesta": true
+   "buscar_en_respuesta": true,
+   "variante": "sierra_norte",
+   "otras_variantes": []
   },
   {
    "espanol": "Oruga",
@@ -670,7 +854,9 @@
    "terminos": [
     "oruga"
    ],
-   "buscar_en_respuesta": true
+   "buscar_en_respuesta": true,
+   "variante": "sierra_norte",
+   "otras_variantes": []
   },
   {
    "espanol": "Cucaracha",
@@ -679,7 +865,9 @@
    "terminos": [
     "cucaracha"
    ],
-   "buscar_en_respuesta": true
+   "buscar_en_respuesta": true,
+   "variante": "sierra_norte",
+   "otras_variantes": []
   },
   {
    "espanol": "Caracol",
@@ -688,7 +876,9 @@
    "terminos": [
     "caracol"
    ],
-   "buscar_en_respuesta": true
+   "buscar_en_respuesta": true,
+   "variante": "sierra_norte",
+   "otras_variantes": []
   },
   {
    "espanol": "Chapulín",
@@ -697,7 +887,14 @@
    "terminos": [
     "chapulín"
    ],
-   "buscar_en_respuesta": true
+   "buscar_en_respuesta": true,
+   "variante": "sierra_norte",
+   "otras_variantes": [
+    {
+     "zapoteco": "bíchí",
+     "variante": "jaltepec"
+    }
+   ]
   },
   {
    "espanol": "Colibrí",
@@ -706,7 +903,9 @@
    "terminos": [
     "colibrí"
    ],
-   "buscar_en_respuesta": true
+   "buscar_en_respuesta": true,
+   "variante": "sierra_norte",
+   "otras_variantes": []
   },
   {
    "espanol": "Alacrán",
@@ -715,7 +914,9 @@
    "terminos": [
     "alacrán"
    ],
-   "buscar_en_respuesta": true
+   "buscar_en_respuesta": true,
+   "variante": "sierra_norte",
+   "otras_variantes": []
   },
   {
    "espanol": "Araña",
@@ -724,7 +925,9 @@
    "terminos": [
     "araña"
    ],
-   "buscar_en_respuesta": true
+   "buscar_en_respuesta": true,
+   "variante": "sierra_norte",
+   "otras_variantes": []
   },
   {
    "espanol": "Sapo",
@@ -733,7 +936,9 @@
    "terminos": [
     "sapo"
    ],
-   "buscar_en_respuesta": true
+   "buscar_en_respuesta": true,
+   "variante": "sierra_norte",
+   "otras_variantes": []
   },
   {
    "espanol": "Agua",
@@ -742,7 +947,14 @@
    "terminos": [
     "agua"
    ],
-   "buscar_en_respuesta": true
+   "buscar_en_respuesta": true,
+   "variante": "sierra_norte",
+   "otras_variantes": [
+    {
+     "zapoteco": "nisa",
+     "variante": "jaltepec"
+    }
+   ]
   },
   {
    "espanol": "Aire",
@@ -751,7 +963,9 @@
    "terminos": [
     "aire"
    ],
-   "buscar_en_respuesta": true
+   "buscar_en_respuesta": true,
+   "variante": "sierra_norte",
+   "otras_variantes": []
   },
   {
    "espanol": "Nube",
@@ -760,7 +974,14 @@
    "terminos": [
     "nube"
    ],
-   "buscar_en_respuesta": true
+   "buscar_en_respuesta": true,
+   "variante": "sierra_norte",
+   "otras_variantes": [
+    {
+     "zapoteco": "bio",
+     "variante": "jaltepec"
+    }
+   ]
   },
   {
    "espanol": "Tierra",
@@ -769,7 +990,14 @@
    "terminos": [
     "tierra"
    ],
-   "buscar_en_respuesta": true
+   "buscar_en_respuesta": true,
+   "variante": "sierra_norte",
+   "otras_variantes": [
+    {
+     "zapoteco": "yo",
+     "variante": "jaltepec"
+    }
+   ]
   },
   {
    "espanol": "Estrellas",
@@ -778,7 +1006,9 @@
    "terminos": [
     "estrellas"
    ],
-   "buscar_en_respuesta": true
+   "buscar_en_respuesta": true,
+   "variante": "sierra_norte",
+   "otras_variantes": []
   },
   {
    "espanol": "Sol",
@@ -787,7 +1017,14 @@
    "terminos": [
     "sol"
    ],
-   "buscar_en_respuesta": true
+   "buscar_en_respuesta": true,
+   "variante": "sierra_norte",
+   "otras_variantes": [
+    {
+     "zapoteco": "wbidza",
+     "variante": "jaltepec"
+    }
+   ]
   },
   {
    "espanol": "Luna",
@@ -796,7 +1033,9 @@
    "terminos": [
     "luna"
    ],
-   "buscar_en_respuesta": true
+   "buscar_en_respuesta": true,
+   "variante": "sierra_norte",
+   "otras_variantes": []
   },
   {
    "espanol": "Fuego",
@@ -805,7 +1044,9 @@
    "terminos": [
     "fuego"
    ],
-   "buscar_en_respuesta": true
+   "buscar_en_respuesta": true,
+   "variante": "sierra_norte",
+   "otras_variantes": []
   },
   {
    "espanol": "Polvo",
@@ -814,7 +1055,9 @@
    "terminos": [
     "polvo"
    ],
-   "buscar_en_respuesta": true
+   "buscar_en_respuesta": true,
+   "variante": "sierra_norte",
+   "otras_variantes": []
   },
   {
    "espanol": "Cielo",
@@ -823,7 +1066,9 @@
    "terminos": [
     "cielo"
    ],
-   "buscar_en_respuesta": true
+   "buscar_en_respuesta": true,
+   "variante": "sierra_norte",
+   "otras_variantes": []
   },
   {
    "espanol": "Río",
@@ -832,7 +1077,9 @@
    "terminos": [
     "río"
    ],
-   "buscar_en_respuesta": true
+   "buscar_en_respuesta": true,
+   "variante": "sierra_norte",
+   "otras_variantes": []
   },
   {
    "espanol": "Mar",
@@ -841,7 +1088,9 @@
    "terminos": [
     "mar"
    ],
-   "buscar_en_respuesta": true
+   "buscar_en_respuesta": true,
+   "variante": "sierra_norte",
+   "otras_variantes": []
   },
   {
    "espanol": "Arena",
@@ -850,7 +1099,9 @@
    "terminos": [
     "arena"
    ],
-   "buscar_en_respuesta": true
+   "buscar_en_respuesta": true,
+   "variante": "sierra_norte",
+   "otras_variantes": []
   },
   {
    "espanol": "Piedra",
@@ -859,7 +1110,14 @@
    "terminos": [
     "piedra"
    ],
-   "buscar_en_respuesta": true
+   "buscar_en_respuesta": true,
+   "variante": "sierra_norte",
+   "otras_variantes": [
+    {
+     "zapoteco": "guio",
+     "variante": "jaltepec"
+    }
+   ]
   },
   {
    "espanol": "Montañas",
@@ -868,14 +1126,28 @@
    "terminos": [
     "montañas"
    ],
-   "buscar_en_respuesta": true
+   "buscar_en_respuesta": true,
+   "variante": "sierra_norte",
+   "otras_variantes": []
   },
   {
    "espanol": "Lluvia",
    "zapoteco": "Shiah",
    "categoria": "Naturaleza",
-   "terminos": ["lluvia", "llover", "llueve", "llovió"],
-   "buscar_en_respuesta": true
+   "terminos": [
+    "lluvia",
+    "llover",
+    "llueve",
+    "llovió"
+   ],
+   "buscar_en_respuesta": true,
+   "variante": "sierra_norte",
+   "otras_variantes": [
+    {
+     "zapoteco": "guio lasi",
+     "variante": "jaltepec"
+    }
+   ]
   },
   {
    "espanol": "Llovizna",
@@ -884,7 +1156,14 @@
    "terminos": [
     "llovizna"
    ],
-   "buscar_en_respuesta": true
+   "buscar_en_respuesta": true,
+   "variante": "sierra_norte",
+   "otras_variantes": [
+    {
+     "zapoteco": "guio lasi",
+     "variante": "jaltepec"
+    }
+   ]
   },
   {
    "espanol": "Árboles",
@@ -894,7 +1173,9 @@
     "árboles",
     "árbol"
    ],
-   "buscar_en_respuesta": true
+   "buscar_en_respuesta": true,
+   "variante": "sierra_norte",
+   "otras_variantes": []
   },
   {
    "espanol": "Chubasco",
@@ -903,7 +1184,9 @@
    "terminos": [
     "chubasco"
    ],
-   "buscar_en_respuesta": true
+   "buscar_en_respuesta": true,
+   "variante": "sierra_norte",
+   "otras_variantes": []
   },
   {
    "espanol": "Granizo",
@@ -912,7 +1195,9 @@
    "terminos": [
     "granizo"
    ],
-   "buscar_en_respuesta": true
+   "buscar_en_respuesta": true,
+   "variante": "sierra_norte",
+   "otras_variantes": []
   },
   {
    "espanol": "Relámpago",
@@ -922,7 +1207,9 @@
     "relámpago",
     "relampago"
    ],
-   "buscar_en_respuesta": true
+   "buscar_en_respuesta": true,
+   "variante": "sierra_norte",
+   "otras_variantes": []
   },
   {
    "espanol": "Temblor",
@@ -931,7 +1218,9 @@
    "terminos": [
     "temblor"
    ],
-   "buscar_en_respuesta": true
+   "buscar_en_respuesta": true,
+   "variante": "sierra_norte",
+   "otras_variantes": []
   },
   {
    "espanol": "Cascada",
@@ -940,7 +1229,9 @@
    "terminos": [
     "cascada"
    ],
-   "buscar_en_respuesta": true
+   "buscar_en_respuesta": true,
+   "variante": "sierra_norte",
+   "otras_variantes": []
   },
   {
    "espanol": "Arcoiris",
@@ -949,7 +1240,9 @@
    "terminos": [
     "arcoiris"
    ],
-   "buscar_en_respuesta": true
+   "buscar_en_respuesta": true,
+   "variante": "sierra_norte",
+   "otras_variantes": []
   },
   {
    "espanol": "Eclipse de sol",
@@ -958,7 +1251,9 @@
    "terminos": [
     "eclipse de sol"
    ],
-   "buscar_en_respuesta": true
+   "buscar_en_respuesta": true,
+   "variante": "sierra_norte",
+   "otras_variantes": []
   },
   {
    "espanol": "Eclipse de luna",
@@ -967,7 +1262,9 @@
    "terminos": [
     "eclipse de luna"
    ],
-   "buscar_en_respuesta": true
+   "buscar_en_respuesta": true,
+   "variante": "sierra_norte",
+   "otras_variantes": []
   },
   {
    "espanol": "Flores",
@@ -976,7 +1273,14 @@
    "terminos": [
     "flores"
    ],
-   "buscar_en_respuesta": true
+   "buscar_en_respuesta": true,
+   "variante": "sierra_norte",
+   "otras_variantes": [
+    {
+     "zapoteco": "guioó",
+     "variante": "jaltepec"
+    }
+   ]
   },
   {
    "espanol": "Pasto",
@@ -985,7 +1289,9 @@
    "terminos": [
     "pasto"
    ],
-   "buscar_en_respuesta": true
+   "buscar_en_respuesta": true,
+   "variante": "sierra_norte",
+   "otras_variantes": []
   },
   {
    "espanol": "manantial",
@@ -994,7 +1300,9 @@
    "terminos": [
     "manantial"
    ],
-   "buscar_en_respuesta": true
+   "buscar_en_respuesta": true,
+   "variante": "sierra_norte",
+   "otras_variantes": []
   },
   {
    "espanol": "Sal",
@@ -1003,7 +1311,9 @@
    "terminos": [
     "sal"
    ],
-   "buscar_en_respuesta": true
+   "buscar_en_respuesta": true,
+   "variante": "sierra_norte",
+   "otras_variantes": []
   },
   {
    "espanol": "Azúcar",
@@ -1012,7 +1322,9 @@
    "terminos": [
     "azúcar"
    ],
-   "buscar_en_respuesta": true
+   "buscar_en_respuesta": true,
+   "variante": "sierra_norte",
+   "otras_variantes": []
   },
   {
    "espanol": "Leche",
@@ -1021,7 +1333,9 @@
    "terminos": [
     "leche"
    ],
-   "buscar_en_respuesta": true
+   "buscar_en_respuesta": true,
+   "variante": "sierra_norte",
+   "otras_variantes": []
   },
   {
    "espanol": "Frijol",
@@ -1030,7 +1344,14 @@
    "terminos": [
     "frijol"
    ],
-   "buscar_en_respuesta": true
+   "buscar_en_respuesta": true,
+   "variante": "sierra_norte",
+   "otras_variantes": [
+    {
+     "zapoteco": "zaá",
+     "variante": "jaltepec"
+    }
+   ]
   },
   {
    "espanol": "Aceite",
@@ -1039,7 +1360,9 @@
    "terminos": [
     "aceite"
    ],
-   "buscar_en_respuesta": true
+   "buscar_en_respuesta": true,
+   "variante": "sierra_norte",
+   "otras_variantes": []
   },
   {
    "espanol": "Chile seco",
@@ -1048,7 +1371,9 @@
    "terminos": [
     "chile seco"
    ],
-   "buscar_en_respuesta": true
+   "buscar_en_respuesta": true,
+   "variante": "sierra_norte",
+   "otras_variantes": []
   },
   {
    "espanol": "Huevo",
@@ -1057,7 +1382,9 @@
    "terminos": [
     "huevo"
    ],
-   "buscar_en_respuesta": true
+   "buscar_en_respuesta": true,
+   "variante": "sierra_norte",
+   "otras_variantes": []
   },
   {
    "espanol": "Carne",
@@ -1066,7 +1393,9 @@
    "terminos": [
     "carne"
    ],
-   "buscar_en_respuesta": true
+   "buscar_en_respuesta": true,
+   "variante": "sierra_norte",
+   "otras_variantes": []
   },
   {
    "espanol": "Pan",
@@ -1075,7 +1404,9 @@
    "terminos": [
     "pan"
    ],
-   "buscar_en_respuesta": true
+   "buscar_en_respuesta": true,
+   "variante": "sierra_norte",
+   "otras_variantes": []
   },
   {
    "espanol": "Salsa",
@@ -1084,7 +1415,9 @@
    "terminos": [
     "salsa"
    ],
-   "buscar_en_respuesta": true
+   "buscar_en_respuesta": true,
+   "variante": "sierra_norte",
+   "otras_variantes": []
   },
   {
    "espanol": "Tortillas",
@@ -1093,7 +1426,14 @@
    "terminos": [
     "tortillas"
    ],
-   "buscar_en_respuesta": true
+   "buscar_en_respuesta": true,
+   "variante": "sierra_norte",
+   "otras_variantes": [
+    {
+     "zapoteco": "yeta",
+     "variante": "jaltepec"
+    }
+   ]
   },
   {
    "espanol": "Arroz",
@@ -1102,7 +1442,9 @@
    "terminos": [
     "arroz"
    ],
-   "buscar_en_respuesta": true
+   "buscar_en_respuesta": true,
+   "variante": "sierra_norte",
+   "otras_variantes": []
   },
   {
    "espanol": "Harina de maíz",
@@ -1111,7 +1453,9 @@
    "terminos": [
     "harina de maíz"
    ],
-   "buscar_en_respuesta": true
+   "buscar_en_respuesta": true,
+   "variante": "sierra_norte",
+   "otras_variantes": []
   },
   {
    "espanol": "Harina de trigo",
@@ -1120,7 +1464,9 @@
    "terminos": [
     "harina de trigo"
    ],
-   "buscar_en_respuesta": true
+   "buscar_en_respuesta": true,
+   "variante": "sierra_norte",
+   "otras_variantes": []
   },
   {
    "espanol": "¿Cuándo?",
@@ -1129,7 +1475,9 @@
    "terminos": [
     "¿cuándo?"
    ],
-   "buscar_en_respuesta": false
+   "buscar_en_respuesta": false,
+   "variante": "sierra_norte",
+   "otras_variantes": []
   },
   {
    "espanol": "¿Cuánto?",
@@ -1138,7 +1486,9 @@
    "terminos": [
     "¿cuánto?"
    ],
-   "buscar_en_respuesta": false
+   "buscar_en_respuesta": false,
+   "variante": "sierra_norte",
+   "otras_variantes": []
   },
   {
    "espanol": "¿Dónde?",
@@ -1147,7 +1497,9 @@
    "terminos": [
     "¿dónde?"
    ],
-   "buscar_en_respuesta": false
+   "buscar_en_respuesta": false,
+   "variante": "sierra_norte",
+   "otras_variantes": []
   },
   {
    "espanol": "¿Qué?",
@@ -1156,7 +1508,9 @@
    "terminos": [
     "¿qué?"
    ],
-   "buscar_en_respuesta": false
+   "buscar_en_respuesta": false,
+   "variante": "sierra_norte",
+   "otras_variantes": []
   },
   {
    "espanol": "¿Cómo?",
@@ -1165,97 +1519,9 @@
    "terminos": [
     "¿cómo?"
    ],
-   "buscar_en_respuesta": false
-  },
-  {
-   "espanol": "maíz",
-   "zapoteco": "",
-   "categoria": "Pendiente",
-   "terminos": [
-    "maíz"
-   ],
-   "buscar_en_respuesta": false
-  },
-  {
-   "espanol": "milpa",
-   "zapoteco": "",
-   "categoria": "Pendiente",
-   "terminos": [
-    "milpa"
-   ],
-   "buscar_en_respuesta": false
-  },
-  {
-   "espanol": "sembrar",
-   "zapoteco": "",
-   "categoria": "Pendiente",
-   "terminos": [
-    "sembrar"
-   ],
-   "buscar_en_respuesta": false
-  },
-  {
-   "espanol": "cosechar",
-   "zapoteco": "",
-   "categoria": "Pendiente",
-   "terminos": [
-    "cosechar"
-   ],
-   "buscar_en_respuesta": false
-  },
-  {
-   "espanol": "café",
-   "zapoteco": "",
-   "categoria": "Pendiente",
-   "terminos": [
-    "café"
-   ],
-   "buscar_en_respuesta": false
-  },
-  {
-   "espanol": "calabaza",
-   "zapoteco": "",
-   "categoria": "Pendiente",
-   "terminos": [
-    "calabaza"
-   ],
-   "buscar_en_respuesta": false
-  },
-  {
-   "espanol": "siembra",
-   "zapoteco": "",
-   "categoria": "Pendiente",
-   "terminos": [
-    "siembra"
-   ],
-   "buscar_en_respuesta": false
-  },
-  {
-   "espanol": "cosecha",
-   "zapoteco": "",
-   "categoria": "Pendiente",
-   "terminos": [
-    "cosecha"
-   ],
-   "buscar_en_respuesta": false
-  },
-  {
-   "espanol": "frío",
-   "zapoteco": "",
-   "categoria": "Pendiente",
-   "terminos": [
-    "frío"
-   ],
-   "buscar_en_respuesta": false
-  },
-  {
-   "espanol": "calor",
-   "zapoteco": "",
-   "categoria": "Pendiente",
-   "terminos": [
-    "calor"
-   ],
-   "buscar_en_respuesta": false
+   "buscar_en_respuesta": false,
+   "variante": "sierra_norte",
+   "otras_variantes": []
   },
   {
    "espanol": "helada",
@@ -1264,7 +1530,315 @@
    "terminos": [
     "helada"
    ],
-   "buscar_en_respuesta": false
+   "buscar_en_respuesta": false,
+   "variante": "sierra_norte",
+   "otras_variantes": []
+  },
+  {
+   "espanol": "Maíz",
+   "zapoteco": "xhoꞌbaꞌ",
+   "categoria": "Cultivos",
+   "terminos": [
+    "maíz",
+    "maiz"
+   ],
+   "buscar_en_respuesta": true,
+   "variante": "jaltepec",
+   "otras_variantes": []
+  },
+  {
+   "espanol": "Milpa",
+   "zapoteco": "guiela",
+   "categoria": "Cultivos",
+   "terminos": [
+    "milpa"
+   ],
+   "buscar_en_respuesta": true,
+   "variante": "jaltepec",
+   "otras_variantes": []
+  },
+  {
+   "espanol": "Sembrar",
+   "zapoteco": "raz",
+   "categoria": "Trabajo del campo",
+   "terminos": [
+    "sembrar",
+    "siembra",
+    "siembras",
+    "siembre",
+    "siembres",
+    "siembro",
+    "siembran",
+    "sembrarlo",
+    "sembrarla",
+    "sembrado",
+    "sembrada"
+   ],
+   "buscar_en_respuesta": true,
+   "variante": "jaltepec",
+   "otras_variantes": []
+  },
+  {
+   "espanol": "Cosechar",
+   "zapoteco": "rláp",
+   "categoria": "Trabajo del campo",
+   "terminos": [
+    "cosechar",
+    "cosecha",
+    "cosechan",
+    "cosecharlo",
+    "cosecharla",
+    "cosechado"
+   ],
+   "buscar_en_respuesta": true,
+   "variante": "jaltepec",
+   "otras_variantes": []
+  },
+  {
+   "espanol": "Tapiscar",
+   "zapoteco": "rkuaꞌ guiez",
+   "categoria": "Trabajo del campo",
+   "terminos": [
+    "tapiscar",
+    "pizcar"
+   ],
+   "buscar_en_respuesta": true,
+   "variante": "jaltepec",
+   "otras_variantes": []
+  },
+  {
+   "espanol": "Café",
+   "zapoteco": "kapée",
+   "categoria": "Cultivos",
+   "terminos": [
+    "café",
+    "cafe"
+   ],
+   "buscar_en_respuesta": true,
+   "variante": "jaltepec",
+   "otras_variantes": []
+  },
+  {
+   "espanol": "Calabaza",
+   "zapoteco": "yetgo",
+   "categoria": "Cultivos",
+   "terminos": [
+    "calabaza"
+   ],
+   "buscar_en_respuesta": true,
+   "variante": "jaltepec",
+   "otras_variantes": []
+  },
+  {
+   "espanol": "Chile",
+   "zapoteco": "guiꞌnaꞌ",
+   "categoria": "Cultivos",
+   "terminos": [
+    "chile"
+   ],
+   "buscar_en_respuesta": true,
+   "variante": "jaltepec",
+   "otras_variantes": []
+  },
+  {
+   "espanol": "Mazorca",
+   "zapoteco": "guieza",
+   "categoria": "Cultivos",
+   "terminos": [
+    "mazorca"
+   ],
+   "buscar_en_respuesta": true,
+   "variante": "jaltepec",
+   "otras_variantes": []
+  },
+  {
+   "espanol": "Gusano",
+   "zapoteco": "wexá",
+   "categoria": "Plagas",
+   "terminos": [
+    "gusano",
+    "gusanos"
+   ],
+   "buscar_en_respuesta": true,
+   "variante": "jaltepec",
+   "otras_variantes": []
+  },
+  {
+   "espanol": "Hongo",
+   "zapoteco": "beꞌyiꞌ",
+   "categoria": "Plagas",
+   "terminos": [
+    "hongo",
+    "hongos"
+   ],
+   "buscar_en_respuesta": true,
+   "variante": "jaltepec",
+   "otras_variantes": []
+  },
+  {
+   "espanol": "Enfermedad",
+   "zapoteco": "guieꞌl weꞌé",
+   "categoria": "Plagas",
+   "terminos": [
+    "enfermedad",
+    "enfermedades"
+   ],
+   "buscar_en_respuesta": true,
+   "variante": "jaltepec",
+   "otras_variantes": []
+  },
+  {
+   "espanol": "Podrido",
+   "zapoteco": "goꞌdzaꞌ",
+   "categoria": "Plagas",
+   "terminos": [
+    "podrido",
+    "podrida",
+    "podridos",
+    "podridas"
+   ],
+   "buscar_en_respuesta": true,
+   "variante": "jaltepec",
+   "otras_variantes": []
+  },
+  {
+   "espanol": "Hoja",
+   "zapoteco": "lagaꞌ",
+   "categoria": "Planta",
+   "terminos": [
+    "hoja",
+    "hojas"
+   ],
+   "buscar_en_respuesta": true,
+   "variante": "jaltepec",
+   "otras_variantes": []
+  },
+  {
+   "espanol": "Raíz",
+   "zapoteco": "lée yaga",
+   "categoria": "Planta",
+   "terminos": [
+    "raíz",
+    "raiz",
+    "raíces",
+    "raices"
+   ],
+   "buscar_en_respuesta": true,
+   "variante": "jaltepec",
+   "otras_variantes": []
+  },
+  {
+   "espanol": "Crecer",
+   "zapoteco": "reꞌny",
+   "categoria": "Planta",
+   "terminos": [
+    "crecer",
+    "crece",
+    "crecen",
+    "creciendo"
+   ],
+   "buscar_en_respuesta": true,
+   "variante": "jaltepec",
+   "otras_variantes": []
+  },
+  {
+   "espanol": "Maduro",
+   "zapoteco": "we",
+   "categoria": "Planta",
+   "terminos": [
+    "maduro",
+    "madura",
+    "maduros",
+    "maduras"
+   ],
+   "buscar_en_respuesta": true,
+   "variante": "jaltepec",
+   "otras_variantes": []
+  },
+  {
+   "espanol": "Sequía",
+   "zapoteco": "wbiny nis",
+   "categoria": "Clima",
+   "terminos": [
+    "sequía",
+    "sequia",
+    "sequías"
+   ],
+   "buscar_en_respuesta": true,
+   "variante": "jaltepec",
+   "otras_variantes": []
+  },
+  {
+   "espanol": "Seco",
+   "zapoteco": "yétsa",
+   "categoria": "Clima",
+   "terminos": [
+    "seco",
+    "seca",
+    "secos",
+    "secas"
+   ],
+   "buscar_en_respuesta": true,
+   "variante": "jaltepec",
+   "otras_variantes": []
+  },
+  {
+   "espanol": "Lodo",
+   "zapoteco": "goꞌnaꞌ",
+   "categoria": "Clima",
+   "terminos": [
+    "lodo"
+   ],
+   "buscar_en_respuesta": true,
+   "variante": "jaltepec",
+   "otras_variantes": []
+  },
+  {
+   "espanol": "Frío",
+   "zapoteco": "zaga",
+   "categoria": "Clima",
+   "terminos": [
+    "frío",
+    "frio",
+    "fría",
+    "fria"
+   ],
+   "buscar_en_respuesta": true,
+   "variante": "jaltepec",
+   "otras_variantes": []
+  },
+  {
+   "espanol": "Calor",
+   "zapoteco": "lá",
+   "categoria": "Clima",
+   "terminos": [
+    "calor"
+   ],
+   "buscar_en_respuesta": true,
+   "variante": "jaltepec",
+   "otras_variantes": []
+  },
+  {
+   "espanol": "Viento",
+   "zapoteco": "be",
+   "categoria": "Clima",
+   "terminos": [
+    "viento",
+    "vientos"
+   ],
+   "buscar_en_respuesta": true,
+   "variante": "jaltepec",
+   "otras_variantes": []
   }
- ]
+ ],
+ "variantes": {
+  "sierra_norte": {
+   "nombre": "Sierra Norte (vocabulario del equipo)",
+   "fuente": "https://dev-deivis.github.io/vocabulario_zapoteco/"
+  },
+  "jaltepec": {
+   "nombre": "San Juan Jaltepec (di'dz xi'dza')",
+   "fuente": "Hernández Andrade, E. y López Nicolás, O. (2022). Diccionario Zapoteco (di'dz xi'dza') San Juan Jaltepec, municipio de Santiago Yaveo, Sierra Norte de Oaxaca. INPI. ISBN 978-607-8799-31-2. Solo se tomó una selección de palabras del campo y del clima."
+  }
+ }
 }

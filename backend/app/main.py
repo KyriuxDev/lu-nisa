@@ -81,6 +81,12 @@ def errores_llm(e: Exception) -> HTTPException:
     return HTTPException(502, {"error": "llm_error", "detalle": str(e)})
 
 
+@app.get("/variantes")
+async def variantes_zapoteco():
+    """Nombre y fuente de cada variante del zapoteco que usa el glosario."""
+    return glosario.variantes()
+
+
 @app.get("/salud")
 async def salud(proveedores: dict[str, Proveedor] = Depends(obtener_proveedores)):
     return {
@@ -318,7 +324,10 @@ async def traducir_zapoteco(
     """
     inicio = time.perf_counter()
     vocabulario = glosario.palabras_en_texto(entrada.texto)
-    lista = "\n".join(f"- {p['espanol'].lower()} = {p['zapoteco']}" for p in vocabulario) or "- (ninguna palabra del texto)"
+    nombres = {k: v["nombre"] for k, v in glosario.variantes().items()}
+    lista = "\n".join(
+        f"- {p['espanol'].lower()} = {p['zapoteco']} ({nombres.get(p['variante'], p['variante'])})" for p in vocabulario
+    ) or "- (ninguna palabra del texto)"
     prompt = prompts.PROMPT_TRADUCIR.format(vocabulario=lista, texto=entrada.texto)
     texto, llm, respaldo = await generar_con_respaldo(
         proveedores, config.PROVEEDOR_TRADUCIR, prompt, prompts.SISTEMA_TRADUCIR, "/traducir-zapoteco"

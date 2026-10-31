@@ -1,19 +1,49 @@
+/// Nombre corto de cada variante del zapoteco que usa el glosario
+String nombreVariante(String variante) => switch (variante) {
+      'jaltepec' => 'Jaltepec',
+      'sierra_norte' => 'Sierra Norte',
+      _ => variante,
+    };
+
+/// La misma palabra en otra variante del zapoteco
+class OtraVariante {
+  final String zapoteco;
+  final String variante;
+
+  const OtraVariante({required this.zapoteco, required this.variante});
+
+  factory OtraVariante.desdeJson(Map<String, dynamic> json) => OtraVariante(
+        zapoteco: json['zapoteco'] as String,
+        variante: json['variante'] as String,
+      );
+}
+
 /// Palabra del glosario zapoteco que apareció en la respuesta o en la pregunta.
 class PalabraZapoteca {
   final String espanol;
   final String zapoteco;
   final String categoria;
 
+  /// 'sierra_norte' (vocabulario del equipo) o 'jaltepec' (diccionario INPI)
+  final String variante;
+  final List<OtraVariante> otrasVariantes;
+
   const PalabraZapoteca({
     required this.espanol,
     required this.zapoteco,
     required this.categoria,
+    this.variante = 'sierra_norte',
+    this.otrasVariantes = const [],
   });
 
   factory PalabraZapoteca.desdeJson(Map<String, dynamic> json) => PalabraZapoteca(
         espanol: json['espanol'] as String,
         zapoteco: json['zapoteco'] as String,
         categoria: json['categoria'] as String,
+        variante: json['variante'] as String? ?? 'sierra_norte',
+        otrasVariantes: (json['otras_variantes'] as List? ?? [])
+            .map((e) => OtraVariante.desdeJson(e as Map<String, dynamic>))
+            .toList(),
       );
 }
 

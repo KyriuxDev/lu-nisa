@@ -47,7 +47,9 @@ def cliente_con(monkeypatch):
 
 def test_glosario_encuentra_palabras_en_orden():
     r = glosario.palabras_en_texto("Con la lluvia de octubre, el frijol crece en tierra húmeda.")
-    assert [(p["espanol"], p["zapoteco"]) for p in r] == [("Lluvia", "Shiah"), ("Frijol", "Dháh"), ("Tierra", "Yúu")]
+    assert [(p["espanol"], p["zapoteco"]) for p in r] == [
+        ("Lluvia", "Shiah"), ("Frijol", "Dháh"), ("Crecer", "reꞌny"), ("Tierra", "Yúu")
+    ]
 
 
 def test_glosario_plurales_y_sin_acentos():
@@ -57,12 +59,12 @@ def test_glosario_plurales_y_sin_acentos():
 
 def test_glosario_no_confunde_papa_con_papa():
     assert glosario.palabras_en_texto("Pregúntale a tu papá") == []
-    assert [p["zapoteco"] for p in glosario.palabras_en_texto("Siembra papa")] == ["Gú"]
+    assert "Gú" in [p["zapoteco"] for p in glosario.palabras_en_texto("Siembra papa")]
 
 
 def test_glosario_no_busca_saludos_ni_pendientes_en_respuesta():
-    # "gracias" y "maíz" (sin traducción confirmada) no se agregan
-    assert glosario.palabras_en_texto("Gracias. El maíz se siembra en mayo.") == []
+    # "gracias" (saludo) y "helada" (sin traducción confirmada) no se agregan
+    assert glosario.palabras_en_texto("Gracias. Cuidado con la helada.") == []
 
 
 def test_glosario_solo_carga_palabras_con_traduccion():
@@ -145,7 +147,7 @@ def test_preguntar_cae_a_ollama_sin_conexion(cliente_con):
     r = cliente.post("/preguntar", json={"texto": "¿qué siembro?", "municipio": "Abejones", "mes": 6})
     j = r.json()
     assert j["proveedor"] == "ollama" and j["respaldo"] == "sin_conexion"
-    assert [p["espanol"] for p in j["zapoteco"]] == ["Lluvia", "Frijol"]
+    assert [p["espanol"] for p in j["zapoteco"]] == ["Lluvia", "Sembrar", "Frijol"]
 
 
 def test_preguntar_sin_api_key_usa_ollama(cliente_con):
@@ -212,7 +214,7 @@ def test_preguntar_en_zapoteco(cliente_con):
     assert "¿cuándo siembro frijol?" in prompt
     # Encontró los datos del frijol aunque la pregunta decía "dháh"
     assert "Frijol negro criollo" in prompt
-    assert [s["zapoteco"] for s in j["respuesta_segmentos"] if s["zapoteco"]] == ["Dháh", "Shiah"]
+    assert [s["zapoteco"] for s in j["respuesta_segmentos"] if s["zapoteco"]] == ["Dháh", "raz", "Shiah"]
 
 
 def test_preguntar_en_espanol_no_trae_traduccion(cliente_con):
@@ -246,3 +248,28 @@ def test_traducir_cae_a_ollama(cliente_con, monkeypatch):
     cliente, _ = cliente_con(gemini=[LLMNoDisponible("sin red")], ollama=["traducción local"])
     j = cliente.post("/traducir-zapoteco", json={"texto": "Hola."}).json()
     assert j["proveedor"] == "ollama" and j["respaldo"] == "sin_conexion"
+
+
+
+# ---------- variantes (vocabulario del equipo y Jaltepec) ----------
+
+def test_cada_palabra_dice_su_variante():
+    r = {p["espanol"]: p for p in glosario.palabras_en_texto("El maíz necesita lluvia.")}
+    assert r["Maíz"]["zapoteco"] == "xhoꞌbaꞌ" and r["Maíz"]["variante"] == "jaltepec"
+    assert r["Lluvia"]["variante"] == "sierra_norte"
+    assert {"zapoteco": "guio lasi", "variante": "jaltepec"} in r["Lluvia"]["otras_variantes"]
+
+
+def test_pregunta_con_palabras_de_jaltepec():
+    assert glosario.traducir_pregunta("¿Bata raz xhoꞌbaꞌ si no hay nisa?") == "¿cuándo sembrar maíz si no hay agua?"
+
+
+def test_variantes_tienen_nombre_y_fuente():
+    v = glosario.variantes()
+    assert set(v) == {"sierra_norte", "jaltepec"}
+    assert "INPI" in v["jaltepec"]["fuente"]
+
+
+def test_no_confunde_yo_en_espanol():
+    # "yo" es tierra en Jaltepec, pero es muy corta para buscarla en español
+    assert glosario.quitar_zapoteco_del_modelo("Yo creo que sí.") == "Yo creo que sí."

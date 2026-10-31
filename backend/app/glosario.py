@@ -52,7 +52,8 @@ def _patrones(campo: str) -> list[tuple[re.Pattern, bool, dict]]:
             formas = p["terminos"]
         else:
             # alias_voz: cómo transcribe el teléfono la palabra al dictarla ("shiah" → "chía")
-            formas = [p["zapoteco"], *p.get("alias_voz", [])]
+            # otras_variantes: la misma palabra en otra variante ("nisa" = agua en Jaltepec)
+            formas = [p["zapoteco"], *p.get("alias_voz", []), *(o["zapoteco"] for o in p.get("otras_variantes", []))]
         for forma in formas:
             # Las palabras zapotecas muy cortas ("Gú", "Yí", "Bi") darían falsos positivos en español
             if campo == "zapoteco" and len(normalizar(forma)) < 3:
@@ -82,7 +83,19 @@ def _coincidencias(texto: str, campo: str, solo_respuesta: bool) -> list[tuple[i
 
 
 def _salida(p: dict) -> dict:
-    return {"espanol": p["espanol"], "zapoteco": p["zapoteco"], "categoria": p["categoria"]}
+    return {
+        "espanol": p["espanol"],
+        "zapoteco": p["zapoteco"],
+        "categoria": p["categoria"],
+        "variante": p.get("variante", "sierra_norte"),
+        "otras_variantes": p.get("otras_variantes", []),
+    }
+
+
+@lru_cache
+def variantes() -> dict:
+    """Nombre y fuente de cada variante: {"jaltepec": {"nombre": ..., "fuente": ...}}."""
+    return json.loads(RUTA.read_text(encoding="utf-8")).get("variantes", {})
 
 
 def _unicas(coincidencias: list[tuple[int, int, dict]]) -> list[dict]:

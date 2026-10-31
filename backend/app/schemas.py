@@ -89,10 +89,18 @@ class PreguntarEntrada(BaseModel):
     mes: int | None = Field(default=None, ge=1, le=12)
 
 
+class OtraVariante(BaseModel):
+    zapoteco: str
+    variante: str
+
+
 class PalabraZapoteca(BaseModel):
     espanol: str
     zapoteco: str
     categoria: str
+    # sierra_norte (vocabulario del equipo) | jaltepec (diccionario INPI); son variantes distintas
+    variante: str = "sierra_norte"
+    otras_variantes: list[OtraVariante] = []
 
 
 class Segmento(BaseModel):
