@@ -22,9 +22,21 @@ class Explicacion {
   });
 }
 
+/// Una oración y su traducción; [zapoteco] es null si esa oración no se pudo traducir
+class OracionTraducida {
+  final String espanol;
+  final String? zapoteco;
+
+  const OracionTraducida({required this.espanol, this.zapoteco});
+}
+
 /// Traducción experimental de POST /traducir-zapoteco (no revisada por un hablante)
 class TraduccionExperimental {
   final String traduccion;
+  final List<OracionTraducida> oraciones;
+
+  /// Cuántas oraciones del diccionario de Jaltepec guiaron al modelo
+  final int ejemplosUsados;
 
   /// false si el modelo se quedó repitiendo palabras y no hubo nada que mostrar
   final bool confiable;
@@ -34,6 +46,8 @@ class TraduccionExperimental {
 
   const TraduccionExperimental({
     required this.traduccion,
+    this.oraciones = const [],
+    this.ejemplosUsados = 0,
     this.confiable = true,
     required this.aviso,
     required this.proveedor,
@@ -175,6 +189,13 @@ class BackendService {
     final json = jsonDecode(utf8.decode(respuesta.bodyBytes)) as Map<String, dynamic>;
     return TraduccionExperimental(
       traduccion: json['traduccion'] as String,
+      oraciones: (json['oraciones'] as List? ?? [])
+          .map((o) => OracionTraducida(
+                espanol: (o as Map<String, dynamic>)['espanol'] as String,
+                zapoteco: o['zapoteco'] as String?,
+              ))
+          .toList(),
+      ejemplosUsados: json['ejemplos_usados'] as int? ?? 0,
       confiable: json['confiable'] as bool? ?? true,
       aviso: json['aviso'] as String,
       proveedor: json['proveedor'] as String,

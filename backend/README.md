@@ -74,12 +74,22 @@ para agregarlas basta llenar ese campo.
 
 ### Traducción completa (experimental)
 
-`/traducir-zapoteco` le pide a Gemma 4 la traducción de toda la respuesta, dándole como guía las palabras
-del glosario verificado que aparecen en el texto. **No está revisada por hablantes**: puede tener errores
-o mezclar otras variantes del zapoteco, y la app siempre la muestra marcada como EXPERIMENTAL.
-El zapoteco verificado sigue siendo el del glosario.
+`/traducir-zapoteco` traduce al zapoteco de **San Juan Jaltepec** (una sola variante, para no mezclar),
+**oración por oración** y en paralelo. A cada oración se le dan como modelo las oraciones del diccionario
+de Jaltepec que comparten palabras con ella (español → zapoteco) y el vocabulario verificado de esa variante.
+Si una oración sale repetitiva ("naxhi' naxhi'…"), se deja en español; `confiable` es `false` si no salió
+ni la mitad. **No está revisada por hablantes** y la app siempre la marca como EXPERIMENTAL.
 
-Usamos Gemma y no Google Translate porque la API oficial de Google Cloud Translation no incluye el zapoteco.
+Las oraciones de ejemplo son del diccionario (Hernández Andrade y López Nicolás, INPI 2022), así que
+**no están en el repositorio**: cada quien las genera con su copia del PDF (el archivo queda en `.gitignore`):
+
+```bash
+.venv/bin/pip install pymupdf
+.venv/bin/python scripts/extraer_ejemplos_jaltepec.py ruta/al/Diccionario-zapoteco-San-Juan-Jaltepec.pdf
+# → app/data/ejemplos_jaltepec.json (unas 1,900 oraciones)
+```
+
+Sin ese archivo funciona igual, pero solo con el glosario y traduce peor.
 
 ## Revisar cultivo (`/analizar-cultivo`)
 

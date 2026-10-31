@@ -62,3 +62,6 @@ backend/.env
 graphify-out/
 .claude/settings.local.json
 backend/.env
+
+# Oraciones del diccionario de Jaltepec: son de sus autores, se generan con scripts/extraer_ejemplos_jaltepec.py
+backend/app/data/ejemplos_jaltepec.json

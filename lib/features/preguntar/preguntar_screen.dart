@@ -599,17 +599,41 @@ class _TraduccionExperimental extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 10),
-          Text(
-            traduccion.confiable
-                ? traduccion.traduccion
-                : 'Gemma no pudo traducir bien esta respuesta: se quedó repitiendo palabras. '
-                    'Así se ve por qué hace falta que hablantes revisen y completen el zapoteco.',
-            style: TextStyle(
-              fontSize: traduccion.confiable ? 17 : 15,
-              height: 1.45,
-              fontStyle: traduccion.confiable ? FontStyle.italic : FontStyle.normal,
+          if (!traduccion.confiable)
+            const Text(
+              'Gemma no pudo traducir bien esta respuesta: se quedó repitiendo palabras. '
+              'Así se ve por qué hace falta que hablantes revisen y completen el zapoteco.',
+              style: TextStyle(fontSize: 15, height: 1.45),
+            )
+          else if (traduccion.oraciones.isEmpty)
+            Text(
+              traduccion.traduccion,
+              style: const TextStyle(fontSize: 17, height: 1.45, fontStyle: FontStyle.italic),
+            )
+          else
+            for (final o in traduccion.oraciones)
+              Padding(
+                padding: const EdgeInsets.only(bottom: 6),
+                child: o.zapoteco != null
+                    ? Text(
+                        o.zapoteco!,
+                        style: const TextStyle(fontSize: 17, height: 1.45, fontStyle: FontStyle.italic),
+                      )
+                    : Text(
+                        '(sin traducir) ${o.espanol}',
+                        style: const TextStyle(fontSize: 14, height: 1.4, color: Color(0xFF777777)),
+                      ),
+              ),
+          if (traduccion.confiable) ...[
+            const SizedBox(height: 6),
+            Text(
+              traduccion.ejemplosUsados > 0
+                  ? 'Zapoteco de San Juan Jaltepec · guiado con ${traduccion.ejemplosUsados} '
+                      'oraciones del diccionario'
+                  : 'Zapoteco de San Juan Jaltepec',
+              style: const TextStyle(fontSize: 12, color: Color(0xFF8B5E3C), fontWeight: FontWeight.w600),
             ),
-          ),
+          ],
           const SizedBox(height: 10),
           Text(
             traduccion.aviso,

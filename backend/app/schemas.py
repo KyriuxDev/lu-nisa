@@ -134,8 +134,20 @@ class TraducirEntrada(BaseModel):
     texto: str = Field(min_length=1, max_length=600)
 
 
+class OracionTraducida(BaseModel):
+    espanol: str
+    # None si esa oración salió repetitiva y se dejó en español
+    zapoteco: str | None
+
+
 class TraducirRespuesta(BaseModel):
     traduccion: str
+    # Cada oración con su traducción, para mostrar cuáles no se pudieron traducir
+    oraciones: list[OracionTraducida] = []
+    # Variante a la que se tradujo (la del diccionario que guía al modelo)
+    variante: str = "jaltepec"
+    # Cuántas oraciones del diccionario se le dieron al modelo como ejemplo
+    ejemplos_usados: int = 0
     # false si el modelo se quedó repitiendo palabras y no se pudo rescatar nada
     confiable: bool = True
     # Siempre true: es traducción automática, no revisada por un hablante

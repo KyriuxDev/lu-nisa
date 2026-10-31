@@ -81,14 +81,19 @@ Contesta en máximo 4 oraciones cortas, usando solo los datos de arriba.
 Responde solo con la respuesta, sin títulos ni viñetas."""
 
 
-SISTEMA_TRADUCIR = """Traduces textos cortos del español al zapoteco de la Sierra Norte de Oaxaca
-(zapoteco serrano, de la región de Ixtlán y Villa Alta).
-Responde SOLO con la traducción, sin explicaciones, sin comillas y sin notas."""
+SISTEMA_TRADUCIR = """Traduces oraciones cortas del español al zapoteco de San Juan Jaltepec (di'dz xi'dza'),
+de la Sierra Norte de Oaxaca. Imitas la forma de escribir de los ejemplos del diccionario que se te dan:
+su ortografía (incluido el saltillo ꞌ), su orden de palabras y sus palabras.
+Los números se quedan en cifras (141 mm, 14.2 °C). Si no conoces una palabra, déjala en español.
+Responde SOLO con la traducción en una línea, sin explicaciones, sin comillas y sin repetir palabras."""
 
-PROMPT_TRADUCIR = """Vocabulario verificado de la región (úsalo tal cual cuando aparezca):
+PROMPT_TRADUCIR = """Ejemplos del diccionario de San Juan Jaltepec (español → zapoteco):
+{ejemplos}
+
+Vocabulario verificado de Jaltepec (úsalo tal cual):
 {vocabulario}
 
-Texto en español:
+Oración en español:
 {texto}
 
-Traducción al zapoteco de la Sierra Norte:"""
+Traducción al zapoteco de Jaltepec:"""
