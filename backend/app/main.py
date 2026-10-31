@@ -4,13 +4,13 @@ import re
 import time
 from contextlib import asynccontextmanager
 
-from fastapi import Depends, FastAPI, File, HTTPException, Request, UploadFile
+from fastapi import Depends, FastAPI, File, Form, HTTPException, Request, UploadFile
 from PIL import Image, ImageOps, UnidentifiedImageError
 from pydantic import ValidationError
 
 from datetime import datetime
 
-from app import config, contexto, glosario, prompts
+from app import config, contexto, glosario, plagas, prompts
 from app.razones import frase_siembra
 from app.llm import LLMError, LLMNoDisponible, Proveedor, crear_proveedores, extraer_json
 from app.schemas import (
@@ -19,6 +19,7 @@ from app.schemas import (
     ExplicarRespuesta,
     ParcelaAnalisis,
     PreguntarEntrada,
+    PlagaRespuesta,
     PreguntarRespuesta,
     TraducirEntrada,
     TraducirRespuesta,
@@ -344,6 +345,64 @@ async def traducir_zapoteco(
         respaldo=respaldo,
         proveedor=llm.nombre,
         modelo=llm.modelo,
+        latencia_ms=ms_desde(inicio),
+    )
+
+
+@app.post("/analizar-plaga", response_model=PlagaRespuesta)
+async def analizar_plaga(
+    imagen: UploadFile = File(...),
+    cultivo: str | None = Form(None),
+    proveedores: dict[str, Proveedor] = Depends(obtener_proveedores),
+):
+    """Posibles plagas o enfermedades en la foto de una planta. No es un diagnóstico:
+    Gemma describe lo que ve y los pasos a seguir son fijos y seguros (sin productos ni dosis)."""
+    inicio = time.perf_counter()
+    datos = await imagen.read(config.MAX_BYTES_IMAGEN + 1)
+    if len(datos) > config.MAX_BYTES_IMAGEN:
+        raise HTTPException(413, {"error": "imagen_muy_grande", "detalle": "Máximo 10 MB"})
+    jpeg = preparar_imagen(datos)
+    cultivo = (cultivo or "").strip()[:40] or None
+
+    llm = proveedores.get(config.PROVEEDOR_ANALISIS)
+    respaldo = None if llm else "sin_api_key"
+    intentos_previos = 0
+    resultado = None
+
+    if llm and llm.nombre != "ollama":
+        try:
+            resultado = await plagas.analizar_con(llm, jpeg, cultivo)
+        except LLMNoDisponible as e:
+            respaldo = "sin_conexion"
+            log.warning("Gemini no disponible en /analizar-plaga, uso Ollama: %s", e)
+        except LLMError as e:
+            respaldo = "error_gemini"
+            log.warning("Gemini falló en /analizar-plaga, uso Ollama: %s", e)
+        except plagas.PlagaInvalida as e:
+            respaldo = "respuesta_invalida"
+            intentos_previos = plagas.MAX_INTENTOS
+            log.warning("Gemini respondió inválido en /analizar-plaga, uso Ollama: %s", e)
+
+    if resultado is None:
+        llm = proveedores["ollama"]
+        try:
+            resultado = await plagas.analizar_con(llm, jpeg, cultivo)
+        except (LLMNoDisponible, LLMError) as e:
+            raise errores_llm(e)
+        except plagas.PlagaInvalida as e:
+            raise HTTPException(502, {"error": "respuesta_invalida_llm", "detalle": str(e)})
+
+    analisis, intentos = resultado
+    return PlagaRespuesta(
+        analisis=analisis,
+        pasos=plagas.pasos_seguros(analisis),
+        aviso=plagas.AVISO,
+        zapoteco=glosario.palabras_en_texto(plagas.texto_para_glosario(analisis)),
+        modelo_local=llm.nombre == "ollama",
+        respaldo=respaldo,
+        proveedor=llm.nombre,
+        modelo=llm.modelo,
+        intentos=intentos_previos + intentos,
         latencia_ms=ms_desde(inicio),
     )
 

@@ -11,6 +11,7 @@ import 'features/recomendacion/recomendacion_screen.dart';
 import 'features/historial/historial_screen.dart';
 import 'features/main_screen.dart';
 import 'features/perfil/perfil_screen.dart';
+import 'features/plaga/plaga_screen.dart';
 import 'features/preguntar/preguntar_screen.dart';
 import 'features/ubicacion/ubicacion_screen.dart';
 
@@ -36,6 +37,10 @@ final _router = GoRouter(
     GoRoute(
       path: '/preguntar',
       builder: (context, state) => const PreguntarScreen(),
+    ),
+    GoRoute(
+      path: '/plaga',
+      builder: (context, state) => const PlagaScreen(),
     ),
     StatefulShellRoute.indexedStack(
       builder: (context, state, navigationShell) {

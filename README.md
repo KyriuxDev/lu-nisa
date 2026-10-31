@@ -54,6 +54,8 @@ El proyecto ya existía antes del evento (ver abajo). Esto es lo que agregamos h
 - [ ] **Vocabulario zapoteco de la Sierra Norte** en las respuestas (*Shiah* = lluvia, *Yúu* = tierra, *Dháh* = frijol). Gemma responde en español y las palabras zapotecas las agrega el código desde un glosario verificado, así el modelo nunca inventa zapoteco.
 - [ ] **Preguntar en zapoteco escrito:** "¿Bata siembro dháh?" se entiende como "¿cuándo siembro frijol?".
 - [ ] **Traducción completa al zapoteco (experimental)** con Gemma 4, guiada por el glosario y marcada como no revisada.
+- [ ] **Revisar plagas por foto:** Gemma 4 describe los síntomas y las posibles causas (no es diagnóstico); los pasos a seguir son fijos y seguros, sin productos ni dosis.
+- [ ] **Segunda variante del zapoteco:** palabras del campo del diccionario de San Juan Jaltepec (INPI, 2022), cada una marcada con su variante.
 - [x] **Licencia MIT** y README actualizado.
 
 ### Qué sigue

@@ -2,6 +2,8 @@ from typing import Literal
 
 from pydantic import BaseModel, ConfigDict, Field, field_validator
 
+from app.plagas import PlagaAnalisis
+
 MAX_PALABRAS_OBSERVACIONES = 25
 
 
@@ -142,4 +144,19 @@ class TraducirRespuesta(BaseModel):
     respaldo: Respaldo
     proveedor: str
     modelo: str
+    latencia_ms: int
+
+
+class PlagaRespuesta(BaseModel):
+    analisis: PlagaAnalisis
+    # Pasos seguros armados por el código (nunca productos ni dosis)
+    pasos: list[str]
+    aviso: str
+    zapoteco: list[PalabraZapoteca]
+    # true si respondió el modelo local, que es menos confiable para esto
+    modelo_local: bool
+    respaldo: Respaldo
+    proveedor: str
+    modelo: str
+    intentos: int
     latencia_ms: int

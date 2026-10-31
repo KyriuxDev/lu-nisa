@@ -67,6 +67,12 @@ class InicioScreen extends StatelessWidget {
             _AnalizarButton(onTap: () => context.go('/camara')),
             const SizedBox(height: 12),
             _PreguntarButton(onTap: () => context.push('/preguntar')),
+            const SizedBox(height: 12),
+            _BotonSecundario(
+              icono: Icons.bug_report_outlined,
+              texto: 'Revisar plaga en mi planta',
+              onTap: () => context.push('/plaga'),
+            ),
             const SizedBox(height: 24),
             _HistorialSection(onVerTodo: () => context.go('/historial')),
             const SizedBox(height: 16),
@@ -379,6 +385,31 @@ class _PreguntarButton extends StatelessWidget {
         style: OutlinedButton.styleFrom(
           foregroundColor: const Color(0xFF012D1D),
           side: const BorderSide(color: Color(0xFF012D1D), width: 1.5),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+        ),
+      ),
+    );
+  }
+}
+
+class _BotonSecundario extends StatelessWidget {
+  final IconData icono;
+  final String texto;
+  final VoidCallback onTap;
+  const _BotonSecundario({required this.icono, required this.texto, required this.onTap});
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: double.infinity,
+      height: 56,
+      child: OutlinedButton.icon(
+        onPressed: onTap,
+        icon: Icon(icono, size: 22),
+        label: Text(texto, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
+        style: OutlinedButton.styleFrom(
+          foregroundColor: const Color(0xFF8B5E3C),
+          side: const BorderSide(color: Color(0xFF8B5E3C), width: 1.5),
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
         ),
       ),

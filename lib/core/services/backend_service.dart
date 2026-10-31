@@ -5,6 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../data/models/analisis_plaga.dart';
 import '../../data/models/condicion_parcela.dart';
 import '../../data/models/respuesta_pregunta.dart';
 
@@ -172,6 +173,24 @@ class BackendService {
       proveedor: json['proveedor'] as String,
       modelo: json['modelo'] as String,
     );
+  }
+
+  /// POST /analizar-plaga con la foto de la planta. [cultivo] es opcional (lo que dice el campesino).
+  static Future<AnalisisPlaga> analizarPlaga(File foto, {String? cultivo}) async {
+    final url = await obtenerUrl();
+    final peticion = http.MultipartRequest('POST', Uri.parse('$url/analizar-plaga'))
+      ..files.add(await http.MultipartFile.fromPath('imagen', foto.path));
+    if (cultivo != null) peticion.fields['cultivo'] = cultivo;
+
+    final respuesta = await http.Response.fromStream(
+      await peticion.send().timeout(_timeoutAnalisis),
+    );
+    if (respuesta.statusCode != 200) {
+      throw HttpException('analizar-plaga ${respuesta.statusCode}: ${respuesta.body}');
+    }
+    final json = jsonDecode(utf8.decode(respuesta.bodyBytes)) as Map<String, dynamic>;
+    debugPrint('[Backend] plaga ${json['proveedor']} ${json['latencia_ms']} ms');
+    return AnalisisPlaga.desdeJson(json);
   }
 
   /// GET /salud con la URL dada; true si responde 200
