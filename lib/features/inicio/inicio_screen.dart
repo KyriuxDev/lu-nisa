@@ -281,10 +281,14 @@ class _ClimaDetalle extends StatelessWidget {
                           ),
                         ),
                       ),
+                      const SizedBox(width: 8),
+                      // Sin Flexible: el municipio (Expanded) cede espacio y "Cambiar" nunca se corta
                       GestureDetector(
                         onTap: onCambiar,
                         child: const Text(
                           'Cambiar',
+                          maxLines: 1,
+                          softWrap: false,
                           style: TextStyle(
                             fontSize: 12,
                             color: Color(0xFF012D1D),
@@ -295,32 +299,40 @@ class _ClimaDetalle extends StatelessWidget {
                     ],
                   ),
                   const SizedBox(height: 4),
+                  Text(
+                    '${clima.tempMedia.round()}°C',
+                    style: const TextStyle(
+                      fontSize: 30,
+                      fontWeight: FontWeight.w700,
+                      color: Color(0xFF1C1C19),
+                      letterSpacing: -0.6,
+                    ),
+                  ),
+                  // Mes y condición en una segunda línea para no desbordar
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.baseline,
                     textBaseline: TextBaseline.alphabetic,
                     children: [
-                      Text(
-                        '${clima.tempMedia.round()}°C',
-                        style: const TextStyle(
-                          fontSize: 30,
-                          fontWeight: FontWeight.w700,
-                          color: Color(0xFF1C1C19),
-                          letterSpacing: -0.6,
-                        ),
-                      ),
-                      const SizedBox(width: 6),
-                      Text(
-                        '(prom. $mes)',
-                        style: const TextStyle(
-                          fontSize: 13,
-                          color: Color(0xFF737977),
+                      Flexible(
+                        child: Text(
+                          '(prom. $mes)',
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: const TextStyle(
+                            fontSize: 13,
+                            color: Color(0xFF737977),
+                          ),
                         ),
                       ),
                       const SizedBox(width: 8),
-                      Text(
-                        info.condicion,
-                        style: const TextStyle(
-                            fontSize: 16, color: Color(0xFF414844)),
+                      Flexible(
+                        child: Text(
+                          info.condicion,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: const TextStyle(
+                              fontSize: 16, color: Color(0xFF414844)),
+                        ),
                       ),
                     ],
                   ),
