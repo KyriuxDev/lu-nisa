@@ -123,10 +123,21 @@ def test_preguntar_gemini_y_zapoteco(cliente_con):
     assert "141 mm" in provs["gemini"].llamadas[0]["prompt"]
 
 
-def test_preguntar_traduce_zapoteco_al_modelo(cliente_con):
+def test_preguntar_el_modelo_no_ve_zapoteco(cliente_con):
     cliente, provs = cliente_con(gemini=["Sí, el frijol se siembra en junio-julio."])
-    cliente.post("/preguntar", json={"texto": "¿cuándo siembro dháh?", "municipio": "Abejones", "mes": 5})
-    assert "Dháh = frijol" in provs["gemini"].llamadas[0]["prompt"]
+    cliente.post("/preguntar", json={"texto": "¿bata siembro dháh?", "municipio": "Abejones", "mes": 5})
+    prompt = provs["gemini"].llamadas[0]["prompt"].lower()
+    assert "¿cuándo siembro frijol?" in prompt
+    assert "dháh" not in prompt and "bata" not in prompt
+
+
+def test_preguntar_quita_zapoteco_que_escriba_el_modelo(cliente_con):
+    # Lo que pasó en la prueba real: Gemma repitió las traducciones al final
+    eco = "El frijol se siembra en junio y julio. En octubre suelen llover 141 mm. Bata = ¿cuándo? Dháh = frijol"
+    cliente, _ = cliente_con(gemini=[eco])
+    j = cliente.post("/preguntar", json={"texto": "¿Bata siembro dháh?", "municipio": "Ixtlán de Juárez"}).json()
+    assert j["respuesta"] == "El frijol se siembra en junio y julio. En octubre suelen llover 141 mm."
+    assert "Bata" not in j["respuesta"] and "Dháh" not in j["respuesta"]
 
 
 def test_preguntar_cae_a_ollama_sin_conexion(cliente_con):
@@ -208,3 +219,9 @@ def test_preguntar_en_espanol_no_trae_traduccion(cliente_con):
     cliente, _ = cliente_con(gemini=["Respuesta."])
     j = cliente.post("/preguntar", json={"texto": "¿qué siembro?"}).json()
     assert j["pregunta_traducida"] is None
+
+
+def test_preguntar_si_todo_era_zapoteco_responde_algo(cliente_con):
+    cliente, _ = cliente_con(gemini=["Dháh = frijol."])
+    j = cliente.post("/preguntar", json={"texto": "¿dháh?"}).json()
+    assert j["respuesta"].startswith("No tengo datos suficientes")

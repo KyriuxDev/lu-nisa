@@ -141,3 +141,14 @@ def segmentos_respuesta(texto: str) -> list[dict]:
     if pos < len(texto):
         segmentos.append({"texto": texto[pos:], "zapoteco": None})
     return segmentos
+
+
+def quitar_zapoteco_del_modelo(texto: str) -> str:
+    """Quita las oraciones del modelo que traen palabras zapotecas del glosario.
+
+    El modelo solo debe escribir español; el zapoteco lo pone este módulo.
+    Se quita la oración entera porque suele ser un eco como "Dháh = frijol".
+    """
+    oraciones = re.split(r"(?<=[.!?])\s+", " ".join(texto.split()))
+    limpias = [o for o in oraciones if not _coincidencias(o, "zapoteco", solo_respuesta=False)]
+    return " ".join(limpias)

@@ -68,10 +68,10 @@ No saludes ni te despidas: el saludo y la despedida se agregan aparte."""
 
 PROMPT_PREGUNTA = """Datos que puedes usar:
 {datos}
-{traducciones}
+
 Pregunta del campesino (dictada por voz, puede tener errores de transcripción):
 "{pregunta}"
-{pregunta_traducida}
+
 Contesta en máximo 4 oraciones cortas, usando solo los datos de arriba.
 - Cuando uses un dato de clima, di el número y que es lo que "suele" pasar en esta época (ejemplo: "en octubre suelen llover 141 mm").
 - Habla de los cultivos con su nombre común (maíz, frijol, café), sin nombres científicos.

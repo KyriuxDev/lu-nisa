@@ -267,28 +267,19 @@ async def preguntar(entrada: PreguntarEntrada, proveedores: dict[str, Proveedor]
     las palabras en zapoteco las agrega el glosario, nunca el modelo."""
     inicio = time.perf_counter()
     mes = entrada.mes or datetime.now().month
-    # Si el campesino usó palabras en zapoteco, se las traducimos al modelo
+    # Si el campesino usó palabras en zapoteco, el modelo recibe la pregunta ya en español:
+    # así nunca ve zapoteco y no puede repetirlo ni inventarlo
     en_pregunta = glosario.zapoteco_en_pregunta(entrada.texto)
-    # Con la pregunta traducida, "dháh" también encuentra los datos del frijol
-    datos, municipio = contexto.armar(entrada.municipio, mes, glosario.traducir_pregunta(entrada.texto))
-    traducciones = (
-        "Palabras en zapoteco que usó el campesino: "
-        + ", ".join(f"{p['zapoteco']} = {p['espanol'].lower()}" for p in en_pregunta)
-        + "\n"
-        if en_pregunta
-        else ""
-    )
-    traducida = glosario.traducir_pregunta(entrada.texto) if en_pregunta else None
-    prompt = prompts.PROMPT_PREGUNTA.format(
-        datos=datos,
-        traducciones=traducciones,
-        pregunta=entrada.texto.replace('"', "'"),
-        pregunta_traducida=(
-            f'La misma pregunta en español: "{traducida.replace(chr(34), chr(39))}"\n' if traducida else ""
-        ),
-    )
+    en_espanol = glosario.traducir_pregunta(entrada.texto)
+    traducida = en_espanol if en_pregunta else None
+    datos, municipio = contexto.armar(entrada.municipio, mes, en_espanol)
+    prompt = prompts.PROMPT_PREGUNTA.format(datos=datos, pregunta=en_espanol.replace('"', "'"))
     texto, llm, respaldo = await generar_con_respaldo(
         proveedores, config.PROVEEDOR_PREGUNTAR, prompt, prompts.SISTEMA_PREGUNTA, "/preguntar"
+    )
+    # Red de seguridad: si aun así el modelo escribió zapoteco, se quita esa oración
+    texto = glosario.quitar_zapoteco_del_modelo(texto) or (
+        "No tengo datos suficientes para contestar eso. Pregúntale a alguien con experiencia en tu comunidad."
     )
     respuesta = max_oraciones(texto, 4)
 
