@@ -1,10 +1,10 @@
 import 'respuesta_pregunta.dart';
 
-/// Posible causa del daño según la foto (no es un diagnóstico)
+/// Posible causa de un daño según la foto (no es un diagnóstico)
 class CausaPosible {
   final String nombre;
 
-  /// insecto | hongo | bacteria_o_virus | falta_de_nutrientes | clima | otro
+  /// insecto | acaro | hongo | bacteria_o_virus | falta_de_nutrientes | clima | otro
   final String tipo;
 
   /// baja | media | alta
@@ -27,6 +27,7 @@ class CausaPosible {
 
   String get tipoLegible => switch (tipo) {
         'insecto' => 'Insecto',
+        'acaro' => 'Ácaro',
         'hongo' => 'Hongo',
         'bacteria_o_virus' => 'Bacteria o virus',
         'falta_de_nutrientes' => 'Falta de nutrientes',
@@ -35,14 +36,16 @@ class CausaPosible {
       };
 }
 
-/// Respuesta de POST /analizar-plaga
-class AnalisisPlaga {
+/// Respuesta de POST /analizar-cultivo
+class AnalisisCultivo {
   final bool esPlanta;
   final String? cultivoVisto;
-  final String parteAfectada;
 
-  /// true, false o null si no se pudo saber
-  final bool? hayDano;
+  /// plantula | crecimiento | floracion | fruto | madurez | no_determinable
+  final String etapa;
+
+  /// sano | problemas_leves | problemas_serios | no_determinable
+  final String estadoGeneral;
   final List<String> sintomas;
   final List<CausaPosible> causas;
   final String confianza;
@@ -54,11 +57,11 @@ class AnalisisPlaga {
   final String proveedor;
   final String modelo;
 
-  const AnalisisPlaga({
+  const AnalisisCultivo({
     required this.esPlanta,
     required this.cultivoVisto,
-    required this.parteAfectada,
-    required this.hayDano,
+    required this.etapa,
+    required this.estadoGeneral,
     required this.sintomas,
     required this.causas,
     required this.confianza,
@@ -71,14 +74,13 @@ class AnalisisPlaga {
     required this.modelo,
   });
 
-  factory AnalisisPlaga.desdeJson(Map<String, dynamic> json) {
+  factory AnalisisCultivo.desdeJson(Map<String, dynamic> json) {
     final a = json['analisis'] as Map<String, dynamic>;
-    final dano = a['hay_dano'];
-    return AnalisisPlaga(
+    return AnalisisCultivo(
       esPlanta: a['es_planta'] as bool,
       cultivoVisto: a['cultivo_visto'] as String?,
-      parteAfectada: a['parte_afectada'] as String,
-      hayDano: dano is bool ? dano : null,
+      etapa: a['etapa'] as String? ?? 'no_determinable',
+      estadoGeneral: a['estado_general'] as String? ?? 'no_determinable',
       sintomas: (a['sintomas'] as List? ?? []).cast<String>(),
       causas: (a['posibles_causas'] as List? ?? [])
           .map((e) => CausaPosible.desdeJson(e as Map<String, dynamic>))
@@ -95,6 +97,24 @@ class AnalisisPlaga {
       modelo: json['modelo'] as String,
     );
   }
+
+  String? get etapaLegible => switch (etapa) {
+        'plantula' => 'Plántula',
+        'crecimiento' => 'En crecimiento',
+        'floracion' => 'En floración',
+        'fruto' => 'Dando fruto',
+        'madurez' => 'Lista para cosechar',
+        _ => null,
+      };
+
+  String get titulo => !esPlanta
+      ? 'No vemos una planta en la foto'
+      : switch (estadoGeneral) {
+          'sano' => 'Tu cultivo se ve sano',
+          'problemas_leves' => 'Tu cultivo tiene algunos problemas',
+          'problemas_serios' => 'Tu cultivo tiene problemas serios',
+          _ => 'No se alcanza a ver bien',
+        };
 
   String get etiquetaModelo =>
       proveedor == 'gemini' ? 'Revisado con Gemma 4 26B' : 'Revisado con Gemma 4 local';

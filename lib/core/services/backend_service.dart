@@ -5,7 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../data/models/analisis_plaga.dart';
+import '../../data/models/analisis_cultivo.dart';
 import '../../data/models/condicion_parcela.dart';
 import '../../data/models/respuesta_pregunta.dart';
 
@@ -52,7 +52,7 @@ class BackendService {
   static const _timeoutExplicar = Duration(seconds: 90);
   static const _timeoutPreguntar = Duration(seconds: 90);
   // Si Gemini falla (30 s) la foto se analiza con Gemma local, que tarda más con imágenes
-  static const _timeoutPlaga = Duration(seconds: 150);
+  static const _timeoutCultivo = Duration(seconds: 150);
 
   static Future<String> obtenerUrl() async {
     try {
@@ -177,22 +177,22 @@ class BackendService {
     );
   }
 
-  /// POST /analizar-plaga con la foto de la planta. [cultivo] es opcional (lo que dice el campesino).
-  static Future<AnalisisPlaga> analizarPlaga(File foto, {String? cultivo}) async {
+  /// POST /analizar-cultivo con la foto de la planta. [cultivo] es opcional (lo que dice el campesino).
+  static Future<AnalisisCultivo> analizarCultivo(File foto, {String? cultivo}) async {
     final url = await obtenerUrl();
-    final peticion = http.MultipartRequest('POST', Uri.parse('$url/analizar-plaga'))
+    final peticion = http.MultipartRequest('POST', Uri.parse('$url/analizar-cultivo'))
       ..files.add(await http.MultipartFile.fromPath('imagen', foto.path));
     if (cultivo != null) peticion.fields['cultivo'] = cultivo;
 
     final respuesta = await http.Response.fromStream(
-      await peticion.send().timeout(_timeoutPlaga),
+      await peticion.send().timeout(_timeoutCultivo),
     );
     if (respuesta.statusCode != 200) {
-      throw HttpException('analizar-plaga ${respuesta.statusCode}: ${respuesta.body}');
+      throw HttpException('analizar-cultivo ${respuesta.statusCode}: ${respuesta.body}');
     }
     final json = jsonDecode(utf8.decode(respuesta.bodyBytes)) as Map<String, dynamic>;
-    debugPrint('[Backend] plaga ${json['proveedor']} ${json['latencia_ms']} ms');
-    return AnalisisPlaga.desdeJson(json);
+    debugPrint('[Backend] cultivo ${json['proveedor']} ${json['latencia_ms']} ms');
+    return AnalisisCultivo.desdeJson(json);
   }
 
   /// GET /salud con la URL dada; true si responde 200

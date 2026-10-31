@@ -5,7 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../core/services/backend_service.dart';
-import '../../data/models/analisis_plaga.dart';
+import '../../data/models/analisis_cultivo.dart';
 import '../../data/models/respuesta_pregunta.dart';
 
 const _kPrimario = Color(0xFF012D1D);
@@ -15,25 +15,25 @@ const _kTierra = Color(0xFF8B5E3C);
 const _kBorde = Color(0xFFE5E2DD);
 const _kAviso = Color(0xFFFFF8E7);
 
-/// Foto de una planta → posibles plagas o enfermedades con Gemma 4.
-/// No es un diagnóstico: muestra síntomas, posibles causas y pasos seguros (sin productos ni dosis).
-class PlagaScreen extends StatefulWidget {
-  const PlagaScreen({super.key});
+/// Foto de un cultivo → cómo se ve (etapa y estado) y, si hay daño, posibles causas, con Gemma 4.
+/// No es un diagnóstico: los pasos a seguir son fijos y seguros (sin productos ni dosis).
+class CultivoScreen extends StatefulWidget {
+  const CultivoScreen({super.key});
 
   @override
-  State<PlagaScreen> createState() => _PlagaScreenState();
+  State<CultivoScreen> createState() => _CultivoScreenState();
 }
 
-class _PlagaScreenState extends State<PlagaScreen> {
+class _CultivoScreenState extends State<CultivoScreen> {
   final _picker = ImagePicker();
 
-  static const _cultivos = ['Maíz', 'Frijol', 'Café', 'Chile', 'Calabaza', 'Tomate', 'Aguacate'];
+  static const _cultivos = ['Maíz', 'Frijol', 'Café', 'Chile', 'Calabaza', 'Tomate', 'Aguacate', 'Palma'];
 
   String? _cultivo;
   File? _foto;
   bool _analizando = false;
   String? _error;
-  AnalisisPlaga? _resultado;
+  AnalisisCultivo? _resultado;
 
   Future<void> _elegirFoto(ImageSource origen) async {
     final elegida = await _picker.pickImage(source: origen, maxWidth: 1024, imageQuality: 85);
@@ -54,10 +54,10 @@ class _PlagaScreenState extends State<PlagaScreen> {
       _error = null;
     });
     try {
-      final r = await BackendService.analizarPlaga(foto, cultivo: _cultivo);
+      final r = await BackendService.analizarCultivo(foto, cultivo: _cultivo);
       if (mounted) setState(() => _resultado = r);
     } catch (e) {
-      debugPrint('[Plaga] $e');
+      debugPrint('[Cultivo] $e');
       if (mounted) {
         setState(() => _error = 'No pudimos revisar la foto. Revisa la conexión con el servidor en Perfil.');
       }
@@ -79,7 +79,7 @@ class _PlagaScreenState extends State<PlagaScreen> {
           onPressed: () => context.canPop() ? context.pop() : context.go('/inicio'),
         ),
         title: const Text(
-          'Revisar plaga',
+          'Revisar mi cultivo',
           style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700, color: _kPrimario),
         ),
         centerTitle: true,
@@ -123,7 +123,7 @@ class _PlagaScreenState extends State<PlagaScreen> {
                 alignment: Alignment.center,
                 padding: const EdgeInsets.all(16),
                 child: const Text(
-                  'Toma una foto de cerca de la hoja o la parte dañada, con buena luz.',
+                  'Toma una foto de tu planta con buena luz. Si ves algún daño, tómala de cerca.',
                   textAlign: TextAlign.center,
                   style: TextStyle(fontSize: 15, color: Color(0xFF555555)),
                 ),
@@ -164,7 +164,7 @@ class _PlagaScreenState extends State<PlagaScreen> {
               const SizedBox(height: 24),
               const Center(child: CircularProgressIndicator(color: _kPrimario)),
               const SizedBox(height: 8),
-              const Text('Revisando la foto…', textAlign: TextAlign.center),
+              const Text('Revisando tu cultivo…', textAlign: TextAlign.center),
             ],
             if (_error != null) ...[
               const SizedBox(height: 16),
@@ -182,26 +182,32 @@ class _PlagaScreenState extends State<PlagaScreen> {
 }
 
 class _Resultado extends StatelessWidget {
-  final AnalisisPlaga r;
+  final AnalisisCultivo r;
   const _Resultado({required this.r});
 
   @override
   Widget build(BuildContext context) {
-    final titulo = !r.esPlanta
-        ? 'No vemos una planta en la foto'
-        : r.hayDano == false
-            ? 'La planta se ve sana'
-            : r.hayDano == null
-                ? 'No se alcanza a ver bien'
-                : 'Encontramos señales de daño';
-
+    final color = switch (r.estadoGeneral) {
+      'sano' => const Color(0xFF2D6A4F),
+      'problemas_serios' => const Color(0xFFB23A2B),
+      _ => _kTierra,
+    };
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Text(titulo, style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w700, color: _kPrimario)),
-        if (r.cultivoVisto != null) ...[
-          const SizedBox(height: 4),
-          Text('Parece ${r.cultivoVisto}', style: const TextStyle(fontSize: 14, color: Color(0xFF555555))),
+        Text(r.titulo, style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700, color: color)),
+        const SizedBox(height: 8),
+        Wrap(
+          spacing: 8,
+          runSpacing: 8,
+          children: [
+            if (r.cultivoVisto != null) _Etiqueta(icono: Icons.eco_outlined, texto: 'Parece ${r.cultivoVisto}'),
+            if (r.etapaLegible != null) _Etiqueta(icono: Icons.timeline, texto: r.etapaLegible!),
+          ],
+        ),
+        if (r.observaciones.isNotEmpty) ...[
+          const SizedBox(height: 12),
+          Text(r.observaciones, style: const TextStyle(fontSize: 15, height: 1.4)),
         ],
         const SizedBox(height: 12),
         _Caja(
@@ -216,7 +222,7 @@ class _Resultado extends StatelessWidget {
           ),
         ),
         if (r.sintomas.isNotEmpty) ...[
-          const _Titulo('Lo que se ve'),
+          const _Titulo('Daños que se ven'),
           for (final s in r.sintomas)
             Padding(
               padding: const EdgeInsets.only(bottom: 4),
@@ -261,15 +267,39 @@ class _Resultado extends StatelessWidget {
             const SizedBox(width: 6),
             Expanded(
               child: Text(
-                r.modeloLocal
-                    ? '${r.etiquetaModelo} (sin internet: menos preciso)'
-                    : r.etiquetaModelo,
+                r.modeloLocal ? '${r.etiquetaModelo} (sin internet: menos preciso)' : r.etiquetaModelo,
                 style: const TextStyle(fontSize: 12, color: Color(0xFF555555)),
               ),
             ),
           ],
         ),
       ],
+    );
+  }
+}
+
+class _Etiqueta extends StatelessWidget {
+  final IconData icono;
+  final String texto;
+  const _Etiqueta({required this.icono, required this.texto});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: _kBorde),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(icono, size: 16, color: _kPrimario),
+          const SizedBox(width: 6),
+          Text(texto, style: const TextStyle(fontSize: 13, color: _kPrimario)),
+        ],
+      ),
     );
   }
 }

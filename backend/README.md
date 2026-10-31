@@ -30,7 +30,7 @@ ollama pull gemma4:e4b        # respaldo local y /explicar
 | `POST /analizar-parcela` | multipart `imagen` (jpeg/png/webp, ≤10 MB) | `{analisis, humedad_preguntar_usuario, respaldo, proveedor, modelo, intentos, latencia_ms}` |
 | `POST /preguntar` | `{texto, municipio?, mes?}` (texto dictado por voz o escrito) | `{respuesta, respuesta_segmentos, pregunta_traducida, zapoteco: [{espanol, zapoteco, categoria}], zapoteco_pregunta, saludo, despedida, municipio, respaldo, proveedor, modelo, latencia_ms}` |
 | `POST /traducir-zapoteco` | `{texto}` | `{traduccion, experimental: true, aviso, vocabulario_usado, respaldo, proveedor, modelo, latencia_ms}` (**experimental**, no revisada por hablantes) |
-| `POST /analizar-plaga` | multipart `imagen` + `cultivo` opcional | `{analisis: {es_planta, cultivo_visto, parte_afectada, hay_dano, sintomas, posibles_causas: [{nombre, tipo, confianza, senales}], confianza, observaciones}, pasos, aviso, zapoteco, modelo_local, respaldo, proveedor, modelo, intentos, latencia_ms}` |
+| `POST /analizar-cultivo` | multipart `imagen` + `cultivo` opcional | `{analisis: {es_planta, cultivo_visto, etapa, estado_general, sintomas, posibles_causas: [{nombre, tipo, confianza, senales}], confianza, observaciones}, pasos, aviso, zapoteco, modelo_local, respaldo, proveedor, modelo, intentos, latencia_ms}` |
 | `POST /explicar` | `{municipio, cultivo, puntaje, datos_regla: {clave: {valor, fuente: foto\|campesino\|datos}}}` | `{explicacion, respaldo, proveedor, modelo, latencia_ms}` |
 
 `analisis` solo trae atributos observables (`es_parcela`, `suelo_desnudo`, `humedad_aparente`,
@@ -81,15 +81,18 @@ El zapoteco verificado sigue siendo el del glosario.
 
 Usamos Gemma y no Google Translate porque la API oficial de Google Cloud Translation no incluye el zapoteco.
 
-## Plagas (`/analizar-plaga`)
+## Revisar cultivo (`/analizar-cultivo`)
 
-Gemma 4 mira la foto de una planta y devuelve los síntomas que se ven y hasta 3 **posibles** causas,
+Gemma 4 mira la foto y dice qué cultivo parece, en qué etapa va (plántula, crecimiento, floración,
+fruto, madurez) y su estado general (sano, problemas leves o serios). Si hay daño, da los síntomas
+que se ven y hasta 3 **posibles** causas (insecto, ácaro, hongo, bacteria o virus, nutrientes, clima),
 cada una con su probabilidad. No es un diagnóstico:
 
 - El prompt le prohíbe recomendar productos, marcas, dosis o tratamientos.
 - Los pasos a seguir (`pasos`) no los escribe el modelo: son frases fijas y seguras de
-  [`app/plagas.py`](app/plagas.py), elegidas según el tipo de causa, y siempre terminan con
+  [`app/cultivo.py`](app/cultivo.py), elegidas según el tipo de causa, y siempre terminan con
   llevar una muestra a un técnico.
+- Se le pide razonamiento mínimo; sin eso Gemini cortaba a los 30 s.
 - Si respondió el modelo local (`modelo_local: true`), la app avisa que es menos preciso.
 
 ## Pruebas

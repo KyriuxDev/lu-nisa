@@ -10,16 +10,16 @@ from pydantic import ValidationError
 
 from datetime import datetime
 
-from app import config, contexto, glosario, plagas, prompts
+from app import config, contexto, cultivo, glosario, prompts
 from app.razones import frase_siembra
 from app.llm import LLMError, LLMNoDisponible, Proveedor, crear_proveedores, extraer_json
 from app.schemas import (
     AnalisisRespuesta,
+    CultivoRespuesta,
     ExplicarEntrada,
     ExplicarRespuesta,
     ParcelaAnalisis,
     PreguntarEntrada,
-    PlagaRespuesta,
     PreguntarRespuesta,
     TraducirEntrada,
     TraducirRespuesta,
@@ -349,20 +349,20 @@ async def traducir_zapoteco(
     )
 
 
-@app.post("/analizar-plaga", response_model=PlagaRespuesta)
-async def analizar_plaga(
+@app.post("/analizar-cultivo", response_model=CultivoRespuesta)
+async def analizar_cultivo(
     imagen: UploadFile = File(...),
-    cultivo: str | None = Form(None),
+    nombre_cultivo: str | None = Form(None, alias="cultivo"),
     proveedores: dict[str, Proveedor] = Depends(obtener_proveedores),
 ):
-    """Posibles plagas o enfermedades en la foto de una planta. No es un diagnóstico:
-    Gemma describe lo que ve y los pasos a seguir son fijos y seguros (sin productos ni dosis)."""
+    """Cómo se ve un cultivo en la foto: etapa, estado general y, si hay daño, posibles causas.
+    No es un diagnóstico: los pasos a seguir son fijos y seguros (sin productos ni dosis)."""
     inicio = time.perf_counter()
     datos = await imagen.read(config.MAX_BYTES_IMAGEN + 1)
     if len(datos) > config.MAX_BYTES_IMAGEN:
         raise HTTPException(413, {"error": "imagen_muy_grande", "detalle": "Máximo 10 MB"})
     jpeg = preparar_imagen(datos)
-    cultivo = (cultivo or "").strip()[:40] or None
+    pista = (nombre_cultivo or "").strip()[:40] or None
 
     llm = proveedores.get(config.PROVEEDOR_ANALISIS)
     respaldo = None if llm else "sin_api_key"
@@ -371,33 +371,33 @@ async def analizar_plaga(
 
     if llm and llm.nombre != "ollama":
         try:
-            resultado = await plagas.analizar_con(llm, jpeg, cultivo)
+            resultado = await cultivo.analizar_con(llm, jpeg, pista)
         except LLMNoDisponible as e:
             respaldo = "sin_conexion"
-            log.warning("Gemini no disponible en /analizar-plaga, uso Ollama: %s", e)
+            log.warning("Gemini no disponible en /analizar-cultivo, uso Ollama: %s", e)
         except LLMError as e:
             respaldo = "error_gemini"
-            log.warning("Gemini falló en /analizar-plaga, uso Ollama: %s", e)
-        except plagas.PlagaInvalida as e:
+            log.warning("Gemini falló en /analizar-cultivo, uso Ollama: %s", e)
+        except cultivo.CultivoInvalido as e:
             respaldo = "respuesta_invalida"
-            intentos_previos = plagas.MAX_INTENTOS
-            log.warning("Gemini respondió inválido en /analizar-plaga, uso Ollama: %s", e)
+            intentos_previos = cultivo.MAX_INTENTOS
+            log.warning("Gemini respondió inválido en /analizar-cultivo, uso Ollama: %s", e)
 
     if resultado is None:
         llm = proveedores["ollama"]
         try:
-            resultado = await plagas.analizar_con(llm, jpeg, cultivo)
+            resultado = await cultivo.analizar_con(llm, jpeg, pista)
         except (LLMNoDisponible, LLMError) as e:
             raise errores_llm(e)
-        except plagas.PlagaInvalida as e:
+        except cultivo.CultivoInvalido as e:
             raise HTTPException(502, {"error": "respuesta_invalida_llm", "detalle": str(e)})
 
     analisis, intentos = resultado
-    return PlagaRespuesta(
+    return CultivoRespuesta(
         analisis=analisis,
-        pasos=plagas.pasos_seguros(analisis),
-        aviso=plagas.AVISO,
-        zapoteco=glosario.palabras_en_texto(plagas.texto_para_glosario(analisis)),
+        pasos=cultivo.pasos_seguros(analisis),
+        aviso=cultivo.AVISO,
+        zapoteco=glosario.palabras_en_texto(cultivo.texto_para_glosario(analisis)),
         modelo_local=llm.nombre == "ollama",
         respaldo=respaldo,
         proveedor=llm.nombre,
@@ -405,7 +405,6 @@ async def analizar_plaga(
         intentos=intentos_previos + intentos,
         latencia_ms=ms_desde(inicio),
     )
-
 
 if __name__ == "__main__":
     import uvicorn

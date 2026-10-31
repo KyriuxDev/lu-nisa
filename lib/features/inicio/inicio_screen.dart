@@ -69,9 +69,9 @@ class InicioScreen extends StatelessWidget {
             _PreguntarButton(onTap: () => context.push('/preguntar')),
             const SizedBox(height: 12),
             _BotonSecundario(
-              icono: Icons.bug_report_outlined,
-              texto: 'Revisar plaga en mi planta',
-              onTap: () => context.push('/plaga'),
+              icono: Icons.eco_outlined,
+              texto: 'Revisar mi cultivo',
+              onTap: () => context.push('/cultivo'),
             ),
             const SizedBox(height: 24),
             _HistorialSection(onVerTodo: () => context.go('/historial')),

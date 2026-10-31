@@ -1,14 +1,14 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:lunisa/data/models/analisis_plaga.dart';
+import 'package:lunisa/data/models/analisis_cultivo.dart';
 
 void main() {
-  test('lee la respuesta de /analizar-plaga', () {
-    final r = AnalisisPlaga.desdeJson({
+  test('lee la respuesta de /analizar-cultivo', () {
+    final r = AnalisisCultivo.desdeJson({
       'analisis': {
         'es_planta': true,
         'cultivo_visto': 'maíz',
-        'parte_afectada': 'hoja',
-        'hay_dano': true,
+        'etapa': 'crecimiento',
+        'estado_general': 'problemas_leves',
         'sintomas': ['agujeros en las hojas'],
         'posibles_causas': [
           {'nombre': 'gusano cogollero', 'tipo': 'insecto', 'confianza': 'media', 'senales': 'hoyos'},
@@ -27,16 +27,17 @@ void main() {
     });
     expect(r.causas.single.tipoLegible, 'Insecto');
     expect(r.zapoteco.single.variante, 'jaltepec');
-    expect(r.hayDano, isTrue);
+    expect(r.titulo, 'Tu cultivo tiene algunos problemas');
+    expect(r.etapaLegible, 'En crecimiento');
     expect(r.etiquetaModelo, 'Revisado con Gemma 4 26B');
   });
 
-  test('hay_dano no_determinable queda en null', () {
-    final r = AnalisisPlaga.desdeJson({
+  test('etapa no_determinable no se muestra', () {
+    final r = AnalisisCultivo.desdeJson({
       'analisis': {
         'es_planta': true,
-        'parte_afectada': 'no_determinable',
-        'hay_dano': 'no_determinable',
+        'etapa': 'no_determinable',
+        'estado_general': 'no_determinable',
         'sintomas': [],
         'posibles_causas': [],
         'confianza': 'baja',
@@ -45,6 +46,7 @@ void main() {
       'proveedor': 'ollama',
       'modelo': 'gemma4:e4b',
     });
-    expect(r.hayDano, isNull);
+    expect(r.etapaLegible, isNull);
+    expect(r.titulo, 'No se alcanza a ver bien');
   });
 }

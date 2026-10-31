@@ -1,6 +1,6 @@
-"""Pruebas de /analizar-plaga. No necesitan Ollama ni Gemini.
+"""Pruebas de /analizar-cultivo. No necesitan Ollama ni Gemini.
 
-    .venv/bin/python -m pytest tests/test_plagas.py
+    .venv/bin/python -m pytest tests/test_cultivo.py
 """
 
 import io
@@ -10,15 +10,15 @@ import pytest
 from fastapi.testclient import TestClient
 from PIL import Image
 
-from app import config, plagas
+from app import config, cultivo
 from app.llm import LLMNoDisponible
 from app.main import app, obtener_proveedores
 
 COGOLLERO = {
     "es_planta": True,
     "cultivo_visto": "maíz",
-    "parte_afectada": "hoja",
-    "hay_dano": True,
+    "etapa": "crecimiento",
+    "estado_general": "problemas_leves",
     "sintomas": ["agujeros en las hojas nuevas", "aserrín en el cogollo"],
     "posibles_causas": [
         {"nombre": "gusano cogollero", "tipo": "insecto", "confianza": "media", "senales": "hoyos y excremento"},
@@ -69,10 +69,10 @@ def cliente_con(monkeypatch):
 
 def enviar(cliente, cultivo=None):
     datos = {"cultivo": cultivo} if cultivo else {}
-    return cliente.post("/analizar-plaga", files={"imagen": ("hoja.jpg", jpeg(), "image/jpeg")}, data=datos)
+    return cliente.post("/analizar-cultivo", files={"imagen": ("hoja.jpg", jpeg(), "image/jpeg")}, data=datos)
 
 
-def test_plaga_con_gemini(cliente_con):
+def test_cultivo_con_gemini(cliente_con):
     cliente, provs = cliente_con(gemini=[json.dumps(COGOLLERO)])
     r = enviar(cliente, cultivo="maíz")
     assert r.status_code == 200, r.text
@@ -90,30 +90,50 @@ def test_pasos_son_seguros_y_terminan_con_tecnico(cliente_con):
     cliente, _ = cliente_con(gemini=[json.dumps(COGOLLERO)])
     j = enviar(cliente).json()
     pasos = " ".join(j["pasos"]).lower()
-    assert j["pasos"][-1] == plagas.PASO_FINAL
+    assert j["pasos"][-1] == cultivo.PASO_FINAL
     assert "en la mañana o al atardecer" in pasos  # insecto
     assert "hojas de abajo" in pasos  # falta de nutrientes
     assert "no es un diagnóstico" in j["aviso"].lower()
 
 
 def test_prompt_prohibe_recomendar_productos():
-    assert "PROHIBIDO" in plagas.SISTEMA and "dosis" in plagas.SISTEMA
+    assert "PROHIBIDO" in cultivo.SISTEMA and "dosis" in cultivo.SISTEMA
 
 
-def test_planta_sana():
-    a = plagas.PlagaAnalisis.model_validate({**COGOLLERO, "hay_dano": False, "posibles_causas": [], "sintomas": []})
-    assert plagas.pasos_seguros(a) == ["La planta se ve sana en la foto. Sigue revisándola cada semana."]
+def test_cultivo_sano():
+    a = cultivo.CultivoAnalisis.model_validate(
+        {**COGOLLERO, "estado_general": "sano", "posibles_causas": [], "sintomas": []}
+    )
+    assert cultivo.pasos_seguros(a) == [cultivo.PASO_SANO]
 
 
 def test_no_es_planta():
-    a = plagas.PlagaAnalisis.model_validate(
-        {**COGOLLERO, "es_planta": False, "hay_dano": "no_determinable", "posibles_causas": [], "sintomas": []}
+    a = cultivo.CultivoAnalisis.model_validate(
+        {**COGOLLERO, "es_planta": False, "estado_general": "no_determinable", "posibles_causas": [], "sintomas": []}
     )
-    assert "foto de cerca" in plagas.pasos_seguros(a)[0]
+    assert cultivo.pasos_seguros(a) == [cultivo.PASO_SIN_PLANTA]
+
+
+def test_acaros_tienen_su_paso():
+    # Caso real: ácaro rojo en hojas de palma; casi no se ve en la foto
+    a = cultivo.CultivoAnalisis.model_validate(
+        {
+            **COGOLLERO,
+            "cultivo_visto": "palma",
+            "posibles_causas": [
+                {"nombre": "ácaro rojo", "tipo": "acaro", "confianza": "media", "senales": "manchitas amarillas"}
+            ],
+        }
+    )
+    assert any("lupa" in p for p in cultivo.pasos_seguros(a))
+
+
+def test_prompt_considera_acaros():
+    assert '"acaro"' in cultivo.PROMPT and "ácaros" in cultivo.PROMPT
 
 
 def test_recorta_listas_largas():
-    a = plagas.PlagaAnalisis.model_validate(
+    a = cultivo.CultivoAnalisis.model_validate(
         {
             **COGOLLERO,
             "sintomas": ["a", "b", "c", "d", "e", "f"],
@@ -140,7 +160,7 @@ def test_cae_a_ollama_y_lo_marca(cliente_con):
 
 def test_imagen_invalida(cliente_con):
     cliente, _ = cliente_con(gemini=[])
-    r = cliente.post("/analizar-plaga", files={"imagen": ("x.jpg", b"no soy imagen", "image/jpeg")})
+    r = cliente.post("/analizar-cultivo", files={"imagen": ("x.jpg", b"no soy imagen", "image/jpeg")})
     assert r.status_code == 415
 
 
