@@ -178,6 +178,7 @@ def crear_proveedores() -> dict[str, Proveedor]:
         ("PROVEEDOR_ANALISIS", config.PROVEEDOR_ANALISIS),
         ("PROVEEDOR_EXPLICAR", config.PROVEEDOR_EXPLICAR),
         ("PROVEEDOR_PREGUNTAR", config.PROVEEDOR_PREGUNTAR),
+        ("PROVEEDOR_TRADUCIR", config.PROVEEDOR_TRADUCIR),
     ]:
         if nombre not in ("ollama", "gemini"):
             raise RuntimeError(f"{tarea} inválido: {nombre!r} (usa ollama o gemini)")

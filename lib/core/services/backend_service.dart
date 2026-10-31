@@ -21,6 +21,21 @@ class Explicacion {
   });
 }
 
+/// Traducción experimental de POST /traducir-zapoteco (no revisada por un hablante)
+class TraduccionExperimental {
+  final String traduccion;
+  final String aviso;
+  final String proveedor;
+  final String modelo;
+
+  const TraduccionExperimental({
+    required this.traduccion,
+    required this.aviso,
+    required this.proveedor,
+    required this.modelo,
+  });
+}
+
 /// Cliente del backend FastAPI (lunisa/backend).
 class BackendService {
   static const _claveUrl = 'backend_url';
@@ -135,6 +150,28 @@ class BackendService {
     final json = jsonDecode(utf8.decode(respuesta.bodyBytes)) as Map<String, dynamic>;
     debugPrint('[Backend] preguntar ${json['proveedor']} ${json['latencia_ms']} ms');
     return RespuestaPregunta.desdeJson(texto, json);
+  }
+
+  /// POST /traducir-zapoteco. Lanza excepción si falla.
+  static Future<TraduccionExperimental> traducirZapoteco(String texto) async {
+    final url = await obtenerUrl();
+    final respuesta = await http
+        .post(
+          Uri.parse('$url/traducir-zapoteco'),
+          headers: {'Content-Type': 'application/json'},
+          body: jsonEncode({'texto': texto}),
+        )
+        .timeout(_timeoutPreguntar);
+    if (respuesta.statusCode != 200) {
+      throw HttpException('traducir-zapoteco ${respuesta.statusCode}: ${respuesta.body}');
+    }
+    final json = jsonDecode(utf8.decode(respuesta.bodyBytes)) as Map<String, dynamic>;
+    return TraduccionExperimental(
+      traduccion: json['traduccion'] as String,
+      aviso: json['aviso'] as String,
+      proveedor: json['proveedor'] as String,
+      modelo: json['modelo'] as String,
+    );
   }
 
   /// GET /salud con la URL dada; true si responde 200

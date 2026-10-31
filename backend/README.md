@@ -29,6 +29,7 @@ ollama pull gemma4:e4b        # respaldo local y /explicar
 | `GET /salud` | — | proveedor activo y si el modelo responde |
 | `POST /analizar-parcela` | multipart `imagen` (jpeg/png/webp, ≤10 MB) | `{analisis, humedad_preguntar_usuario, respaldo, proveedor, modelo, intentos, latencia_ms}` |
 | `POST /preguntar` | `{texto, municipio?, mes?}` (texto dictado por voz o escrito) | `{respuesta, respuesta_segmentos, pregunta_traducida, zapoteco: [{espanol, zapoteco, categoria}], zapoteco_pregunta, saludo, despedida, municipio, respaldo, proveedor, modelo, latencia_ms}` |
+| `POST /traducir-zapoteco` | `{texto}` | `{traduccion, experimental: true, aviso, vocabulario_usado, respaldo, proveedor, modelo, latencia_ms}` (**experimental**, no revisada por hablantes) |
 | `POST /explicar` | `{municipio, cultivo, puntaje, datos_regla: {clave: {valor, fuente: foto\|campesino\|datos}}}` | `{explicacion, respaldo, proveedor, modelo, latencia_ms}` |
 
 `analisis` solo trae atributos observables (`es_parcela`, `suelo_desnudo`, `humedad_aparente`,
@@ -61,6 +62,15 @@ El reconocimiento de voz del teléfono escribe las palabras zapotecas como suena
 El glosario viene de [vocabulario_zapoteco](https://dev-deivis.github.io/vocabulario_zapoteco/). Las entradas
 con `"zapoteco": ""` (maíz, milpa, sembrar, cosechar, café…) faltan por confirmar con un hablante y no se muestran;
 para agregarlas basta llenar ese campo.
+
+### Traducción completa (experimental)
+
+`/traducir-zapoteco` le pide a Gemma 4 la traducción de toda la respuesta, dándole como guía las palabras
+del glosario verificado que aparecen en el texto. **No está revisada por hablantes**: puede tener errores
+o mezclar otras variantes del zapoteco, y la app siempre la muestra marcada como EXPERIMENTAL.
+El zapoteco verificado sigue siendo el del glosario.
+
+Usamos Gemma y no Google Translate porque la API oficial de Google Cloud Translation no incluye el zapoteco.
 
 ## Pruebas
 

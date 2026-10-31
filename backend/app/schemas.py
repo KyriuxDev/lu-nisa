@@ -118,3 +118,20 @@ class PreguntarRespuesta(BaseModel):
     proveedor: str
     modelo: str
     latencia_ms: int
+
+
+class TraducirEntrada(BaseModel):
+    texto: str = Field(min_length=1, max_length=600)
+
+
+class TraducirRespuesta(BaseModel):
+    traduccion: str
+    # Siempre true: es traducción automática, no revisada por un hablante
+    experimental: bool = True
+    aviso: str
+    # Palabras del glosario verificado que se le dieron al modelo como guía
+    vocabulario_usado: list[PalabraZapoteca]
+    respaldo: Respaldo
+    proveedor: str
+    modelo: str
+    latencia_ms: int

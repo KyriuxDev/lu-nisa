@@ -225,3 +225,24 @@ def test_preguntar_si_todo_era_zapoteco_responde_algo(cliente_con):
     cliente, _ = cliente_con(gemini=["Dháh = frijol."])
     j = cliente.post("/preguntar", json={"texto": "¿dháh?"}).json()
     assert j["respuesta"].startswith("No tengo datos suficientes")
+
+
+
+# ---------- traducción experimental ----------
+
+def test_traducir_da_vocabulario_verificado_al_modelo(cliente_con, monkeypatch):
+    monkeypatch.setattr(config, "PROVEEDOR_TRADUCIR", "gemini")
+    cliente, provs = cliente_con(gemini=['"Dháh ... Shiah ..."'])
+    j = cliente.post("/traducir-zapoteco", json={"texto": "El frijol necesita lluvia."}).json()
+    prompt = provs["gemini"].llamadas[0]["prompt"]
+    assert "frijol = Dháh" in prompt and "lluvia = Shiah" in prompt
+    assert j["experimental"] is True and "no revisada" in j["aviso"]
+    assert j["traduccion"] == "Dháh ... Shiah ..."  # sin comillas
+    assert [p["zapoteco"] for p in j["vocabulario_usado"]] == ["Dháh", "Shiah"]
+
+
+def test_traducir_cae_a_ollama(cliente_con, monkeypatch):
+    monkeypatch.setattr(config, "PROVEEDOR_TRADUCIR", "gemini")
+    cliente, _ = cliente_con(gemini=[LLMNoDisponible("sin red")], ollama=["traducción local"])
+    j = cliente.post("/traducir-zapoteco", json={"texto": "Hola."}).json()
+    assert j["proveedor"] == "ollama" and j["respaldo"] == "sin_conexion"

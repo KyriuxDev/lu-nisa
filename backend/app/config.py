@@ -23,6 +23,8 @@ PORT = int(os.getenv("PORT", "8000"))
 
 # Proveedor preferido para /preguntar (voz); cae a Ollama si Gemini falla
 PROVEEDOR_PREGUNTAR = os.getenv("PROVEEDOR_PREGUNTAR", "gemini").strip().lower()
+# Traducción experimental al zapoteco: el modelo grande traduce mejor que el local
+PROVEEDOR_TRADUCIR = os.getenv("PROVEEDOR_TRADUCIR", "gemini").strip().lower()
 
 # Mismo JSON que usa la app: clima y cultivos por municipio y mes
 DATOS_RECOMENDACIONES = os.getenv(

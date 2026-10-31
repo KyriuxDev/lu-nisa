@@ -77,3 +77,16 @@ Contesta en máximo 4 oraciones cortas, usando solo los datos de arriba.
 - Habla de los cultivos con su nombre común (maíz, frijol, café), sin nombres científicos.
 - Si preguntan por un cultivo que no aparece en los datos, di que no tienes información de ese cultivo para su municipio.
 Responde solo con la respuesta, sin títulos ni viñetas."""
+
+
+SISTEMA_TRADUCIR = """Traduces textos cortos del español al zapoteco de la Sierra Norte de Oaxaca
+(zapoteco serrano, de la región de Ixtlán y Villa Alta).
+Responde SOLO con la traducción, sin explicaciones, sin comillas y sin notas."""
+
+PROMPT_TRADUCIR = """Vocabulario verificado de la región (úsalo tal cual cuando aparezca):
+{vocabulario}
+
+Texto en español:
+{texto}
+
+Traducción al zapoteco de la Sierra Norte:"""

@@ -52,7 +52,15 @@ El proyecto ya existía antes del evento (ver abajo). Esto es lo que agregamos h
 - [ ] **Preguntas por voz:** el campesino pregunta hablando ("¿ya puedo sembrar frijol?") y Gemma 4 responde con los datos de su municipio.
 - [ ] **Respuesta en voz alta**, para quien no lee con facilidad.
 - [ ] **Vocabulario zapoteco de la Sierra Norte** en las respuestas (*Shiah* = lluvia, *Yúu* = tierra, *Dháh* = frijol). Gemma responde en español y las palabras zapotecas las agrega el código desde un glosario verificado, así el modelo nunca inventa zapoteco.
+- [ ] **Preguntar en zapoteco escrito:** "¿Bata siembro dháh?" se entiende como "¿cuándo siembro frijol?".
+- [ ] **Traducción completa al zapoteco (experimental)** con Gemma 4, guiada por el glosario y marcada como no revisada.
 - [x] **Licencia MIT** y README actualizado.
+
+### Qué sigue
+
+- **Revisión por hablantes:** que hablantes de la Sierra Norte revisen la traducción experimental y completen el glosario (maíz, milpa, sembrar, cosechar, café).
+- **Frases verificadas:** plantillas como "En {mes} suelen llover {n} mm" traducidas una vez por un hablante, para dar respuestas completas en zapoteco sin traducción automática.
+- **Voz en zapoteco:** el dictado del teléfono solo entiende español ("bata siembro dháh" se escucha como "mata siempre da"). Hace falta grabar a hablantes para entrenar el reconocimiento.
 
 **Antes del evento:** app Flutter base, datos de clima por municipio y mes, y backend de análisis de fotos con Gemma 4.
 

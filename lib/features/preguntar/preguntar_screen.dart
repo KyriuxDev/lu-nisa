@@ -429,6 +429,37 @@ class _TarjetaRespuestaState extends State<_TarjetaRespuesta> {
   /// Mostrar las palabras en zapoteco dentro de la frase
   bool _conZapoteco = true;
 
+  /// Traducción completa experimental (Gemma 4), se pide solo si el usuario toca el botón
+  TraduccionExperimental? _traduccion;
+  bool _traduciendo = false;
+  String? _errorTraduccion;
+
+  @override
+  void didUpdateWidget(covariant _TarjetaRespuesta anterior) {
+    super.didUpdateWidget(anterior);
+    // Nueva pregunta: la traducción anterior ya no aplica
+    if (anterior.respuesta != widget.respuesta) {
+      _traduccion = null;
+      _errorTraduccion = null;
+    }
+  }
+
+  Future<void> _traducir() async {
+    setState(() {
+      _traduciendo = true;
+      _errorTraduccion = null;
+    });
+    try {
+      final t = await BackendService.traducirZapoteco(widget.respuesta.respuesta);
+      if (mounted) setState(() => _traduccion = t);
+    } catch (e) {
+      debugPrint('[Traducir] $e');
+      if (mounted) setState(() => _errorTraduccion = 'No se pudo traducir ahora.');
+    } finally {
+      if (mounted) setState(() => _traduciendo = false);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final respuesta = widget.respuesta;
@@ -478,6 +509,27 @@ class _TarjetaRespuestaState extends State<_TarjetaRespuesta> {
                 label: Text(_conZapoteco ? 'Ver solo en español' : 'Ver con palabras en zapoteco'),
               ),
             ),
+          const SizedBox(height: 8),
+          if (_traduccion == null)
+            OutlinedButton.icon(
+              onPressed: _traduciendo ? null : _traducir,
+              style: OutlinedButton.styleFrom(
+                foregroundColor: _kTierra,
+                side: const BorderSide(color: _kTierra),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+              ),
+              icon: _traduciendo
+                  ? const SizedBox(width: 16, height: 16, child: CircularProgressIndicator(strokeWidth: 2))
+                  : const Icon(Icons.auto_awesome, size: 18),
+              label: Text(_traduciendo ? 'Traduciendo…' : 'Traducir todo al zapoteco (experimental)'),
+            )
+          else
+            _TraduccionExperimental(traduccion: _traduccion!),
+          if (_errorTraduccion != null)
+            Padding(
+              padding: const EdgeInsets.only(top: 6),
+              child: Text(_errorTraduccion!, style: const TextStyle(fontSize: 13, color: _kTierra)),
+            ),
           if (palabras.isNotEmpty) ...[
             const SizedBox(height: 20),
             const Text(
@@ -510,6 +562,51 @@ class _TarjetaRespuestaState extends State<_TarjetaRespuesta> {
                 ),
               ),
             ],
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+/// Traducción completa de Gemma 4, siempre marcada como experimental
+class _TraduccionExperimental extends StatelessWidget {
+  final TraduccionExperimental traduccion;
+  const _TraduccionExperimental({required this.traduccion});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(14),
+      decoration: BoxDecoration(
+        color: const Color(0xFFFFF8E7),
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(color: const Color(0xFFE9C46A)),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+            decoration: BoxDecoration(
+              color: const Color(0xFFE9C46A),
+              borderRadius: BorderRadius.circular(4),
+            ),
+            child: const Text(
+              'EXPERIMENTAL',
+              style: TextStyle(fontSize: 11, fontWeight: FontWeight.w800, letterSpacing: 0.8),
+            ),
+          ),
+          const SizedBox(height: 10),
+          Text(
+            traduccion.traduccion,
+            style: const TextStyle(fontSize: 17, height: 1.45, fontStyle: FontStyle.italic),
+          ),
+          const SizedBox(height: 10),
+          Text(
+            traduccion.aviso,
+            style: const TextStyle(fontSize: 12, color: Color(0xFF555555)),
           ),
         ],
       ),

@@ -20,6 +20,8 @@ from app.schemas import (
     ParcelaAnalisis,
     PreguntarEntrada,
     PreguntarRespuesta,
+    TraducirEntrada,
+    TraducirRespuesta,
 )
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(name)s: %(message)s")
@@ -292,6 +294,39 @@ async def preguntar(entrada: PreguntarEntrada, proveedores: dict[str, Proveedor]
         saludo=glosario.SALUDO,
         despedida=glosario.DESPEDIDA,
         municipio=municipio,
+        respaldo=respaldo,
+        proveedor=llm.nombre,
+        modelo=llm.modelo,
+        latencia_ms=ms_desde(inicio),
+    )
+
+
+AVISO_TRADUCCION = (
+    "Traducción automática con Gemma 4, todavía no revisada por un hablante. "
+    "Puede tener errores o mezclar otras variantes del zapoteco."
+)
+
+
+@app.post("/traducir-zapoteco", response_model=TraducirRespuesta)
+async def traducir_zapoteco(
+    entrada: TraducirEntrada, proveedores: dict[str, Proveedor] = Depends(obtener_proveedores)
+):
+    """Traducción EXPERIMENTAL de una respuesta al zapoteco de la Sierra Norte.
+
+    Se le da al modelo el vocabulario verificado que aparece en el texto para orientarlo a la variante
+    de la región, pero el resultado no está revisado: la app lo muestra siempre marcado como experimental.
+    """
+    inicio = time.perf_counter()
+    vocabulario = glosario.palabras_en_texto(entrada.texto)
+    lista = "\n".join(f"- {p['espanol'].lower()} = {p['zapoteco']}" for p in vocabulario) or "- (ninguna palabra del texto)"
+    prompt = prompts.PROMPT_TRADUCIR.format(vocabulario=lista, texto=entrada.texto)
+    texto, llm, respaldo = await generar_con_respaldo(
+        proveedores, config.PROVEEDOR_TRADUCIR, prompt, prompts.SISTEMA_TRADUCIR, "/traducir-zapoteco"
+    )
+    return TraducirRespuesta(
+        traduccion=" ".join(texto.strip().strip('"').split()),
+        aviso=AVISO_TRADUCCION,
+        vocabulario_usado=vocabulario,
         respaldo=respaldo,
         proveedor=llm.nombre,
         modelo=llm.modelo,
