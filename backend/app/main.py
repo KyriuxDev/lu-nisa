@@ -369,6 +369,17 @@ async def analizar_cultivo(
     intentos_previos = 0
     resultado = None
 
+    if config.CULTIVO_EN_PARALELO and llm and llm.nombre != "ollama":
+        try:
+            analisis, intentos, llm, respaldo = await cultivo.analizar_en_paralelo(
+                llm, proveedores["ollama"], jpeg, pista
+            )
+        except (LLMNoDisponible, LLMError) as e:
+            raise errores_llm(e)
+        except cultivo.CultivoInvalido as e:
+            raise HTTPException(502, {"error": "respuesta_invalida_llm", "detalle": str(e)})
+        return _respuesta_cultivo(analisis, intentos, llm, respaldo, inicio)
+
     if llm and llm.nombre != "ollama":
         try:
             resultado = await cultivo.analizar_con(llm, jpeg, pista)
@@ -393,6 +404,10 @@ async def analizar_cultivo(
             raise HTTPException(502, {"error": "respuesta_invalida_llm", "detalle": str(e)})
 
     analisis, intentos = resultado
+    return _respuesta_cultivo(analisis, intentos_previos + intentos, llm, respaldo, inicio)
+
+
+def _respuesta_cultivo(analisis, intentos: int, llm: Proveedor, respaldo, inicio: float) -> CultivoRespuesta:
     return CultivoRespuesta(
         analisis=analisis,
         pasos=cultivo.pasos_seguros(analisis),
@@ -402,7 +417,7 @@ async def analizar_cultivo(
         respaldo=respaldo,
         proveedor=llm.nombre,
         modelo=llm.modelo,
-        intentos=intentos_previos + intentos,
+        intentos=intentos,
         latencia_ms=ms_desde(inicio),
     )
 

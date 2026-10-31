@@ -49,4 +49,24 @@ void main() {
     expect(r.etapaLegible, isNull);
     expect(r.titulo, 'No se alcanza a ver bien');
   });
+
+  test('el pie dice por qué respondió el modelo local', () {
+    AnalisisCultivo local(String? respaldo) => AnalisisCultivo.desdeJson({
+          'analisis': {
+            'es_planta': true,
+            'etapa': 'crecimiento',
+            'estado_general': 'sano',
+            'sintomas': [],
+            'posibles_causas': [],
+            'confianza': 'media',
+            'observaciones': '',
+          },
+          'modelo_local': true,
+          'respaldo': respaldo,
+          'proveedor': 'ollama',
+          'modelo': 'gemma4:e4b',
+        });
+    expect(local('sin_conexion').pieModelo, contains('sin internet'));
+    expect(local('mas_rapido_local').pieModelo, contains('respondió primero'));
+  });
 }

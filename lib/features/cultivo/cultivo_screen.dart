@@ -267,7 +267,7 @@ class _Resultado extends StatelessWidget {
             const SizedBox(width: 6),
             Expanded(
               child: Text(
-                r.modeloLocal ? '${r.etiquetaModelo} (sin internet: menos preciso)' : r.etiquetaModelo,
+                r.pieModelo,
                 style: const TextStyle(fontSize: 12, color: Color(0xFF555555)),
               ),
             ),

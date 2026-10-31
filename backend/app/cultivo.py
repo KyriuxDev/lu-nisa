@@ -7,12 +7,13 @@ El modelo solo describe lo que se ve. Nunca recomienda productos, dosis ni trata
 los pasos a seguir son fijos y seguros, y los arma este código.
 """
 
+import asyncio
 import logging
 from typing import Literal
 
 from pydantic import BaseModel, ConfigDict, field_validator
 
-from app.llm import Proveedor, extraer_json
+from app.llm import LLMError, LLMNoDisponible, Proveedor, extraer_json
 
 log = logging.getLogger("lunisa.cultivo")
 
@@ -47,7 +48,7 @@ class Causa(BaseModel):
     @field_validator("senales")
     @classmethod
     def corta(cls, v: str) -> str:
-        return _recortar(v, 20)
+        return _recortar(v, 15)
 
 
 class CultivoAnalisis(BaseModel):
@@ -75,7 +76,7 @@ class CultivoAnalisis(BaseModel):
     @field_validator("observaciones")
     @classmethod
     def obs_corta(cls, v: str) -> str:
-        return _recortar(v, 30)
+        return _recortar(v, 20)
 
 
 SISTEMA = """Eres un observador de fotos de cultivos de la Sierra Norte de Oaxaca (por ejemplo maíz, frijol,
@@ -101,11 +102,11 @@ PROMPT = """{pista}Observa la foto y responde con este JSON (mismas claves):
       "nombre": "nombre común en México (ej. gusano cogollero, roya del café, araña roja, ácaro)",
       "tipo": "insecto" | "acaro" | "hongo" | "bacteria_o_virus" | "falta_de_nutrientes" | "clima" | "otro",
       "confianza": "baja" | "media" | "alta",
-      "senales": "qué se ve en la foto que lo sugiere"
+      "senales": "qué se ve que lo sugiere, máximo 15 palabras"
     }}
   ],
   "confianza": "baja" | "media" | "alta",
-  "observaciones": "cómo se ve el cultivo en general, en español sencillo, máximo 30 palabras"
+  "observaciones": "cómo se ve el cultivo en general, en español sencillo, máximo 20 palabras"
 }}
 
 Reglas:
@@ -130,7 +131,7 @@ async def analizar_con(llm: Proveedor, jpeg: bytes, cultivo: str | None) -> tupl
     for intento in range(1, MAX_INTENTOS + 1):
         # pensar_minimo: sin esto Gemma 4 razona tanto que Gemini corta a los 30 s (ReadTimeout)
         texto = await llm.generar(
-            prompt, sistema=SISTEMA, imagen=jpeg, json_mode=True, pensar_minimo=True, max_tokens=800
+            prompt, sistema=SISTEMA, imagen=jpeg, json_mode=True, pensar_minimo=True, max_tokens=500
         )
         try:
             return CultivoAnalisis.model_validate(extraer_json(texto)), intento
@@ -183,3 +184,54 @@ def texto_para_glosario(a: CultivoAnalisis) -> str:
     partes = [a.cultivo_visto or "", *a.sintomas, a.observaciones]
     partes += [f"{c.nombre}. {c.senales}" for c in a.posibles_causas]
     return ". ".join(p for p in partes if p)
+
+
+async def analizar_en_paralelo(
+    preferido: Proveedor, local: Proveedor, jpeg: bytes, cultivo: str | None
+) -> tuple[CultivoAnalisis, int, Proveedor, str | None]:
+    """Lanza Gemini y Gemma local al mismo tiempo y usa la primera respuesta válida.
+
+    Antes se esperaba a que Gemini fallara (30 s) para empezar con el local. Así, si Gemini
+    está rápido gana Gemini; si está lento, sale el local sin perder esos 30 s.
+    Devuelve (análisis, intentos, proveedor que ganó, motivo por el que no ganó el preferido).
+    """
+    tareas = {
+        asyncio.create_task(analizar_con(preferido, jpeg, cultivo)): preferido,
+        asyncio.create_task(analizar_con(local, jpeg, cultivo)): local,
+    }
+    errores: dict[str, Exception] = {}
+    pendientes = set(tareas)
+    try:
+        while pendientes:
+            listas, pendientes = await asyncio.wait(pendientes, return_when=asyncio.FIRST_COMPLETED)
+            # Si las dos terminan juntas, se prefiere la de Gemini
+            for tarea in sorted(listas, key=lambda t: tareas[t] is not preferido):
+                llm = tareas[tarea]
+                try:
+                    analisis, intentos = tarea.result()
+                except Exception as e:  # que una falla rara de uno no tumbe al otro
+                    errores[llm.nombre] = e
+                    log.warning("[%s] falló en paralelo: %s", llm.nombre, e)
+                    continue
+                if llm is preferido:
+                    return analisis, intentos, llm, None
+                motivo = _motivo(errores.get(preferido.nombre)) or "mas_rapido_local"
+                log.info("Gemma local respondió primero (%s)", motivo)
+                return analisis, intentos, llm, motivo
+    finally:
+        # Al que perdió se le cancela; Ollama deja de generar cuando se corta la conexión
+        for tarea in tareas:
+            if not tarea.done():
+                tarea.cancel()
+    # Fallaron los dos: se re-lanza el error del local, que es el más informativo sin internet
+    raise errores.get(local.nombre) or errores.get(preferido.nombre) or CultivoInvalido("sin respuesta")
+
+
+def _motivo(e: Exception | None) -> str | None:
+    if e is None:
+        return None
+    if isinstance(e, LLMNoDisponible):
+        return "sin_conexion"
+    if isinstance(e, CultivoInvalido):
+        return "respuesta_invalida"
+    return "error_gemini"

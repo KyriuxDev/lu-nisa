@@ -80,7 +80,7 @@ class ExplicarRespuesta(BaseModel):
     latencia_ms: int
 
 
-Respaldo = Literal["sin_conexion", "error_gemini", "respuesta_invalida", "sin_api_key"] | None
+Respaldo = Literal["sin_conexion", "error_gemini", "respuesta_invalida", "sin_api_key", "mas_rapido_local"] | None
 
 
 class PreguntarEntrada(BaseModel):

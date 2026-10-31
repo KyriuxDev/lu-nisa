@@ -54,6 +54,9 @@ class AnalisisCultivo {
   final String aviso;
   final List<PalabraZapoteca> zapoteco;
   final bool modeloLocal;
+
+  /// Por qué respondió el modelo local: sin_conexion, mas_rapido_local, error_gemini…
+  final String? respaldo;
   final String proveedor;
   final String modelo;
 
@@ -70,6 +73,7 @@ class AnalisisCultivo {
     required this.aviso,
     required this.zapoteco,
     required this.modeloLocal,
+    this.respaldo,
     required this.proveedor,
     required this.modelo,
   });
@@ -93,6 +97,7 @@ class AnalisisCultivo {
           .map((e) => PalabraZapoteca.desdeJson(e as Map<String, dynamic>))
           .toList(),
       modeloLocal: json['modelo_local'] as bool? ?? false,
+      respaldo: json['respaldo'] as String?,
       proveedor: json['proveedor'] as String,
       modelo: json['modelo'] as String,
     );
@@ -118,4 +123,14 @@ class AnalisisCultivo {
 
   String get etiquetaModelo =>
       proveedor == 'gemini' ? 'Revisado con Gemma 4 26B' : 'Revisado con Gemma 4 local';
+
+  /// Texto completo para el pie: dice por qué respondió el modelo local
+  String get pieModelo {
+    if (!modeloLocal) return etiquetaModelo;
+    return switch (respaldo) {
+      'sin_conexion' => '$etiquetaModelo (sin internet: menos preciso)',
+      'mas_rapido_local' => '$etiquetaModelo (respondió primero; menos preciso que el de la nube)',
+      _ => '$etiquetaModelo (menos preciso)',
+    };
+  }
 }

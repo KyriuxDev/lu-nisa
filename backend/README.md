@@ -92,7 +92,10 @@ cada una con su probabilidad. No es un diagnóstico:
 - Los pasos a seguir (`pasos`) no los escribe el modelo: son frases fijas y seguras de
   [`app/cultivo.py`](app/cultivo.py), elegidas según el tipo de causa, y siempre terminan con
   llevar una muestra a un técnico.
-- Se le pide razonamiento mínimo; sin eso Gemini cortaba a los 30 s.
+- Se le pide razonamiento mínimo y una respuesta corta (500 tokens).
+- **Gemini y Gemma local corren al mismo tiempo** (`CULTIVO_EN_PARALELO=true`) y se usa la primera respuesta
+  válida; al otro se le cancela. Si Gemini está rápido gana Gemini; si tarda (con fotos llegaba a
+  más de 30 s), responde el local sin esperar a que Gemini falle. `respaldo: "mas_rapido_local"` lo indica.
 - Si respondió el modelo local (`modelo_local: true`), la app avisa que es menos preciso.
 
 ## Pruebas

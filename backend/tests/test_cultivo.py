@@ -3,6 +3,7 @@
     .venv/bin/python -m pytest tests/test_cultivo.py
 """
 
+import asyncio
 import io
 import json
 
@@ -36,14 +37,23 @@ def jpeg() -> bytes:
 
 
 class ProveedorFalso:
-    def __init__(self, nombre, respuestas):
+    def __init__(self, nombre, respuestas, demora=0.0):
         self.nombre = nombre
         self.modelo = f"{nombre}-falso"
         self.respuestas = list(respuestas)
         self.llamadas = []
+        self.demora = demora
+        self.cancelado = False
 
     async def generar(self, prompt, sistema=None, imagen=None, json_mode=False, pensar_minimo=False, max_tokens=None):
-        self.llamadas.append({"prompt": prompt, "sistema": sistema, "imagen": imagen, "pensar_minimo": pensar_minimo})
+        try:
+            await asyncio.sleep(self.demora)
+        except asyncio.CancelledError:
+            self.cancelado = True
+            raise
+        self.llamadas.append(
+            {"prompt": prompt, "sistema": sistema, "imagen": imagen, "pensar_minimo": pensar_minimo, "max_tokens": max_tokens}
+        )
         r = self.respuestas.pop(0)
         if isinstance(r, Exception):
             raise r
@@ -55,11 +65,12 @@ class ProveedorFalso:
 
 @pytest.fixture
 def cliente_con(monkeypatch):
-    def _crear(gemini=None, ollama=()):
+    def _crear(gemini=None, ollama=(), paralelo=False, demora_gemini=0.0, demora_ollama=0.0):
         monkeypatch.setattr(config, "PROVEEDOR_ANALISIS", "gemini")
-        provs = {"ollama": ProveedorFalso("ollama", ollama)}
+        monkeypatch.setattr(config, "CULTIVO_EN_PARALELO", paralelo)
+        provs = {"ollama": ProveedorFalso("ollama", ollama, demora_ollama)}
         if gemini is not None:
-            provs["gemini"] = ProveedorFalso("gemini", gemini)
+            provs["gemini"] = ProveedorFalso("gemini", gemini, demora_gemini)
         app.dependency_overrides[obtener_proveedores] = lambda: provs
         return TestClient(app), provs
 
@@ -169,3 +180,55 @@ def test_pide_razonamiento_minimo(cliente_con):
     cliente, provs = cliente_con(gemini=[json.dumps(COGOLLERO)])
     enviar(cliente)
     assert provs["gemini"].llamadas[0]["pensar_minimo"] is True
+
+
+
+# ---------- Gemini y Gemma local al mismo tiempo ----------
+
+def test_paralelo_gana_gemini_si_es_rapido(cliente_con):
+    cliente, provs = cliente_con(
+        gemini=[json.dumps(COGOLLERO)], ollama=[json.dumps(COGOLLERO)], paralelo=True, demora_ollama=0.5
+    )
+    j = enviar(cliente).json()
+    assert j["proveedor"] == "gemini" and j["respaldo"] is None and j["modelo_local"] is False
+    assert provs["ollama"].cancelado  # al local se le corta para no gastar la compu
+
+
+def test_paralelo_gana_local_si_gemini_es_lento(cliente_con):
+    # Lo que pasaba en el teléfono: Gemini tardaba más de 30 s con la foto
+    cliente, provs = cliente_con(
+        gemini=[json.dumps(COGOLLERO)], ollama=[json.dumps(COGOLLERO)], paralelo=True, demora_gemini=0.5
+    )
+    j = enviar(cliente).json()
+    assert j["proveedor"] == "ollama" and j["respaldo"] == "mas_rapido_local" and j["modelo_local"] is True
+    assert provs["gemini"].cancelado
+
+
+def test_paralelo_gemini_falla_y_responde_local(cliente_con):
+    cliente, _ = cliente_con(
+        gemini=[LLMNoDisponible("sin red")], ollama=[json.dumps(COGOLLERO)], paralelo=True, demora_ollama=0.1
+    )
+    j = enviar(cliente).json()
+    assert j["proveedor"] == "ollama" and j["respaldo"] == "sin_conexion"
+
+
+def test_paralelo_local_falla_y_espera_a_gemini(cliente_con):
+    cliente, _ = cliente_con(
+        gemini=[json.dumps(COGOLLERO)], ollama=[LLMNoDisponible("ollama apagado")], paralelo=True, demora_gemini=0.2
+    )
+    j = enviar(cliente).json()
+    assert j["proveedor"] == "gemini" and j["respaldo"] is None
+
+
+def test_paralelo_fallan_los_dos(cliente_con):
+    cliente, _ = cliente_con(
+        gemini=[LLMNoDisponible("sin red")], ollama=[LLMNoDisponible("ollama apagado")], paralelo=True
+    )
+    assert enviar(cliente).status_code == 503
+
+
+def test_respuesta_mas_corta(cliente_con):
+    # Menos texto = respuesta más rápida, sobre todo en el modelo local
+    cliente, provs = cliente_con(gemini=[json.dumps(COGOLLERO)])
+    enviar(cliente)
+    assert provs["gemini"].llamadas[0]["max_tokens"] == 500
